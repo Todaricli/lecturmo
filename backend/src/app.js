@@ -23,6 +23,16 @@ app.use(express.static("public"));
 import routes from "./routes/routes.js";
 app.use("/", routes);
 
-// Start the server running.
-// await mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
-app.listen(PORT, () => console.log(`App server listening on port ${PORT}!`));
+// Start the server running, connect to db.
+const runAndConnectToDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
+    console.log("Successfully connected to MongoDB.");
+    app.listen(PORT, () => console.log(`App server listening on port ${PORT}!`));
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err);
+  }
+};
+runAndConnectToDB();
+
+
