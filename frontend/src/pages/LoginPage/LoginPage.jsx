@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../../contexts/AppContextProvider';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { updateData, getData } = useContext(AppContext);
+
+  useEffect(() => {
+    console.log("1234:", 1234)
+    console.log("getData('user'):", getData('user'));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
