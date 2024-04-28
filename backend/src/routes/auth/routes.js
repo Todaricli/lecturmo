@@ -1,14 +1,28 @@
-import express from 'express';
+import express from "express";
+import passport from 'passport';
+import { authenticate } from "../../middleware/authMW.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  console.log("request.session:", req.session);
-  console.log("request.session.id:", req.session.id);
-  req.session.visited = true;
-  res.cookie("hello", "world", { maxAge: 30000, signed: true });
-  res.status(201).send({ msg: "hello" });
-});
+// expects username and password
+router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), (req, res) => {
+  // console.log("req.session:", req.session)
+  res.sendStatus(200)
+})
 
+router.get('/status', authenticate, (req, res) => {
+  console.log("req.session:", req.session)
+
+  console.log("req.user:", req.user)
+  return req.user ? res.send(req.user) : res.sendStatus(401);
+})
+
+router.get("/logout", (req, res) => {
+  if (!req.user) return res.sendStatus(401);
+  req.logout((err) => {
+    if (err) return res.sendStatus(400);
+    res.send(200);
+  });
+});
 
 export default router;

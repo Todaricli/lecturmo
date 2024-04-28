@@ -6,6 +6,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import routes from './routes/index.js';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
@@ -16,7 +17,7 @@ const PORT = process.env.PORT ?? 3000;
 const SECRET_KEY = process.env.SECRET_KEY ?? '39608663';
 
 // Creates the express server
-export async function startExpress() {
+export async function startExpress(mongoStore) {
   const app = express();
 
   // Configure middleware
@@ -31,6 +32,10 @@ export async function startExpress() {
       secret: SECRET_KEY,
       saveUninitialized: false,
       resave: false,
+      store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_CONNECTION_STRING, 
+        collection: 'sessions'
+      }), //session is now stored in db
       cookie: {
         maxAge: 60000 * 60, //one hour expiry
       }
@@ -41,6 +46,10 @@ export async function startExpress() {
   app.use(passport.session());
 
   // Import and use our application routes.
+  app.get("/", (req, res) => {
+    console.log("req.session:", req.session)
+
+  })
   app.use('/', routes);
 
   app.listen(PORT, () =>

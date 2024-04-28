@@ -1,14 +1,15 @@
 import { faker } from '@faker-js/faker';
 import { User } from '../../schemas/userSchema.js';
-import bcrypt from 'bcrypt';
+import { hashPassword } from '../../utils/useBcrypt.js'
 
 const NUMBER_OF_USERS = 10;
+const PASSWORD = '123'
 
 export async function createEmptyUsers() {
   try {
     const users = await Promise.all(
       Array.from({ length: NUMBER_OF_USERS }, async () => {
-        const hashedPassword = await bcrypt.hash('123', 12);
+        const hashedPassword = await hashPassword(PASSWORD);
 
         return new User({
           username: faker.internet.userName(),
@@ -48,8 +49,6 @@ export async function populateUsers(users, courses) {
 
       return user.save();
     }));
-
-    console.log('Users populated:', updatedUsers);
   } catch (error) {
     console.error('Failed to populate users:', error);
   }
