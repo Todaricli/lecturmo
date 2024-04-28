@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { Course } from '../../schemas/course-schema.js';
+import { Course } from '../../schemas/courseSchema.js';
 
 const NUMBER_OF_COURSES = 5;
 

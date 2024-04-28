@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { User } from '../../schemas/user-schema.js';
+import { User } from '../../schemas/userSchema.js';
 import bcrypt from 'bcrypt';
 
 const NUMBER_OF_USERS = 10;
@@ -37,7 +37,7 @@ export async function populateUsers(users, courses) {
       // Populate user details
       user.name = faker.person.fullName();
       user.username = `user${index + 1}`;
-      // user.password = "123";
+      user.password = "123";
       user.email = faker.internet.email();
       user.rank = faker.helpers.arrayElement(['Beginner', 'Intermediate', 'Advanced']);
       user.profileDescription = faker.lorem.sentence();
