@@ -45,8 +45,8 @@ async function run() {
     console.log("Connecting to database.");
     await mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
     await Person.deleteMany({});
-    await Person.insertMany(personData);
-    console.log("Database seeded successfully.");
+    await Person.insertMany(personData).then(
+    console.log("Database seeded successfully."));
   } catch (error) {
     console.error("Error seeding the database:", error);
   } finally {
