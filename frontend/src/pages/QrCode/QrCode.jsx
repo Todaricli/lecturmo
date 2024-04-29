@@ -15,7 +15,7 @@ const QrCode = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             getServerTime();
-        }, 2000);
+        }, 1000);
         return () => clearInterval(intervalId);
     }, []);
 
