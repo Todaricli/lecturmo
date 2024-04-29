@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { Course } from '../../schemas/course-schema.js';
+import { Course } from '../../schemas/courseSchema.js';
 
 const NUMBER_OF_COURSES = 5;
 
@@ -29,8 +29,6 @@ export async function populateCourses(users, courses) {
 
       return course.save();  // Save the updated course
     }));
-
-    console.log('Courses populated with detailed data:', updatedCourses);
   } catch (error) {
     console.error('Failed to populate courses:', error);
   }
