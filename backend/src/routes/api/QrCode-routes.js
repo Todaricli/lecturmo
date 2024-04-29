@@ -11,9 +11,9 @@ function convertToDateObject(date) {
     return timezOb
 }
 
-QrRouters.get("/qr-code", async(req,res) =>{
-    const date = req.query.date
-    const courseId = req.query.courseId
+QrRouters.post("/qr-code", async(req,res) =>{
+    const date = req.body.date
+    const courseId = req.body.courseId
 
     const dateNowSkeet =  await fetch(`http://worldtimeapi.org/api/timezone/Pacific/Auckland`)
     const dateNowJson = await dateNowSkeet.json()

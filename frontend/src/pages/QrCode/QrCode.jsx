@@ -20,7 +20,7 @@ const QrCode = () => {
     }, []);
 
     useEffect(() =>{
-      setQrCode(`http://localhost:3000/api/qr-code?date=${currentTime}&course=${courseId}`);
+      setQrCode(`http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}`);
     }, [currentTime])
 
     useEffect(()=>{
