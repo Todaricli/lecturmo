@@ -13,6 +13,7 @@ export async function populateCourses(users, courses) {
     const updatedCourses = await Promise.all(courses.map(async (course) => {
       // Populate course details
       course.courseName = faker.company.catchPhrase();
+      course.lecturer = faker.helpers.arrayElement(users)._id,
       course.description = faker.lorem.paragraph();
       course.category = faker.commerce.department();
       course.level = faker.helpers.arrayElement(['Bachelor', 'Postgrad', 'Masters']);

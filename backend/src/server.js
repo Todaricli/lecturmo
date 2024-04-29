@@ -7,6 +7,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
 import routes from './routes/routes.js';
+import QrRouters from './routes/api/QrCode-routes.js';
 
 // Set's our port to the PORT environment variable, or 3000 by default if the env is not configured.
 const PORT = process.env.PORT ?? 3000;
@@ -33,6 +34,7 @@ export async function startExpress() {
 
   // Import and use our application routes.
   app.use('/', routes);
+  app.use('/api', QrRouters)
 
   app.listen(PORT, () =>
     console.log(`App server listening on port ${PORT}!`),
