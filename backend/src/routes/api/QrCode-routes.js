@@ -34,6 +34,8 @@ QrRouters.post("/qr-code", async(req,res) =>{
 
     //---------------------------set expiry time here skeet ------------------------------------
     if(difference < 30){
+        
+
         res.json({date: dateObject, dateNow: dateNowObject, difference: difference, validity: true, skeets: "in joy"})
         return
     }else{

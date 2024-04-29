@@ -6,9 +6,11 @@ const QrLandingPage = () => {
     const [params, setParams] = useSearchParams()
     const [date, setDate] = useState(undefined)
     const [course, setCourse] = useState(undefined)
+    const [isLoading, setIsLoading] = useState(false)
 
     const submit = async() =>{
         if (date && course) {
+            setIsLoading(true)
             const response = await axios.post(`http://localhost:3000/api/qr-code`,
                 {
                     "date": date,
@@ -19,7 +21,7 @@ const QrLandingPage = () => {
                         "Content-Type": "application/json"
                     }
                 }
-            )
+            ).then(setIsLoading(false))
 
             console.log(response.data.validity)
         }
@@ -36,7 +38,7 @@ const QrLandingPage = () => {
 
     return (
         <div>
-                
+            
         </div>
     )
 }
