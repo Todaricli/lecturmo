@@ -7,13 +7,13 @@ const LoginPage = () => {
   const { updateData, getData } = useContext(AppContext);
 
   useEffect(() => {
-    console.log("1234:", 1234)
+    console.log('1234:', 1234);
     console.log("getData('user'):", getData('user'));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login Attempt with:", username, password);
+    console.log('Login Attempt with:', username, password);
   };
 
   return (
@@ -22,7 +22,10 @@ const LoginPage = () => {
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
               Username
             </label>
             <input
@@ -35,7 +38,10 @@ const LoginPage = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -57,6 +63,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default LoginPage;
