@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import mongoose from 'mongoose';
-import { createEmptyCourses, populateCourses } from './data/initial-course-data.js';
-import { createEmptyUsers, populateUsers } from './data/initial-user-data.js';
+import { createEmptyCourses, populateCourses } from './data/initialCourseData.js';
+import { createEmptyUsers, populateUsers } from './data/initialUserData.js';
 
 // This is a standalone program which will populate the database with initial data.
 async function run() {
