@@ -4,8 +4,7 @@ const saltRounds = 12;
 
 export const hashPassword = async (password) => {
   try {
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
   } catch (error) {
     throw new Error("Error hashing password");

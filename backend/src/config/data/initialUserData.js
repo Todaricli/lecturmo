@@ -38,7 +38,7 @@ export async function populateUsers(users, courses) {
       // Populate user details
       user.name = faker.person.fullName();
       user.username = `user${index + 1}`;
-      user.password = "123";
+      // user.password = "123";
       user.email = faker.internet.email();
       user.rank = faker.helpers.arrayElement(['Beginner', 'Intermediate', 'Advanced']);
       user.profileDescription = faker.lorem.sentence();
