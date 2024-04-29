@@ -3,39 +3,43 @@ import { Router } from "express";
 
 const QrRouters =Router()
 
+function convertToDateObject(date) {
+    const [time, rubbish] = date.split(".")
+    const timez = time+"z"
+    const timezOb = new Date(timez)
+
+    return timezOb
+}
+
 QrRouters.get("/qr-code", async(req,res) =>{
     const date = req.query.date
     const courseId = req.query.courseId
-    const dateNow = new Date()
-    const dateNowString = dateNow.toString()
 
-    const dateDiff = (dateNow - date)/1000
+    const dateNowSkeet =  await fetch(`http://worldtimeapi.org/api/timezone/Pacific/Auckland`)
+    const dateNowJson = await dateNowSkeet.json()
+    const dateNow = dateNowJson.utc_datetime
+
+    const dateObject = convertToDateObject(date)
+    const dateNowObject = convertToDateObject(dateNow)
+
+    console.log(dateObject)
+    console.log(dateNowObject)
+
+    const difference = (dateNowObject - dateObject)/1000
+
     if(date == undefined){
-        res.status(500).send("noo")
+        res.status(500).send("yagotproblems")
         return
     }
-    console.log((date - dateNow)/1000)
-    if((date - dateNow)/1000 == 3000){
-        res.status(200).send("valid")
+
+    //set expiry time here skeet
+    if(difference < 30){
+        res.json({date: dateObject, dateNow: dateNowObject, difference: difference, validity: true, skeets: "in joy"})
         return
     }else{
-        res.json({date: date, dateNow: dateNow})
+        res.json({date: dateObject, dateNow: dateNowObject, difference: difference, validity: false, skeets: "in anger"})
         return
     }
-    console.log("it ran")
-
-    console.log(date)
-    console.log(courseId)
-
-    console.log(date - dateNow)
-
-    res.send({date: date, courseId: courseId})
-})
-
-QrRouters.get("/get-server-time", async (req,res) =>{
-    const date = new Date()
-
-    res.json({date: date})
 })
 
 export default QrRouters
