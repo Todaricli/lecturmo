@@ -1,19 +1,19 @@
 import React, { createContext } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';  // Ensure this path is correct
+import useLocalStorage from '../hooks/useLocalStorage'; // Ensure this path is correct
 
 export const AppContext = createContext();
 
 export function AppContextProvider({ children }) {
   const [data, setData] = useLocalStorage('appData', {
     settings: {},
-    user: {}
+    user: {},
   });
 
   // Function to update any part of the data by key
   const updateData = (key, value) => {
-    setData(prevData => ({
+    setData((prevData) => ({
       ...prevData,
-      [key]: value
+      [key]: value,
     }));
   };
 

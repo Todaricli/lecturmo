@@ -1,5 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import './App.css'
+import { Navigate, Route, Routes } from 'react-router-dom';
+import './App.css';
 import PageLayout from './layouts/PageLayout';
 import HomePage from './pages/HomePage/HomePage'
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -9,7 +9,6 @@ import VerificationSuccessPage from "./pages/ScanVerificationPage/VerificationSu
 import VerificationErrorPage from "./pages/ScanVerificationPage/VerificationErrorPage";
 
 function App() {
-
   return (
     <Routes>
       <Route path="/" element={<PageLayout />}>
@@ -22,7 +21,7 @@ function App() {
         <Route path="error" element={<VerificationErrorPage />} />
       </Route>
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;
