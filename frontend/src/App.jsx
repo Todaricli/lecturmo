@@ -3,14 +3,15 @@ import './App.css';
 import PageLayout from './layouts/PageLayout';
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import QrCode from "./pages/QrCode/QrCode";
-import QrLandingPage from "./pages/QrCode/QrLandingPage";
-import VerificationSuccessPage from "./pages/ScanVerificationPage/VerificationSuccessPage";
-import VerificationErrorPage from "./pages/ScanVerificationPage/VerificationErrorPage";
-import UserProfilePage from "./pages/ProfilePage/UserProfilePage";
-import EditProfilePage from "./pages/ProfilePage/EditProfilePage";
+import QrCode from './pages/QrCode/QrCode';
+import QrLandingPage from './pages/QrCode/QrLandingPage';
+import VerificationSuccessPage from './pages/ScanVerificationPage/VerificationSuccessPage';
+import VerificationErrorPage from './pages/ScanVerificationPage/VerificationErrorPage';
+import UserProfilePage from './pages/ProfilePage/UserProfilePage';
+import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
-import RegisterProfilePage from "./pages/RegisterPage/RegisterProfilePage";
+import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
+import ReactQueryExamplePage from './pages/ReactQueryExamplePage/ReactQueryExamplePage';
 
 function App() {
   return (
@@ -27,9 +28,10 @@ function App() {
         <Route path="qr-landing-page" element={<QrLandingPage />} />
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
+        <Route path="reactQuery" element={<ReactQueryExamplePage />} />
       </Route>
     </Routes>
-  );;
+  );
 }
 
 export default App;

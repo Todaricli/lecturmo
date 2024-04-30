@@ -1,7 +1,11 @@
-import { Typography } from '@mui/material'
-import React from 'react'
+import { Typography } from '@mui/material';
+import React from 'react';
 const Footer = () => {
-  return <Typography variant="caption" sx={{marginTop: 10}}>© 2024 Lectermo</Typography>;
-}
+  return (
+    <Typography variant="caption" sx={{ marginTop: 10 }}>
+      © 2024 Lectermo
+    </Typography>
+  );
+};
 
-export default Footer
+export default Footer;
