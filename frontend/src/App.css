@@ -3,3 +3,6 @@
   padding: 2rem;
   text-align: center;
 }
+
+.material-icons.md-light { color: rgb(11, 112, 26); }
+/* .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); } */

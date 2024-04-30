@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage/HomePage'
 import LoginPage from "./pages/LoginPage/LoginPage";
 import QrCode from "./pages/QrCode/QrCode";
 import QrLandingPage from "./pages/QrCode/QrLandingPage";
+import VerificationSuccessPage from "./pages/ScanVerificationPage/VerificationSuccessPage";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="qr" element={<QrCode />} />
         <Route path="qr-landing-page" element={<QrLandingPage />} />
+        <Route path="success" element={<VerificationSuccessPage />}/>
       </Route>
     </Routes>
   )
