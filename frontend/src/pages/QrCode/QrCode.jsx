@@ -6,7 +6,7 @@ const QrCode = () => {
     const [courseId, setCourseId] = useState("comp_sci_751");
     const [currentTime, setCurrentTime] = useState("");
 
-    const getServerTime = async () => {
+    const getServerTime = async () => { 
         const time = await fetch(`http://worldtimeapi.org/api/timezone/Pacific/Auckland`);
         const timeJson = await time.json();
         setCurrentTime(timeJson.utc_datetime)
