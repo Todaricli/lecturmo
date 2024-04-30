@@ -15,7 +15,9 @@ const userSchema = new Schema({
   courses: [{
     courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
     attendanceCount: Number
-  }]
+  }],
+  isVerified: {type: Boolean, default: false, required: true},
+  emailToken: {type: String, default: null}
 }, { timestamps: true });
 
 export const User = mongoose.model('User', userSchema);
