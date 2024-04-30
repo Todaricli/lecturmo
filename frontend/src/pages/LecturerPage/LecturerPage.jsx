@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from "axios"
+import axios from "Axios"
 
 const LecturerPage = () => {
     const [coursesList, setCoursesList] = useState(undefined)
