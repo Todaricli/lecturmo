@@ -1,5 +1,8 @@
 {
-  "dependencies": {
-    "react-router-dom": "^6.23.0"
+  "scripts": {
+    "prettify": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
   }
 }
