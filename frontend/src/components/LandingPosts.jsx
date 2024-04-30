@@ -1,10 +1,22 @@
-import { Grid, Box, Card, CardHeader, Avatar, IconButton, CardActions, Typography, Rating, CardContent } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Card,
+  CardHeader,
+  Avatar,
+  IconButton,
+  CardActions,
+  Typography,
+  Rating,
+  CardContent,
+} from "@mui/material";
 import React from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import { useTheme } from "@emotion/react";
 
 const LandingPosts = () => {
-
+  const theme = useTheme();
   return (
     <Grid
       container
@@ -12,7 +24,9 @@ const LandingPosts = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Box sx={{ marginTop: "50px", width: "400px" }}>
+      <Box
+        sx={{ marginTop: "50px", width: "400px", boxShadow: theme.shadows[1] }}
+      >
         <Card variant="outlined" sx={{ borderRadius: 5 }}>
           <Box
             sx={{

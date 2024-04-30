@@ -43,7 +43,7 @@ const Navbar = () => {
         >
           Lectermo
         </Typography>
-        <Box sx={{ display: { xs: "none", md: "flex" } }}>
+        <Box sx={{ display: { xs: "none", md: "flex" }}}>
           <Button color="inherit" sx={styles.buttonStyle}>
             Members
           </Button>
@@ -53,7 +53,7 @@ const Navbar = () => {
           <Button color="inherit" sx={styles.buttonStyle}>
             Log In{" "}
           </Button>
-          <Button color="inherit" sx={styles.buttonStyle}>
+          <Button color="inherit" sx={styles.register}>
             Register
           </Button>
         </Box>
