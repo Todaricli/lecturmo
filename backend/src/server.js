@@ -17,7 +17,7 @@ const PORT = process.env.PORT ?? 3000;
 const SECRET_KEY = process.env.SECRET_KEY ?? '39608663';
 
 // Creates the express server
-export async function startExpress(mongoStore) {
+export async function startExpress() {
   const app = express();
 
   // Configure middleware
@@ -37,7 +37,7 @@ export async function startExpress(mongoStore) {
         collection: 'sessions',
       }), //session is now stored in db
       cookie: {
-        maxAge: 60000 * 60, //one hour expiry
+        maxAge: 60 * 60 * 1000, //one hour expiry
       },
     }),
   );
@@ -46,9 +46,6 @@ export async function startExpress(mongoStore) {
   app.use(passport.session());
 
   // Import and use our application routes.
-  app.get('/', (req, res) => {
-    console.log('req.session:', req.session);
-  });
   app.use('/', routes);
 
   app.listen(PORT, () => console.log(`App server listening on port ${PORT}!`));

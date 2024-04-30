@@ -8,12 +8,11 @@ const router = express.Router();
 router.post(
   '/login',
   passport.authenticate('local', {
-    failureRedirect: '/login',
     failureMessage: true,
   }),
   (req, res) => {
     // console.log("req.session:", req.session)
-    res.sendStatus(200);
+    res.status(200).json({message: 'Login Successful'});
   },
 );
 
@@ -26,9 +25,8 @@ router.get('/status', authenticate, (req, res) => {
 router.get('/logout', (req, res) => {
   if (!req.user) return res.sendStatus(401);
   req.logout((err) => {
-    // destroy req.user
     if (err) return res.sendStatus(400);
-    res.sendStatus(200);
+    res.status(200).json({message: 'Logout Successful'});
   });
 });
 
