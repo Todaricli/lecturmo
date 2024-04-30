@@ -27,19 +27,23 @@ const UserProfilePage = () => {
         borderTopRightRadius: 20,
       }}
     >
-      <Button href="/" color="initial" startIcon={<ArrowBackIcon />} sx={{marginTop: 3, marginLeft: 3}}>
-        Home
-      </Button>
+      <IconButton
+        sx={{ marginTop: 3, marginLeft: 3 }}
+        color="initial"
+        component={Link} to="/"
+      >
+        <ArrowBackIcon />
+      </IconButton>
 
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginTop: 5,
+
         }}
       >
-        <Box sx={{ width: 600 }}>
+        <Box sx={{ width: 600}}>
           <Card
             sx={{
               padding: "10px",
