@@ -7,6 +7,7 @@ import {
   Typography,
   CardActions,
   IconButton,
+  Paper
 } from "@mui/material";
 import React from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -14,6 +15,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import EmailIcon from "@mui/icons-material/Email";
 import { Link } from "react-router-dom";
 
 const UserProfilePage = () => {
@@ -30,7 +32,8 @@ const UserProfilePage = () => {
       <IconButton
         sx={{ marginTop: 3, marginLeft: 3 }}
         color="initial"
-        component={Link} to="/"
+        component={Link}
+        to="/"
       >
         <ArrowBackIcon />
       </IconButton>
@@ -40,10 +43,9 @@ const UserProfilePage = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-
         }}
       >
-        <Box sx={{ width: 600}}>
+        <Box sx={{ width: 600 }}>
           <Card
             sx={{
               padding: "10px",
@@ -84,6 +86,12 @@ const UserProfilePage = () => {
               </Typography>
               <Typography variant="subtitle2" color="initial">
                 University of Auckland
+              </Typography>
+              <Typography variant="body2" color="#78858F">
+                Gender
+              </Typography>
+              <Typography variant="subtitle2" color="initial">
+                Female
               </Typography>
             </CardContent>
           </Card>
@@ -126,22 +134,18 @@ const UserProfilePage = () => {
 
         <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>
           <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <Typography variant="h6" color="initial">
-                Gender
-              </Typography>
-              <Typography variant="body1" color="initial">
-                Female
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <Typography variant="h6" color="initial">
-                Phone
-              </Typography>
-              <Typography variant="body1" color="initial">
-                123456789
-              </Typography>
-            </Box>
+            <Typography variant="h6" color="initial">
+              Resend email verification
+            </Typography>
+            {/* <Paper component="form">
+              <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Enter your email"
+              />
+              <IconButton sx={{ p: "10px" }} aria-label="menu">
+                <EmailIcon />
+              </IconButton>
+            </Paper> */}
           </CardContent>
         </Card>
 
