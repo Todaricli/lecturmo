@@ -12,7 +12,7 @@ function convertToDateObject(date) {
     return timezOb
 }
 
-QrRouters.post("/qr-code",authenticate, async(req,res) =>{
+QrRouters.post("/qr-code", async(req,res) =>{
     const date = req.body.date
     const courseId = req.body.courseId
 

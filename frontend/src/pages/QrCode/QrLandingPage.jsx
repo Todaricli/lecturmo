@@ -13,6 +13,7 @@ const QrLandingPage = () => {
     const [validity, setValidity] = useState()
 
     const submit = async () => {
+        
         if (date && course) {
             const response = await axios.post(`http://localhost:3000/api/qr-code`,
                 {
@@ -26,6 +27,7 @@ const QrLandingPage = () => {
                 }
             ).then((response) => {
                 setResponse(response)
+                console.log("skeet")
             })
             
         }

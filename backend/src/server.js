@@ -6,7 +6,6 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
-import QrRouters from './routes/api/QrCode-routes.js';
 import MongoStore from 'connect-mongo';
 import routes from './routes/index.js';
 import cookieParser from 'cookie-parser';
@@ -49,7 +48,6 @@ export async function startExpress() {
 
   // Import and use our application routes.
   app.use('/', routes);
-  app.use('/api', QrRouters)
 
   app.listen(PORT, () => console.log(`App server listening on port ${PORT}!`));
 }
