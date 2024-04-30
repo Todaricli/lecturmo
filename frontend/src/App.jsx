@@ -9,22 +9,26 @@ import VerificationSuccessPage from "./pages/ScanVerificationPage/VerificationSu
 import VerificationErrorPage from "./pages/ScanVerificationPage/VerificationErrorPage";
 import UserProfilePage from "./pages/ProfilePage/UserProfilePage";
 import EditProfilePage from "./pages/ProfilePage/EditProfilePage";
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import RegisterProfilePage from "./pages/RegisterPage/RegisterProfilePage";
 
 function App() {
   return (
-      <Routes>
-        <Route path="/" element={<PageLayout />}>
-          <Route index element={<Navigate to="home" replace />} />
-          <Route path="home" element={<HomePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="profile" element={<UserProfilePage />} />
-          <Route path="edit-profile" element={<EditProfilePage />} />
-          <Route path="qr" element={<QrCode />} />
+    <Routes>
+      <Route path="/" element={<PageLayout />}>
+        <Route index element={<Navigate to="home" replace />} />
+        <Route path="home" element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="register/profile" element={<RegisterProfilePage />} />
+        <Route path="profile" element={<UserProfilePage />} />
+        <Route path="edit-profile" element={<EditProfilePage />} />
+        <Route path="qr" element={<QrCode />} />
         <Route path="qr-landing-page" element={<QrLandingPage />} />
-        <Route path="success" element={<VerificationSuccessPage />}/>
+        <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
       </Route>
-      </Routes>
+    </Routes>
   );;
 }
 
