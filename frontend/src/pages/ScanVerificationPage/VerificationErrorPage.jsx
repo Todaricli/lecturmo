@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { css } from '@emotion/css';
 import { useMediaQuery } from 'react-responsive';
 
-const VerificationSuccessPage = () => {
+const VerificationErrorPage = () => {
     const isMobile = useMediaQuery({ maxWidth: 767 }); // Define your mobile breakpoint here
 
     const containerStyle = {
@@ -32,13 +32,13 @@ const VerificationSuccessPage = () => {
     const iconStyle = {
         padding: isMobile ? '5%' : '20px', // Adjust padding for mobile and non-mobile screens
         fontSize: isMobile ? '15vw' : '40px', // Adjust font-size based on viewport width
-        color: 'green' // Keep the color as green
+        color: 'red' // Keep the color as green
     };
 
     const titleStyle = {
         padding: isMobile ? '5%' : '20px', // Adjust padding for mobile and non-mobile screens
         fontSize: isMobile ? '6vw' : '24px', // Adjust font-size based on viewport width
-        color: 'green',
+        color: 'red',
         fontWeight: 'bold'
     };
 
@@ -46,27 +46,27 @@ const VerificationSuccessPage = () => {
         padding: isMobile ? '5%' : '20px', // Adjust padding for mobile and non-mobile screens
         marginBottom: '20px',
         fontSize: isMobile ? '3.5vw' : '15px', // Adjust font-size based on viewport width
-        color: 'green'
+        color: 'red'
     };
 
     return (
         <div className={css(backgroundStyle)}>
             <div className={css(containerStyle)}>
                 <span className="material-icons" style={iconStyle}>
-                    check_circle
+                    highlight_off
                 </span>
 
                 <p className={css(titleStyle)}>
-                    SUCCESS!
+                    ERROR!
                 </p>
                 <p className={css(contentStyle)}>
-                    Congrats! You have attended the lecture!
+                    We couldn't process your request.
                 </p>
 
-                <Button variant="contained" color="success">Go Back Home</Button>
+                <Button variant="contained" color="error">Try Again</Button>
             </div>
         </div>
     );
 }
 
-export default VerificationSuccessPage;
+export default VerificationErrorPage;
