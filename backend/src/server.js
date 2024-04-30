@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import './config/strategies/local-strategy.js';
 
+
 // Set's our port to the PORT environment variable, or 3000 by default if the env is not configured.
 const PORT = process.env.PORT ?? 3000;
 const SECRET_KEY = process.env.SECRET_KEY ?? '39608663';
