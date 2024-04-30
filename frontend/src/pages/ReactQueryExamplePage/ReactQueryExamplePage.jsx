@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import React, { useState, useEffect, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'Axios'
 
