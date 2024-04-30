@@ -1,4 +1,4 @@
-import { startExpress } from './server.js'
+import { startExpress } from './server.js';
 import mongoose from 'mongoose';
 
 const VERSION = '1.0.0';
@@ -15,7 +15,7 @@ const initializeDatabase = async () => {
 async function startServer() {
   console.log('-'.repeat(30));
   console.log(`Starting Server v${VERSION}`);
-  await initializeDatabase()
+  await initializeDatabase();
   await startExpress();
 }
 
