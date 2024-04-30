@@ -7,6 +7,8 @@ import Footer from "../../components/Footer";
 import { useTheme } from "@emotion/react";
 import { Box, IconButton } from "@mui/material";
 
+
+
 const HomePage = () => {
   const theme = useTheme();
   return (
