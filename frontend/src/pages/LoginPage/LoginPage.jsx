@@ -31,13 +31,21 @@ export default function LoginPage() {
   const { updateData, getData } = useContext(AppContext);
 
   useEffect(() => {
-    console.log("1234:", 1234)
+    console.log('1234:', 1234);
     console.log("getData('user'):", getData('user'));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login Attempt with:", username, password);
+    console.log('Login Attempt with:', username, password);
+  };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -141,7 +149,7 @@ export default function LoginPage() {
       </Container>
     </ThemeProvider>
   );
-}
+};
 
 function Copyright(props) {
   return (

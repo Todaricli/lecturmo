@@ -1,20 +1,23 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import { AppContextProvider } from './contexts/AppContextProvider.jsx';
 import '@radix-ui/themes/styles.css';
-import { Theme } from '@radix-ui/themes';
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "./layouts/GlobalTheme";
+import CssBaseline from "@mui/material/CssBaseline";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AppContextProvider>
       <BrowserRouter>
-        <Theme>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
           <App />
-        </Theme>
+        </ThemeProvider>
       </BrowserRouter>
     </AppContextProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

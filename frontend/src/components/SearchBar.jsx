@@ -18,7 +18,7 @@ const SearchBar = () => {
         placeholder="Search"
         sx={{
           width: 500,
-          backgroundColor: theme.palette.background.paper, // corrected line
+          backgroundColor: theme.palette.light.main,
           borderRadius: 10,
           "& .MuiOutlinedInput-root": {
             "& fieldset": {

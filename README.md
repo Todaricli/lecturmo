@@ -3,6 +3,7 @@
 Welcome to the project! I look forward to seeing your progress and your final results this semester!
 
 Your team members are:
+
 - Alden Maiyor
 - Tuocheng Li
 - Inez Yuan Ya Chong
