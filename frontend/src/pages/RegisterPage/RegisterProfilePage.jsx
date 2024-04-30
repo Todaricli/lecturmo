@@ -54,6 +54,12 @@ export default function RegisterProfilePage() {
     setGender(event.target.value);
   };
 
+  const [selectedDate, setSelectedDate] = useState('');
+
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -115,34 +121,17 @@ export default function RegisterProfilePage() {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                <InputLabel id="dob-label">Date of birth</InputLabel>
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={handleDateChange}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirm-password"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirm-password"
-                  autoComplete="confirm-password"
-                />
+                
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive notifications, updates via email."
-                  name="allowExtraEmails"
-                />
-              </Grid>
+
             </Grid>
             <Button
               type="submit"
