@@ -1,6 +1,6 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 // Define a custom hook called useLocalStorage
 const useLocalStorage = (key, initialValue = null) => {
