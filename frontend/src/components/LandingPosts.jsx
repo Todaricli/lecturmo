@@ -10,13 +10,16 @@ import {
   Rating,
   CardContent,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { useTheme } from '@emotion/react';
 
-const LandingPosts = () => {
+
+const LandingPosts = ({posts}) => {
   const theme = useTheme();
+
+
   return (
     <Grid
       container
@@ -24,10 +27,13 @@ const LandingPosts = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Box
-        sx={{ marginTop: '50px', width: '400px', boxShadow: theme.shadows[1] }}
+      
+      {posts.map((post, index) => (
+    <Box
+        key={index}
+        sx={{ marginTop: '50px', width: '400px', boxShadow: theme.shadows[1]}}
       >
-        <Card variant="outlined" sx={{ borderRadius: 5 }}>
+        <Card variant="outlined" sx={{ borderRadius: 5, bgcolor: index % 2 === 0 ? "primary.main" : "light.main" }}>
           <Box
             sx={{
               display: 'flex',
@@ -35,7 +41,7 @@ const LandingPosts = () => {
               alignItems: 'center',
             }}
           >
-            <CardHeader title="Compsci 723" />
+            <CardHeader title={post.courseNumber} />
             <CardActions>
               <IconButton
                 aria-label="favourite"
@@ -74,11 +80,11 @@ const LandingPosts = () => {
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="body2" color="initial">
-                Overall:
+                Ratings:
               </Typography>
               <Rating
                 name="size-small"
-                defaultValue={3}
+                value={post.reviews[0].rating}
                 readOnly
                 size="small"
               />
@@ -100,25 +106,22 @@ const LandingPosts = () => {
                 fontSize={15}
                 sx={{ lineHeight: 2 }}
               >
-                Very interesting and straightfoward paper, internals (lab
-                reports) were harshly marked but other than that, the
-                mid-terms/exams are extremely easy to do well in. I only got 56
-                and 63% respectively for my lab reports but still managed an A
-                whilst only spending a day or less studying for the finals/mid
-                terms. A+ is very achievable provided you put effort into your
-                lab reports.
+               {post.reviews[0].content}
               </Typography>
+              
               <Typography
                 variant="caption"
                 color="#78858F"
                 sx={{ lineHeight: 3 }}
               >
-                24 Feb 23:49
+                {new Date(post.updatedAt).toLocaleDateString()}
               </Typography>
             </CardContent>
           </Box>
         </Card>
       </Box>
+      ))}
+      
     </Grid>
   );
 };
