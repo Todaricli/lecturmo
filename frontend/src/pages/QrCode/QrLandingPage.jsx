@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'Axios';
+import axios from 'axios';
 import VerificationSuccess from '../ScanVerificationPage/VerificationSuccessPage.jsx';
 import VerificationError from '../ScanVerificationPage/VerificationErrorPage.jsx';
 
