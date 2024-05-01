@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -9,23 +9,22 @@ import {
   Button,
   Menu,
   MenuItem,
-  MenuList
-} from "@mui/material";
-import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
-import { navbarStyles } from "../layouts/navbarStyles";
+  MenuList,
+} from '@mui/material';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import { navbarStyles } from '../layouts/navbarStyles';
 
 const Navbar = () => {
   const [openNav, setopenNav] = useState(false);
   const anchorRef = useRef(null);
   const styles = navbarStyles();
 
-
   return (
     <AppBar position="static">
       <Toolbar>
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
           <IconButton
             aria-label="logo"
             size="large"
@@ -39,11 +38,11 @@ const Navbar = () => {
         <Typography
           variant="h6"
           component="div"
-          sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+          sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
         >
           Lectermo
         </Typography>
-        <Box sx={{ display: { xs: "none", md: "flex" }}}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <Button color="inherit" sx={styles.buttonStyle}>
             Members
           </Button>
@@ -51,14 +50,14 @@ const Navbar = () => {
             Courses
           </Button>
           <Button color="inherit" sx={styles.buttonStyle}>
-            Log In{" "}
+            Log In{' '}
           </Button>
           <Button color="inherit" sx={styles.register}>
             Register
           </Button>
         </Box>
 
-        <Box sx={{ display: { xs: "flex", md: "none" }, ml: "auto" }}>
+        <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 'auto' }}>
           {openNav ? (
             <IconButton
               size="large"

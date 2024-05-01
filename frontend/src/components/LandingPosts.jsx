@@ -9,11 +9,11 @@ import {
   Typography,
   Rating,
   CardContent,
-} from "@mui/material";
-import React from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { useTheme } from "@emotion/react";
+} from '@mui/material';
+import React from 'react';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { useTheme } from '@emotion/react';
 
 const LandingPosts = () => {
   const theme = useTheme();
@@ -25,14 +25,14 @@ const LandingPosts = () => {
       alignItems="center"
     >
       <Box
-        sx={{ marginTop: "50px", width: "400px", boxShadow: theme.shadows[1] }}
+        sx={{ marginTop: '50px', width: '400px', boxShadow: theme.shadows[1] }}
       >
         <Card variant="outlined" sx={{ borderRadius: 5 }}>
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
             <CardHeader title="Compsci 723" />
@@ -40,8 +40,8 @@ const LandingPosts = () => {
               <IconButton
                 aria-label="favourite"
                 sx={{
-                  border: "3px solid #D74545",
-                  padding: "5px",
+                  border: '3px solid #D74545',
+                  padding: '5px',
                 }}
               >
                 <FavoriteBorderIcon />
@@ -50,29 +50,29 @@ const LandingPosts = () => {
           </Box>
           <Box
             sx={{
-              margin: "10px 10px 16px 16px",
-              display: "flex",
-              justifyContent: "space-between",
+              margin: '10px 10px 16px 16px',
+              display: 'flex',
+              justifyContent: 'space-between',
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                bgcolor: "secondary.main",
-                padding: "5px",
+                display: 'flex',
+                bgcolor: 'secondary.main',
+                padding: '5px',
                 width: 190,
                 borderRadius: 3,
               }}
             >
               <LocationOnOutlinedIcon
                 fontSize="small"
-                sx={{ marginRight: "5px" }}
+                sx={{ marginRight: '5px' }}
               />
               <Typography variant="body2" color="initial">
                 University of Auckland
               </Typography>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="body2" color="initial">
                 Overall:
               </Typography>

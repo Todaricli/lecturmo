@@ -1,30 +1,30 @@
-import React, { useState, useContext, useEffect } from "react";
-import Typography from "@mui/material/Typography";
-import SearchBar from "../../components/SearchBar";
-import LandingPosts from "../../components/LandingPosts";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import Footer from "../../components/Footer";
-import { useTheme } from "@emotion/react";
-import { Box, IconButton } from "@mui/material";
+import React, { useState, useContext, useEffect } from 'react';
+import Typography from '@mui/material/Typography';
+import SearchBar from '../../components/SearchBar';
+import LandingPosts from '../../components/LandingPosts';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import Footer from '../../components/Footer';
+import { useTheme } from '@emotion/react';
+import { Box, IconButton } from '@mui/material';
 
 const HomePage = () => {
   const theme = useTheme();
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       <Typography variant="h1">Hello Lectermo</Typography>
       <SearchBar />
       <LandingPosts />
       <IconButton
         sx={{
-          bgcolor: "secondary.main",
-          width: "60px",
-          height: "60px",
+          bgcolor: 'secondary.main',
+          width: '60px',
+          height: '60px',
           borderRadius: 10,
-          padding: "5px",
-          marginTop: "70px",
-          textAlign: "center",
+          padding: '5px',
+          marginTop: '70px',
+          textAlign: 'center',
           boxShadow: theme.shadows[1],
         }}
         disableRipple={true}

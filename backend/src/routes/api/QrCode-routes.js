@@ -1,55 +1,68 @@
-import { el } from "@faker-js/faker";
-import { Router } from "express";
-import {User} from "../../schemas/userSchema.js"
-import {Course} from "../../schemas/courseSchema.js"
-import {authenticate} from "../../middleware/authMW.js"
+import { el } from '@faker-js/faker';
+import { Router } from 'express';
+import { User } from '../../schemas/userSchema.js';
+import { Course } from '../../schemas/courseSchema.js';
+import { authenticate } from '../../middleware/authMW.js';
 
-const QrRouters =Router()
+const QrRouters = Router();
 
 function convertToDateObject(date) {
-    const [time, rubbish] = date.split(".")
-    const timez = time+"z"
-    const timezOb = new Date(timez)
+  const [time, rubbish] = date.split('.');
+  const timez = time + 'z';
+  const timezOb = new Date(timez);
 
-    return timezOb
+  return timezOb;
 }
 
-QrRouters.post("/qr-code", async(req,res) =>{
-    const date = req.body.date
-    const courseId = req.body.courseId
-    const userId = req.body.userId
 
-    const dateNowSkeet =  await fetch(`http://worldtimeapi.org/api/timezone/Pacific/Auckland`)
-    const dateNowJson = await dateNowSkeet.json()
-    const dateNow = dateNowJson.utc_datetime
+QrRouters.post('/qr-code', async (req, res) => {
+  const date = req.body.date;
+  const courseId = req.body.courseId;
+  const userId = req.body.userId;
 
-    const dateObject = convertToDateObject(date)
-    const dateNowObject = convertToDateObject(dateNow)
+  const dateNowSkeet = await fetch(
+    `http://worldtimeapi.org/api/timezone/Pacific/Auckland`,
+  );
+  const dateNowJson = await dateNowSkeet.json();
+  const dateNow = dateNowJson.utc_datetime;
 
-    const user = await User.find({username: "user4"})
+  const dateObject = convertToDateObject(date);
+  const dateNowObject = convertToDateObject(dateNow);
 
-    console.log(dateObject)
-    console.log(dateNowObject)
-    console.log(userId)
-    console.log(user[0].courses)
+  const user = await User.find({ username: 'user4' });
 
-    const difference = (dateNowObject - dateObject)/1000
+  console.log(dateObject);
+  console.log(dateNowObject);
+  console.log(userId);
+  console.log(user[0].courses);
 
-    if(date == undefined || courseId == undefined){
-        res.send("yagotproblems")
-        return
-    }
+  const difference = (dateNowObject - dateObject) / 1000;
 
-    //---------------------------set expiry time here skeet ------------------------------------
-    if(difference < 30){
+  if (date == undefined || courseId == undefined) {
+    res.send('yagotproblems');
+    return;
+  }
 
+  //---------------------------set expiry time here skeet ------------------------------------
+  if (difference < 30) {
+    res.json({
+      date: dateObject,
+      dateNow: dateNowObject,
+      difference: difference,
+      validity: true,
+      skeets: 'in joy',
+    });
+    return;
+  } else {
+    res.json({
+      date: dateObject,
+      dateNow: dateNowObject,
+      difference: difference,
+      validity: false,
+      skeets: 'in anger',
+    });
+    return;
+  }
+});
 
-        res.json({date: dateObject, dateNow: dateNowObject, difference: difference, validity: true, skeets: "in joy"})
-        return
-    }else{
-        res.json({date: dateObject, dateNow: dateNowObject, difference: difference, validity: false, skeets: "in anger"})
-        return
-    }
-})
-
-export default QrRouters
+export default QrRouters;

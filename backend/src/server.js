@@ -12,10 +12,22 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import './config/strategies/local-strategy.js';
 
-
 // Set's our port to the PORT environment variable, or 3000 by default if the env is not configured.
 const PORT = process.env.PORT ?? 3000;
 const SECRET_KEY = process.env.SECRET_KEY ?? '39608663';
+
+// CORS options
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Check if the incoming origin is from localhost on any port
+    if (!origin || /^https?:\/\/localhost(:\d+)?$/.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'), false);
+    }
+  },
+  credentials: true,
+};
 
 // Creates the express server
 export async function startExpress() {
@@ -23,7 +35,7 @@ export async function startExpress() {
 
   // Configure middleware
   app.use(morgan('combined'));
-  app.use(cors());
+  app.use(cors(corsOptions));
   app.use(express.json());
   app.use(express.static('public'));
 

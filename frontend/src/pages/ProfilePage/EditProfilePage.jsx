@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Card,
@@ -9,34 +9,35 @@ import {
   Select,
   MenuItem,
   Button,
-  Avatar, IconButton
-} from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Link } from "react-router-dom";
+  Avatar,
+  IconButton,
+} from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Link } from 'react-router-dom';
 
 const EditProfilePage = () => {
   return (
     <Box>
       <Box
         sx={{
-          bgcolor: "secondary.main",
+          bgcolor: 'secondary.main',
           marginTop: 80,
-          height: "100vh",
+          height: '100vh',
           borderTopLeftRadius: 7,
           borderTopRightRadius: 7,
           zIndex: -999999,
-          position: "relative",
+          position: 'relative',
         }}
       ></Box>
       <Container
         sx={{
-          bgcolor: "primary.main",
+          bgcolor: 'primary.main',
           zIndex: 10,
-          position: "absolute",
+          position: 'absolute',
           top: 200,
           width: 600,
           height: 1100,
@@ -44,9 +45,9 @@ const EditProfilePage = () => {
           right: 0,
           bottom: 0,
           borderRadius: 4,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
         <Box>
@@ -56,9 +57,9 @@ const EditProfilePage = () => {
         </Box>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Box>
@@ -70,10 +71,10 @@ const EditProfilePage = () => {
             <IconButton
               aria-label="edit avatar"
               sx={{
-                position: "absolute",
-                left: "330px",
-                top: "190px",
-                bgcolor: "light.main",
+                position: 'absolute',
+                left: '330px',
+                top: '190px',
+                bgcolor: 'light.main',
               }}
             >
               <CameraAltIcon />
@@ -84,7 +85,7 @@ const EditProfilePage = () => {
           <Typography variant="h6" color="text.primary">
             Name
           </Typography>
-          <TextField sx={{ width: "100%" }} variant="filled" />
+          <TextField sx={{ width: '100%' }} variant="filled" />
         </Box>
         <Box sx={{ marginTop: 5 }}>
           <Typography variant="h6" color="text.primary">
@@ -96,7 +97,7 @@ const EditProfilePage = () => {
               id="gender"
               label="Gender"
               defaultValue=""
-              sx={{ zIndex: "100" }}
+              sx={{ zIndex: '100' }}
             >
               <MenuItem>Female</MenuItem>
               <MenuItem>Male</MenuItem>
@@ -120,7 +121,7 @@ const EditProfilePage = () => {
           <TextField
             multiline
             rows={10}
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             variant="filled"
           />
         </Box>
