@@ -126,6 +126,10 @@ const LecturerPage = () => {
               bgcolor: "background.default",
               borderRadius: 4,
               width: "100px",
+              "&:hover": {
+                backgroundColor: "secondary.main",
+                color: "#000000"
+              },
             }}
           >
             QR code
@@ -146,7 +150,7 @@ const LecturerPage = () => {
             p: "20px",
           }}
         >
-          <Typography variant="h6" color="initial" sx={{mb: "5px"}}>
+          <Typography variant="h6" color="initial" sx={{ mb: "5px" }}>
             Compsci 732
           </Typography>
           <Table sx={{ maxWidth: "100%", bgcolor: "grey.main" }}>
@@ -163,9 +167,7 @@ const LecturerPage = () => {
               <TableRow>
                 <TableCell>Introduction to React</TableCell>
                 <TableCell>Tue 24 May</TableCell>
-                <TableCell>
-                  20/100 students
-                </TableCell>
+                <TableCell>20/100 students</TableCell>
               </TableRow>
             </TableBody>
           </Table>
