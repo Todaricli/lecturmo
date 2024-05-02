@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "Axios";
+import axios from "axios";
 
 /**
  * A custom hook which fetches data from the given URL. Includes functionality to determine

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../../contexts/AuthContextProvider';
 import Typography from '@mui/material/Typography';
 import SearchBar from '../../components/SearchBar';
 import LandingPosts from '../../components/LandingPosts';
@@ -7,8 +8,18 @@ import Footer from '../../components/Footer';
 import { useTheme } from '@emotion/react';
 import { Box, IconButton } from '@mui/material';
 
+
 const HomePage = () => {
   const theme = useTheme();
+
+  const { user, fetchUserDetails, isFetchUserLoading, fetchUserError } = useContext(AuthContext);
+  useEffect(() => {
+    fetchUserDetails();
+  }, [fetchUserDetails]);
+
+  if (isFetchUserLoading) return <div>Loading...</div>;
+  if (fetchUserError) return <div>Error: {JSON.stringify(fetchUserError)}</div>;
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
