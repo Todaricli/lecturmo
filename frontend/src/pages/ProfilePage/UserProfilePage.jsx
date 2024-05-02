@@ -8,6 +8,7 @@ import {
   CardActions,
   IconButton,
   Paper,
+  InputBase
 } from '@mui/material';
 import React from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
