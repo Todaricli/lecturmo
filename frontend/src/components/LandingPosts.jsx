@@ -18,6 +18,7 @@ import { useTheme } from '@emotion/react';
 
 const LandingPosts = ({posts}) => {
   const theme = useTheme();
+  
 
 
   return (

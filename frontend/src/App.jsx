@@ -12,6 +12,7 @@ import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
 import ReactQueryExamplePage from './pages/ReactQueryExamplePage/ReactQueryExamplePage';
+import StatsPage from './pages/ProfilePage/StatsPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
         <Route path="reactQuery" element={<ReactQueryExamplePage />} />
+        <Route path="stats" element={<StatsPage />} />
       </Route>
     </Routes>
   );

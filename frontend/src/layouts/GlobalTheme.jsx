@@ -4,26 +4,40 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     background: {
-      default: '#382e7f',
+      default: "#382e7f",
     },
     primary: {
-      main: '#FFF3F3',
+      main: "#FFF3F3",
     },
     secondary: {
-      main: '#FFCF60',
+      main: "#FFCF60",
     },
     light: {
-      main: '#FFFFFF',
+      main: "#FFFFFF",
     },
     grey: {
-      main: '#F3F4FF',
+      main: "#F3F4FF",
     },
     text: {
-      primary: '#2E2E2E',
+      primary: "#2E2E2E",
     },
   },
   shadows: {
-    0: 'none',
-    1: 'rgba(0, 0, 0, 0.15) 0px 30px 14px',
+    0: "none",
+    1: "rgba(0, 0, 0, 0.15) 0px 30px 14px",
+  },
+  components: {
+    MuiLinearProgress: {
+      styleOverrides: {
+        bar: {
+          backgroundColor: "#382e7f",
+        },
+        root: {
+          backgroundColor: "#E2E2E2",
+          height: "10px",
+          borderRadius: "15px",
+        },
+      },
+    },
   },
 });
