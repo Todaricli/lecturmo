@@ -12,7 +12,7 @@ import UserProfilePage from './pages/ProfilePage/UserProfilePage';
 import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
-import ReactQueryExamplePage from './pages/ReactQueryExamplePage/ReactQueryExamplePage';
+import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
         <Route path="qr-landing-page" element={<QrLandingPage />} />
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
-        <Route path="reactQuery" element={<ReactQueryExamplePage />} />
+        <Route path="fetchExample" element={<FetchExamplePage />} />
         <Route path="/verifyEmail" element={<VerifyEmail/>}/>
       </Route>
     </Routes>

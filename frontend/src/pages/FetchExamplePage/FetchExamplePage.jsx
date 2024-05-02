@@ -58,7 +58,9 @@ const ReactQueryExamplePage = () => {
             Hi, Welcome Back! 👋
           </Typography>
 
-
+          <p>Update is just a get request to backend to get user details, and bring it into the frontend. ALWAYS use when updating user info</p>
+          <p>Fetch will only request backend IF user is not already in the context. ALWAYS use at the top of page if you need user info</p>
+          <p>The reason for this is to reduce backend requests everytime we need user info</p>
           <Button
             type="submit"
             fullWidth
