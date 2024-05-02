@@ -43,8 +43,11 @@ const HomePage = () => {
           marginTop: "70px",
           textAlign: "center",
           boxShadow: theme.shadows[1],
+          "&:hover": {
+            backgroundColor: "secondary.main",
+            color: "#000000",
+          },
         }}
-        disableRipple={true}
       >
         <ArrowDownwardIcon sx={{ fontSize: 50 }} />
       </IconButton>
