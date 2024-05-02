@@ -21,19 +21,46 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../contexts/AppContextProvider';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { updateData, getData } = useContext(AppContext);
 
-  useEffect(() => {
-    console.log('1234:', 1234);
-    console.log("getData('user'):", getData('user'));
-  }, []);
+
+export default function LoginPage() {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+  const { updateData, getData } = useContext(AppContext);
+  const [validLogin, setValidLogin] = useState(null)
+  const navigate = useNavigate();
+
+  const login = async () => {
+    const response = await axios
+      .post(
+        `http://localhost:3000/api/login`,
+        {
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      ).then((res) => {
+        console.log(res.status)
+        if(res.status == 200){
+          navigate("/")
+
+          //CHANGE LATER
+        }else if(res.status == 400){
+            setValidLogin(false)
+            console.log(validLogin)
+        }
+      })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,6 +74,16 @@ export default function LoginPage() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+   
+  const handleEmail = (e) => {
+    setUsername(e)
+    console.log(username)
+  }
+
+  const handlePassword = (e) => {
+    setPassword(e)
+    console.log(password)
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -73,6 +110,9 @@ export default function LoginPage() {
             sx={{ mt: 1 }}
           >
             <TextField
+              onChange={(e)=>{
+                handleEmail(e.target.value)
+              }}
               margin="normal"
               required
               fullWidth
@@ -99,6 +139,7 @@ export default function LoginPage() {
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
+                onChange={(e) =>{handlePassword(e.target.value)}}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -131,12 +172,18 @@ export default function LoginPage() {
               </Link>
             </Grid>
             <Grid item></Grid>
+            {validLogin
+            ?<p>dfghdfg</p>
+            :null}
+            
             <Button
+              onClick={() => {
+                login()
+              }}
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              href="/"
             >
               Login
             </Button>

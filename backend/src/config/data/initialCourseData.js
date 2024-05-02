@@ -39,6 +39,14 @@ export async function populateCourses(users, courses) {
           }),
         );
 
+        course.lectures = Array.from(
+          { length: faker.number.int({ min: 1, max: 5 }) },
+          () => ({
+            lectureName: faker.music.songName(),
+          }),
+        );
+
+
         return course.save(); // Save the updated course
       }),
     );

@@ -15,6 +15,7 @@ const QrLandingPage = () => {
   const [user, setUser] = useState()
 
   const submit = async () => {
+    console.log("hi")
     if (date && course && user) {
       console.log("asdfsadf")
       const response = await axios
@@ -67,8 +68,8 @@ const QrLandingPage = () => {
   }
 
   useEffect(() => {
-    console.log("sksskskkskskskeeeekekekkeekttete")
     getStatus()
+    console.log(validity)
 
   }, [login])
 
@@ -78,22 +79,17 @@ const QrLandingPage = () => {
     }
   }, [user])
 
-  // useEffect(()=>{
-  //     const response = submit()
-  //     console.log("hi")
-  //     console.log(response)
-  //     setResponse(response)
-  // },[])
-
   useEffect(() => {
     checkUser()
+
     setDate(params.get('date'));
     setCourse(params.get('course'));
   }, []);
 
   useEffect(() => {
+    console.log("asd")
     submit();
-  }, [date, course]);
+  }, [date, course, login]);
 
   useEffect(() => {
     console.log(response)

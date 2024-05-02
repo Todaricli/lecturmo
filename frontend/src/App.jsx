@@ -12,6 +12,7 @@ import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
 import ReactQueryExamplePage from './pages/ReactQueryExamplePage/ReactQueryExamplePage';
+import AddNewLecture from './components/AddNewLecture';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
         <Route path="reactQuery" element={<ReactQueryExamplePage />} />
+
+        <Route path="testlecture" element={<AddNewLecture />} />
       </Route>
     </Routes>
   );

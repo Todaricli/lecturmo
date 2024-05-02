@@ -32,9 +32,6 @@ QrRouters.post('/qr-code', async (req, res) => {
   const user = await User.find({ username: username });
   console.log(user)
 
-  console.log("here")
-  console.log(userCheck)
-
   // console.log(dateObject);
   // console.log(dateNowObject);
   // console.log(userId);
