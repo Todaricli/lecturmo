@@ -17,7 +17,8 @@ function convertToDateObject(date) {
 QrRouters.post('/qr-code', async (req, res) => {
   const date = req.body.date;
   const courseId = req.body.courseId;
-  const userId = req.body.userId;
+  const username = req.body.username;
+  
 
   const dateNowSkeet = await fetch(
     `http://worldtimeapi.org/api/timezone/Pacific/Auckland`,
@@ -28,12 +29,16 @@ QrRouters.post('/qr-code', async (req, res) => {
   const dateObject = convertToDateObject(date);
   const dateNowObject = convertToDateObject(dateNow);
 
-  const user = await User.find({ username: 'user4' });
+  const user = await User.find({ username: username });
+  console.log(user)
 
-  console.log(dateObject);
-  console.log(dateNowObject);
-  console.log(userId);
-  console.log(user[0].courses);
+  console.log("here")
+  console.log(userCheck)
+
+  // console.log(dateObject);
+  // console.log(dateNowObject);
+  // console.log(userId);
+  // console.log(user[0].courses);
 
   const difference = (dateNowObject - dateObject) / 1000;
 

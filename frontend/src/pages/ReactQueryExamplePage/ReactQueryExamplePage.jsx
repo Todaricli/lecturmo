@@ -8,7 +8,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import React, { useState, useEffect, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'Axios'
+import axios from 'axios'
 
 // NEED TO ADJUST CORS POLICY HERE TO ALLOW CREDENTIALS
 axios.defaults.withCredentials = true;
