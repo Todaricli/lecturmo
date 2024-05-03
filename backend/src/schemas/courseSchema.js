@@ -22,7 +22,9 @@ const courseSchema = new Schema(
       // lectureId: {type: String, unique:true, },
       lectureName: {type:String},
       attendence: {type: Number, default: 0},
-      date: {type:String}
+      date: {type:String},
+      qrDuration: {type:Number, default: 15},
+      qrCreationTime: String
     }]
   },
   { timestamps: true },

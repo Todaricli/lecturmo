@@ -12,11 +12,13 @@ const userSchema = new Schema(
     profileDescription: String,
     avatarPicture: String,
     isVerified: Boolean,
-    roles: [{ type: String }], //(student, lecturer, admin)
+    roles: String, //(student, lecturer, admin)
     courses: [
       {
         courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
-        attendanceCount: Number,
+        lectures: [{
+          lectureId: String,
+        }]
       },
     ]
   },
