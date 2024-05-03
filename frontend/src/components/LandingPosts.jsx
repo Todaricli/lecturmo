@@ -51,7 +51,7 @@ const LandingPosts = ({ posts }) => {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       height: "100%",
                     }}
                   >
