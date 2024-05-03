@@ -21,6 +21,9 @@ export const theme = createTheme({
     text: {
       primary: "#2E2E2E",
     },
+    heart: {
+      primary: "#D74545"
+    }
   },
   shadows: {
     0: "none",

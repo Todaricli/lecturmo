@@ -10,7 +10,7 @@ import {
   CardContent,
 } from "@mui/material";
 import React from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useTheme } from "@emotion/react";
 
@@ -20,14 +20,14 @@ const LandingPosts = ({ posts }) => {
   return (
     <Grid
       container
-      direction={{ xs: "column", sm: "column", md: "row", lg: 'row' }}
+      direction={{ xs: "column", sm: "column", md: "row", lg: "row" }}
       justifyContent="center"
       alignItems="center"
       spacing={2}
-      sx={{mt: "20px"}}
+      sx={{ mt: "20px" }}
     >
       {[...Array(2)].map((_, columnIndex) => (
-        <Grid item lg={2} key={columnIndex} >
+        <Grid item lg={2} key={columnIndex}>
           {/* Each column */}
           {posts
             .filter((_, index) => columnIndex === index % 3)
@@ -56,17 +56,6 @@ const LandingPosts = ({ posts }) => {
                     }}
                   >
                     <CardHeader title={post.courseNumber} />
-                    <CardActions>
-                      <IconButton
-                        aria-label="favourite"
-                        sx={{
-                          border: "3px solid #D74545",
-                          padding: "5px",
-                        }}
-                      >
-                        <FavoriteBorderIcon />
-                      </IconButton>
-                    </CardActions>
                   </Box>
                   <Box
                     sx={{
@@ -98,7 +87,7 @@ const LandingPosts = ({ posts }) => {
                       </Typography>
                       <Rating
                         name="size-small"
-                        value={post.reviews[0].rating}
+                        value={post.highestRatedReview.rating}
                         readOnly
                         size="small"
                       />
@@ -106,21 +95,44 @@ const LandingPosts = ({ posts }) => {
                   </Box>
                   <Box>
                     <CardContent>
-                      <Typography
-                        variant="subtitle2"
-                        color="initial"
-                        fontSize={15}
-                        sx={{ lineHeight: 3 }}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
                       >
-                        Review:
-                      </Typography>
+                        <Typography
+                          variant="subtitle2"
+                          color="initial"
+                          fontSize={15}
+                          sx={{ lineHeight: 3 }}
+                        >
+                          Review:
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <FavoriteIcon
+                            sx={{ mr: "5px", color: "heart.primary" }}
+                          />
+                          <Typography variant="body1" color="initial">
+                            {post.highestRatedReview.likes.length}
+                          </Typography>
+                        </Box>
+                      </Box>
+
                       <Typography
                         variant="body2"
                         color="initial"
                         fontSize={15}
                         sx={{ lineHeight: 2 }}
                       >
-                        {post.reviews[0].content}
+                        {post.highestRatedReview.content}
                       </Typography>
 
                       <Typography
