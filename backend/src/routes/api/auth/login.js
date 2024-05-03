@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { authenticate } from '../../middleware/authMW.js';
+import { authenticate } from '../../../middleware/authMW.js';
 
 const router = express.Router();
 

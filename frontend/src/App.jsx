@@ -1,8 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import PageLayout from './layouts/PageLayout';
+import LoginPage from "./pages/LoginPage/LoginPage";
+import VerifyEmail from "./pages/VerifyEmail";
 import HomePage from './pages/HomePage/HomePage';
-import LoginPage from './pages/LoginPage/LoginPage';
 import QrCode from './pages/QrCode/QrCode';
 import QrLandingPage from './pages/QrCode/QrLandingPage';
 import VerificationSuccessPage from './pages/ScanVerificationPage/VerificationSuccessPage';
@@ -11,7 +12,7 @@ import UserProfilePage from './pages/ProfilePage/UserProfilePage';
 import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
-import ReactQueryExamplePage from './pages/ReactQueryExamplePage/ReactQueryExamplePage';
+import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 import StatsPage from './pages/ProfilePage/StatsPage';
 import LecturerPage from './pages/LecturerPage/LecturerPage';
 
@@ -30,7 +31,8 @@ function App() {
         <Route path="qr-landing-page" element={<QrLandingPage />} />
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
-        <Route path="reactQuery" element={<ReactQueryExamplePage />} />
+        <Route path="fetchExample" element={<FetchExamplePage />} />
+        <Route path="/verifyEmail" element={<VerifyEmail/>}/>
         <Route path="stats" element={<StatsPage />} />
         <Route path="lecturer" element={<LecturerPage />} />
 
