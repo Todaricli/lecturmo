@@ -1,18 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../contexts/AuthContextProvider';
 
 export const useRedirectToLoginIfNotLoggedIn = () => {
-  const { user } = useContext(AuthContext);
+  const { user, fetchUserDetails, isUpdateUserLoading } = useContext(AuthContext);
   const navigate = useNavigate();
+  useEffect(() => {
+  }, []);
+  const checkUser = useCallback(async () => {
+    await fetchUserDetails();
+    if (user === null && !isUpdateUserLoading) {
+      navigate('/login');
+    }
+  }, [user]);
 
   useEffect(() => {
-    const redirectToLoginIfNotLoggedIn = () => {
-      if (!user) {
-        navigate('/login');
-      }
-    };
-
-    redirectToLoginIfNotLoggedIn();
-  }, [navigate, user]);
+    checkUser();
+  }, [checkUser]);
 };

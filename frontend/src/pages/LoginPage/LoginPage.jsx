@@ -17,6 +17,7 @@ import {
   OutlinedInput,
   InputLabel,
   FormControl,
+  FormHelperText
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
@@ -35,6 +36,7 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -42,16 +44,23 @@ export default function LoginPage() {
       username: username,
       password: password,
     };
-    await loginUser(JSON.stringify(body));
-    navigate('/');
+    const res = await loginUser(JSON.stringify(body));
+    if (res && res.error) {
+      setError(res.message);
+    } else {
+      setError('');
+      navigate('/');
+    }
   };
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
+    setError('')
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+    setError('')
   };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -95,6 +104,7 @@ export default function LoginPage() {
               autoFocus
               value={username}
               onChange={handleUsernameChange}
+              onFocus={() => setError('')}
             />
             <FormControl fullWidth required variant="outlined" margin="normal">
               <InputLabel htmlFor="outlined-adornment-password">
@@ -105,6 +115,7 @@ export default function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={handlePasswordChange}
+                onFocus={() => setError('')}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -119,6 +130,11 @@ export default function LoginPage() {
                 }
                 label="Password"
               />
+              {error && (
+                  <FormHelperText error>
+                    {error}
+                  </FormHelperText>
+              )}
             </FormControl>
             <Grid
               container
