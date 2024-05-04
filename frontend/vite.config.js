@@ -7,4 +7,10 @@ export default defineConfig({
     sourcemap: true, // or "inline" to include the source map directly in the output files
   },
   plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    css: true,
+    setupFiles: './setupTest.js',
+  }
 });

@@ -48,16 +48,16 @@ const VerificationErrorPage = () => {
   };
 
   return (
-    <div className={css(backgroundStyle)}>
+    <div className={css(backgroundStyle)} data-testid="background-container">
       <div className={css(containerStyle)}>
-        <span className="material-icons" style={iconStyle}>
+        <span className="material-icons" style={iconStyle} data-testid="error-icon">
           highlight_off
         </span>
 
-        <p className={css(titleStyle)}>ERROR!</p>
-        <p className={css(contentStyle)}>We couldn't process your request.</p>
+        <p className={css(titleStyle)} data-testid="error-title">ERROR!</p>
+        <p className={css(contentStyle)} data-testid="error-content">We couldn't process your request.</p>
 
-        <Button variant="contained" color="error">
+        <Button variant="contained" color="error" data-testid="try-again-button">
           Try Again
         </Button>
       </div>

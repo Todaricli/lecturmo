@@ -48,18 +48,18 @@ const VerificationSuccessPage = () => {
   };
 
   return (
-    <div className={css(backgroundStyle)}>
+    <div className={css(backgroundStyle)} data-testid="background-container">
       <div className={css(containerStyle)}>
-        <span className="material-icons" style={iconStyle}>
+        <span className="material-icons" style={iconStyle} data-testid="error-icon">
           check_circle
         </span>
 
-        <p className={css(titleStyle)}>SUCCESS!</p>
-        <p className={css(contentStyle)}>
+        <p className={css(titleStyle)} data-testid="error-title">SUCCESS!</p>
+        <p className={css(contentStyle)} data-testid="error-content">
           Congrats! You have attended the lecture!
         </p>
 
-        <Button variant="contained" color="success">
+        <Button variant="contained" color="success" data-testid="try-again-button">
           Go Back Home
         </Button>
       </div>
