@@ -13,6 +13,8 @@ import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
 import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
+import StatsPage from './pages/ProfilePage/StatsPage';
+import LecturerPage from './pages/LecturerPage/LecturerPage';
 
 function App() {
   return (
@@ -31,6 +33,9 @@ function App() {
         <Route path="error" element={<VerificationErrorPage />} />
         <Route path="fetchExample" element={<FetchExamplePage />} />
         <Route path="/verifyEmail" element={<VerifyEmail/>}/>
+        <Route path="stats" element={<StatsPage />} />
+        <Route path="lecturer" element={<LecturerPage />} />
+
       </Route>
     </Routes>
   );
