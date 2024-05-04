@@ -5,8 +5,15 @@ import mongoose from 'mongoose';
 import {
   createEmptyCourses,
   populateCourses,
-} from './data/initialCourseData.js';
-import { createEmptyUsers, populateUsers } from './data/initialUserData.js';
+  initCourses,
+  updateCourseForeignKeys
+} from './data/initCourseData.js';
+import {
+  createEmptyUsers,
+  populateUsers,
+  initUsers,
+  updateUserForeignKeys
+} from './data/initUserData.js';
 
 // This is a standalone program which will populate the database with initial data.
 async function run() {
@@ -18,13 +25,17 @@ async function run() {
     console.log('Database cleared.');
 
     // barebones creation just to allow foreign key referencing
-    const users = await createEmptyUsers();
-    const courses = await createEmptyCourses();
+    // const users = await createEmptyUsers();
+    // const courses = await createEmptyCourses();
 
-    await populateUsers(users, courses);
-    console.log('Users created and updated successfully');
-    await populateCourses(users, courses);
-    console.log('Courses created and updated successfully');
+    const users = await initUsers();
+    const courses = await initCourses();
+
+    await updateUserForeignKeys(users, courses);
+    await updateCourseForeignKeys(users, courses);
+
+    // await populateUsers(users, courses);
+    // await populateCourses(users, courses);
     console.log('Database seeded successfully.');
   } catch (error) {
     console.error('Error seeding the database:', error);

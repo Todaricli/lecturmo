@@ -1,9 +1,52 @@
 import { faker } from '@faker-js/faker';
 import { User } from '../../schemas/userSchema.js';
 import { hashPassword } from '../../utils/useBcrypt.js';
+import { usersJSON } from './raw/usersJSON.js';
 
-const NUMBER_OF_USERS = 10;
+const NUMBER_OF_USERS = usersJSON.length;
 const PASSWORD = '123';
+
+
+export async function initUsers() {
+  try {
+    const initialUsers = await User.insertMany(usersJSON);
+    console.log('Users initialized.');
+    return initialUsers
+  } catch (error) {
+    console.error('Error adding users:', error);
+    throw error;
+  }
+}
+
+// find the actual generated _id based off dummy id
+async function fetchCourseIds(courses) {
+  const courseMap = {};
+  courses.forEach(course => {
+    courseMap[course.course_dummy_id] = course._id;
+  });
+  return courseMap;
+}
+
+export async function updateUserForeignKeys(users, courses) {
+  try {
+    // Retrieve the map of dummy IDs to actual course IDs
+    const courseMap = await fetchCourseIds(courses);
+    const updates = users.map(async (user) => {
+      user.courses = user.courses.map(courseEntry => {
+        if (courseMap[courseEntry.course.dummy]) {
+          courseEntry.course.id = courseMap[courseEntry.course.dummy];
+        }
+        return courseEntry;
+      });
+      await user.save();
+    });
+    await Promise.all(updates);
+    console.log('User foreign keys updated successfully.');
+  } catch (error) {
+    console.error('Error updating user foreign keys:', error);
+    throw error;
+  }
+}
 
 export async function createEmptyUsers() {
   try {
@@ -51,9 +94,7 @@ export async function populateUsers(users, courses) {
         user.profileDescription = faker.lorem.sentence();
         user.avatarPicture = faker.image.avatar();
         user.isVerified = faker.datatype.boolean();
-        user.roles = ['student', 'lecturer', 'admin'].filter(() =>
-          faker.datatype.boolean(),
-        );
+        user.roles = faker.helpers.arrayElement(['student', 'lecturer', 'admin']);
         user.courses = userCourses;
 
         return user.save();
