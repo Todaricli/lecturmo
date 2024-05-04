@@ -22,8 +22,11 @@ export const theme = createTheme({
       primary: "#2E2E2E",
     },
     heart: {
-      primary: "#D74545"
-    }
+      primary: "#D74545",
+    },
+    icon: {
+      main: "#1C89B6",
+    },
   },
   shadows: {
     0: "none",
@@ -43,4 +46,9 @@ export const theme = createTheme({
       },
     },
   },
+  typography: {
+    button: {
+      textTransform: 'none'
+    }
+  }
 });
