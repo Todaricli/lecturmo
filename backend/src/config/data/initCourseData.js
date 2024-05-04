@@ -11,7 +11,7 @@ export async function initCourses() {
     return intialCourses;
   } catch (error) {
     console.error('Error adding courses:', error);
-    throw error; 
+    throw error;
   }
 }
 
@@ -19,7 +19,7 @@ export async function initCourses() {
 async function fetchUserIds(users) {
   const userMap = {};
   users.forEach(user => {
-      userMap[user.user_dummy_id] = user._id;
+    userMap[user.user_dummy_id] = user._id;
   });
   return userMap;
 }
@@ -32,20 +32,18 @@ export async function updateCourseForeignKeys(users, courses) {
     // Map the courses and update their nested references
     const updates = courses.map(async (course) => {
       // Update lecturer reference
-      if (course.lecturer.dummy && userMap[course.lecturer.dummy]) {
-        course.lecturer.id = userMap[course.lecturer.dummy];
+      if (course.dummyLecId && userMap[course.dummyLecId]) {
+        course.lecturerId = userMap[course.dummyLecId];
       }
 
       // Update reviews references
       course.reviews.forEach(review => {
-        if (review.user.dummy && userMap[review.user.dummy]) {
-          review.user.id = userMap[review.user.dummy];
+        if (review.dummyId && userMap[review.dummyId]) {
+          review.userId = userMap[review.dummyId];
         }
-        review.likes.forEach(like => {
-          if (like.user.dummy && userMap[like.user.dummy]) {
-            like.user.id = userMap[like.user.dummy];
-          }
-        });
+        review.likes = review.dummyLikes.map(dummy => ({
+          userId: userMap[dummy]
+        }));
       });
 
       // Save the updated course

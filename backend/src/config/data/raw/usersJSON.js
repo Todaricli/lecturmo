@@ -12,9 +12,7 @@ export const usersJSON = [
     "roles": "lecturer",
     "courses": [
       {
-        "course": {
-          "dummy": "COMPSCI_732"
-        },
+        "dummyId": "COMPSCI_732",
         "lecturesAttended": []
       },
     ],

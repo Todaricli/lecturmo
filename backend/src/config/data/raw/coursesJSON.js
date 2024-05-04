@@ -2,72 +2,33 @@ export const coursesJSON = [
   {
     "course_dummy_id": "COMPSCI_732",
     "courseName": "Software Tools and Techniques",
-    "lecturer": "lec5",
+    "dummyLecId": "lec5",
     "description": "An advanced course examining research issues related to tools and techniques for software design and development. Topics include techniques for data mapping and data integration, software architectures for developing software tools, issues in advanced database systems. This course includes a lecture component and a group project component, focusing on state-of-the-art software development tools and techniques.",
     "category": "Science",
     "level": "Postgraduate",
     "reviews": [
       {
-        "user": {
-          "dummy": "lec1"
-        },
+        "dummyId": "lec1",
         "content": "Very insightful course, really enjoyed the practical sessions!",
-        "likes": [
-          {
-            "user": {
-              "dummy": "lec1"
-            }
-          },
-          {
-            "user": {
-              "dummy": "lec2"
-            }
-          },
-        ],
+        "dummyLikes": ["lec1", "lec2"],
         "difficultyRating": 4,
         "contentRating": 5,
         "qualityRating": 5,
         "createdAt": "2024-02-01T09:00:00Z"
       },
       {
-        "user": {
-          "dummy": "lec2"
-        },
+        "dummyId": "lec2",
         "content": "Challenging yet rewarding experience with ample learning opportunities.",
-        "likes": [
-          {
-            "user": {
-              "dummy": "lec4"
-            }
-          },
-          {
-            "user": {
-              "dummy": "lec5"
-            }
-          },
-        ],
+        "dummyLikes": ["lec4", "lec5"],
         "difficultyRating": 3,
         "contentRating": 4,
         "qualityRating": 4,
         "createdAt": "2024-02-02T09:00:00Z"
       },
       {
-        "user": {
-          "dummy": "lec5"
-        },
+        "dummyId": "lec5",
         "content": "Good course but needs better pacing. Projects felt rushed.",
-        "likes": [
-          {
-            "user": {
-              "dummy": "lec3"
-            }
-          },
-          {
-            "user": {
-              "dummy": "lec2"
-            }
-          },
-        ],
+        "dummyLikes": ["lec3", "lec2"],
         "difficultyRating": 3,
         "contentRating": 3,
         "qualityRating": 3,
@@ -104,7 +65,7 @@ export const coursesJSON = [
   {
     "course_dummy_id": "COMPSCI_718",
     "courseName": "Programming for Industry",
-    "lecturer": "lec3",
+    "dummyLecId": "lec3",
     "description": "An examination of object-oriented programming and design. Key principles of object-oriented programming: typing, encapsulation, inheritance, polymorphism, and composition. Fundamental object-oriented modeling and design techniques. Students will develop application software of reasonable complexity that draws on object-oriented language features, and contemporary APIs, frameworks, and tools.",
     "category": "Science",
     "level": "Postgraduate",
@@ -133,7 +94,7 @@ export const coursesJSON = [
   {
     "course_dummy_id": "COMPSCI_719",
     "courseName": "Programming with Web Technologies",
-    "lecturer": "lec4",
+    "dummyLecId": "lec4",
     "description": "An examination of developing web-based applications. Client-side technologies: HTML, CSS and JavaScript. Server-side technologies to support dynamic Web pages and data access. Fundamental relational database concepts and design techniques. Principles of Web-application design. HCI considerations and mobile clients. Students will build a Web-based application that dynamically generates content involving relational database access.",
     "category": "Science",
     "level": "Postgraduate",
@@ -162,9 +123,7 @@ export const coursesJSON = [
   {
     "course_dummy_id": "COMPSCI_751",
     "courseName": "Advanced Topics in Database Systems",
-    "lecturer": {
-      "dummy": "lec1"
-    },
+    "dummyLecId": "lec1",
     "description": "Database principles. Relational model, relational algebra, relational calculus, SQL, SQL and programming languages, entity-relationship model, normalisation, query processing and query optimisation, ACID transactions, transaction isolation levels, database recovery, database security, databases and XML. Research frontiers in database systems. Advanced coverage of database systems design and implementation including distributed database systems and modern query languages.",
     "category": "Science",
     "level": "Postgraduate",
@@ -205,9 +164,7 @@ export const coursesJSON = [
   {
     "course_dummy_id": "INFOSYS_727",
     "courseName": "Advanced Information Security",
-    "lecturer": {
-      "dummy": "lec1"
-    },
+    "dummyLecId": "lec1",
     "description": "Focuses on technical security issues of the systems used in today's information technology applications. Explores the practical issues of identification and authentication, security of operating systems, cryptography, disaster recovery and contingency planning, and discusses the relevant theoretical models. Managerial aspects of information security issues as well as legal and ethical issues arising from protecting computer files both from a New Zealand and global perspective will be addressed. The course follows the content of CISSP certification.",
     "category": "Business and Economics",
     "level": "Postgraduate",
@@ -248,9 +205,7 @@ export const coursesJSON = [
   {
     "course_dummy_id": "INFOSYS_704",
     "courseName": "IT Consultancy",
-    "lecturer": {
-      "dummy": "lec1"
-    },
+    "dummyLecId": "lec1",
     "description": "Focuses on developing IT consultancy skills by introducing the lifecycle of IT consultancy project and best practices per each phase. Prepares students for IT consultancy roles that involve business and technology analysis, change management, implementation and performance management.",
     "category": "Business and Economics",
     "level": "Postgraduate",

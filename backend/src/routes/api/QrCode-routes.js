@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { User } from '../../schemas/userSchema.js';
 import { Course } from '../../schemas/courseSchema.js';
 import { authenticate } from '../../middleware/authMW.js';
+import mongoose from 'mongoose';
 
 const QrRouters = Router();
 
@@ -37,10 +38,20 @@ QrRouters.post('/qr-code', async (req, res) => {
   console.log(user[0].courses);
 
   const difference = (dateNowObject - dateObject) / 1000;
+  const usernameIdObject = new mongoose.Types.ObjectId(username._id)
 
   if (date == undefined || courseId == undefined) {
     res.send('yagotproblems');
     return;
+  }
+
+  try {
+    console.log("skeet")
+    const sket = await User.updateOne({_id: usernameIdObject, courses:{$elemMatch:{"course.id":courseId}}},
+    {$push:{"courses.$.lectures": 576}}).exec()
+    console.log(sket)
+  } catch (error) {
+    console.log(error)
   }
 
   //---------------------------set expiry time here skeet ------------------------------------

@@ -6,26 +6,21 @@ const courseSchema = new Schema(
   {
     course_dummy_id: String,
     courseName: { type: String },
-    lecturer: {
-      id: { type: Schema.Types.ObjectId, ref: 'User' },
-      dummy: { type: String }
-    },
+    lecturerId: {type: Schema.Types.ObjectId, ref: 'User' },
+    dummyLecId: String,
     description: { type: String },
     category: String,
     level: String,
     reviews: [
       {
-        user: {
-          id: { type: Schema.Types.ObjectId, ref: 'User' },
-          dummy: { type: String }
-        },
+        userId: { type: Schema.Types.ObjectId, ref: 'User' },
+        dummyId: String,
         content: String,
         likes: [{
-          user: {
-            id: { type: Schema.Types.ObjectId, ref: 'User' },
-            dummy: { type: String }
+          userId: { type: Schema.Types.ObjectId, ref: 'User' },
           },
-        }],
+        ],
+        dummyLikes: [String],
         difficultyRating: { type: Number, min: 1, max: 5 },
         contentRating: { type: Number, min: 1, max: 5 },
         qualityRating: { type: Number, min: 1, max: 5 },
@@ -34,7 +29,7 @@ const courseSchema = new Schema(
     ],
     lectures: [
       {
-        title: String,
+        lectureName: String,
         lectureDate: { type: Date },
         qrExpiry: String,
         qrCreation: { type: Date, default: Date.now },
