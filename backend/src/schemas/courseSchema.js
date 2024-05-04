@@ -17,9 +17,10 @@ const courseSchema = new Schema(
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
         dummyId: String,
         content: String,
-        likes: [{
-          userId: { type: Schema.Types.ObjectId, ref: 'User' },
-        },
+        likes: [
+          {
+            userId: { type: Schema.Types.ObjectId, ref: 'User' },
+          },
         ],
         dummyLikes: [String],
         difficultyRating: { type: Number, min: 1, max: 5 },
@@ -34,8 +35,8 @@ const courseSchema = new Schema(
         lectureDate: { type: Date },
         qrExpiry: String,
         qrCreation: { type: Date, default: Date.now },
-      }
-    ]
+      },
+    ],
   },
   { timestamps: true },
 );

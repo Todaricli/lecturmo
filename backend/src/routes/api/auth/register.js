@@ -1,9 +1,9 @@
-import express from "express";
-import { User } from '../../../schemas/userSchema.js'
-import validator from "validator";
+import express from 'express';
+import { User } from '../../../schemas/userSchema.js';
+import validator from 'validator';
 import crypto from 'crypto';
-import { hashPassword } from "../../../utils/useBcrypt.js";
-import jwt from "jsonwebtoken"
+import { hashPassword } from '../../../utils/useBcrypt.js';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -22,60 +22,67 @@ const router = express.Router();
  * check if the username is already exist
  */
 router.get('/register/check-username', async (req, res) => {
-    const { username } = req.body;
-    const user = await User.find({ username });
-    if (user) return res.sendStatus(400); //email or username taken.
-    return res.sendStatus(200);
-})
+  const { username } = req.body;
+  const user = await User.find({ username });
+  if (user) return res.sendStatus(400); //email or username taken.
+  return res.sendStatus(200);
+});
 
 /**
  * Check if the email is already exist
  */
 router.get('/register/check-email', async (req, res) => {
-    const { email } = req.body;
-    const user = await User.find({ email });
-    if (user) return res.sendStatus(400);
-    return res.sendStatus(200)
-})
+  const { email } = req.body;
+  const user = await User.find({ email });
+  if (user) return res.sendStatus(400);
+  return res.sendStatus(200);
+});
 
 /**
  * register a user, add username, email, password in database
- * 
+ *
  */
 router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-    if (!username || !email || !password) {
-        return res.status(400).json("All key credentials fields are required.")
-    }
+  if (!username || !email || !password) {
+    return res.status(400).json('All key credentials fields are required.');
+  }
 
-    if (!validator.isEmail(email)) return res.status(400).json("Please provide valid email.")
+  if (!validator.isEmail(email))
+    return res.status(400).json('Please provide valid email.');
 
-    // if (!validator.isStrongPassword(password))
-    // return res.status(400).json("Password must be a strong password..");
+  // if (!validator.isStrongPassword(password))
+  // return res.status(400).json("Password must be a strong password..");
 
-    // console.log(req.body)
-    // console.log(username);
-    // console.log(password);
-    // console.log(email)
-    // const hashedPassword = await hashPassword(password);
-    // console.log(hashedPassword)
+  // console.log(req.body)
+  // console.log(username);
+  // console.log(password);
+  // console.log(email)
+  // const hashedPassword = await hashPassword(password);
+  // console.log(hashedPassword)
 
-    try {
-        const user = new User({
-            username: username,
-            email: email,
-            password: await hashPassword(password),
-            emailToken: crypto.randomBytes(32).toString('hex') // generate a emailToken for later comparison
-        });
+  try {
+    const user = new User({
+      username: username,
+      email: email,
+      password: await hashPassword(password),
+      emailToken: crypto.randomBytes(32).toString('hex'), // generate a emailToken for later comparison
+    });
 
-        await user.save();
+    await user.save();
 
-        res.status(200).json({ _id: user._id, username: username, email: email, isVerified: user.isVerified });
-
-    } catch (e) {
-        console.log(e.message);
-    }
-})
+    res
+      .status(200)
+      .json({
+        _id: user._id,
+        username: username,
+        email: email,
+        isVerified: user.isVerified,
+      });
+  } catch (e) {
+    console.log(e.message);
+  }
+});
 
 export default router;

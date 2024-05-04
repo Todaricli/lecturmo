@@ -7,8 +7,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios'
-
+import axios from 'axios';
 
 // NEED TO ADJUST CORS POLICY HERE TO ALLOW CREDENTIALS
 axios.defaults.withCredentials = true;
@@ -16,30 +15,30 @@ axios.defaults.withCredentials = true;
 const defaultTheme = createTheme();
 
 const ReactQueryExamplePage = () => {
-  const { user, loginUser, logoutUser, fetchUserDetails, updateUserDetails } = useContext(AuthContext);
+  const { user, loginUser, logoutUser, fetchUserDetails, updateUserDetails } =
+    useContext(AuthContext);
 
   let userInfo = user;
 
-
   const handleLogin = async () => {
     const body = {
-      username: "user2",
-      password: "123",
-    }
-    await loginUser(JSON.stringify(body)) // refetches the postLogin here
-  }
+      username: 'user2',
+      password: '123',
+    };
+    await loginUser(JSON.stringify(body)); // refetches the postLogin here
+  };
 
   const handleLogout = async () => {
-    await logoutUser()
-  }
+    await logoutUser();
+  };
 
   const handleFetch = async () => {
-    await fetchUserDetails()
-  }
+    await fetchUserDetails();
+  };
 
   const handleUpdate = async () => {
-    await updateUserDetails()
-  }
+    await updateUserDetails();
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -53,14 +52,22 @@ const ReactQueryExamplePage = () => {
             alignItems: 'center',
           }}
         >
-
           <Typography component="h1" variant="h5">
             Hi, Welcome Back! 👋
           </Typography>
 
-          <p>Update is just a get request to backend to get user details, and bring it into the frontend. ALWAYS use when updating user info</p>
-          <p>Fetch will only request backend IF user is not already in the context. ALWAYS use at the top of page if you need user info</p>
-          <p>The reason for this is to reduce backend requests everytime we need user info</p>
+          <p>
+            Update is just a get request to backend to get user details, and
+            bring it into the frontend. ALWAYS use when updating user info
+          </p>
+          <p>
+            Fetch will only request backend IF user is not already in the
+            context. ALWAYS use at the top of page if you need user info
+          </p>
+          <p>
+            The reason for this is to reduce backend requests everytime we need
+            user info
+          </p>
           <Button
             type="submit"
             fullWidth
@@ -102,16 +109,13 @@ const ReactQueryExamplePage = () => {
           >
             Logout Button
           </Button>
-
         </Box>
       </Container>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default ReactQueryExamplePage
-
-
+export default ReactQueryExamplePage;
 
 // // fetch example with outside api CANNOT USE BECAUSE CANNOT ADJUST THE CORS POLICY HERE, if you want to test, comment out the axios.defaults above
 // const { isPending: idPendingDog, isError: isErrDog, data: dogData, error: dogError } = useQuery({
@@ -122,9 +126,6 @@ export default ReactQueryExamplePage
 //     return 1
 //   }
 // })
-
-
-
 
 // tan query login example, with fetch status dependant on the current user
 

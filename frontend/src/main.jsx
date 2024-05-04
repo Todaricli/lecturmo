@@ -9,8 +9,8 @@ import '@radix-ui/themes/styles.css';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './layouts/GlobalTheme';
 import CssBaseline from '@mui/material/CssBaseline';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,8 +18,8 @@ const queryClient = new QueryClient({
       // refetches on new instance query mount, window refocus, network reconnect
       staleTime: 60000,
       // garbage collection, removes unnecessary  data from cache
-      gcTime: 10 * (60 * 1000)
-    }
+      gcTime: 10 * (60 * 1000),
+    },
   },
 });
 

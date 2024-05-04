@@ -8,34 +8,33 @@ import {
   Typography,
   Rating,
   CardContent,
-} from "@mui/material";
-import React, { useEffect } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { useTheme } from "@emotion/react";
+} from '@mui/material';
+import React, { useEffect } from 'react';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { useTheme } from '@emotion/react';
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
 
-  useEffect(() => {
-    console.log("posts:", posts);
-    if (posts.length > 0) {
-      console.log("posts[0]:", posts[0]);
-      console.log("posts[0].reviews:", posts[0].reviews);
-    }
-  }, [posts]);
+  // useEffect(() => {
+  //   if (posts.length > 0) {
+  //     console.log('posts[0]:', posts[0]);
+  //     console.log('posts[0].reviews:', posts[0].reviews);
+  //   }
+  // }, [posts]);
 
   return (
-    (<Grid
+    <Grid
       container
-      direction={{ xs: "column", sm: "column", md: "row", lg: 'row' }}
+      direction={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }}
       justifyContent="center"
       alignItems="center"
       spacing={2}
-      sx={{ mt: "20px" }}
+      sx={{ mt: '20px' }}
     >
       {[...Array(2)].map((_, columnIndex) => (
-        <Grid item lg={2} key={columnIndex} >
+        <Grid item lg={2} key={columnIndex}>
           {/* Each column */}
           {posts
             .filter((_, index) => columnIndex === index % 3)
@@ -43,8 +42,8 @@ const LandingPosts = ({ posts }) => {
               <Box
                 key={index}
                 sx={{
-                  marginTop: "15px",
-                  width: "400px",
+                  marginTop: '15px',
+                  width: '400px',
                   boxShadow: theme.shadows[1],
                 }}
               >
@@ -52,15 +51,15 @@ const LandingPosts = ({ posts }) => {
                   variant="outlined"
                   sx={{
                     borderRadius: 5,
-                    bgcolor: index % 2 === 0 ? "primary.main" : "light.main",
+                    bgcolor: index % 2 === 0 ? 'primary.main' : 'light.main',
                   }}
                 >
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      flexDirection: "row",
-                      height: "100%",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      height: '100%',
                     }}
                   >
                     <CardHeader title={course.courseNumber} />
@@ -68,8 +67,8 @@ const LandingPosts = ({ posts }) => {
                       <IconButton
                         aria-label="favourite"
                         sx={{
-                          border: "3px solid #D74545",
-                          padding: "5px",
+                          border: '3px solid #D74545',
+                          padding: '5px',
                         }}
                       >
                         <FavoriteBorderIcon />
@@ -78,30 +77,30 @@ const LandingPosts = ({ posts }) => {
                   </Box>
                   <Box
                     sx={{
-                      margin: "10px 10px 16px 16px",
-                      display: "flex",
-                      justifyContent: "space-between",
+                      margin: '10px 10px 16px 16px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
                     }}
                   >
                     <Box
                       sx={{
-                        display: "flex",
-                        bgcolor: "secondary.main",
-                        padding: "5px",
+                        display: 'flex',
+                        bgcolor: 'secondary.main',
+                        padding: '5px',
                         width: 190,
                         borderRadius: 3,
                       }}
                     >
                       <LocationOnOutlinedIcon
                         fontSize="small"
-                        sx={{ marginRight: "5px" }}
+                        sx={{ marginRight: '5px' }}
                       />
                       <Typography variant="body2" color="initial">
                         University of Auckland
                       </Typography>
                     </Box>
-                    {course.reviews && course.reviews.length > 0 &&
-                      (<Box sx={{ display: "flex", alignItems: "center" }}>
+                    {course.reviews && course.reviews.length > 0 && (
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant="body2" color="initial">
                           Ratings:
                         </Typography>
@@ -111,10 +110,11 @@ const LandingPosts = ({ posts }) => {
                           readOnly
                           size="small"
                         />
-                      </Box>)}
+                      </Box>
+                    )}
                   </Box>
-                  {course.reviews && course.reviews.length > 0 &&
-                    (<Box>
+                  {course.reviews && course.reviews.length > 0 && (
+                    <Box>
                       <CardContent>
                         <Typography
                           variant="subtitle2"
@@ -141,13 +141,14 @@ const LandingPosts = ({ posts }) => {
                           {new Date(course.createdAt).toLocaleDateString()}
                         </Typography>
                       </CardContent>
-                    </Box>)}
+                    </Box>
+                  )}
                 </Card>
               </Box>
             ))}
         </Grid>
       ))}
-    </Grid>)
+    </Grid>
   );
 };
 

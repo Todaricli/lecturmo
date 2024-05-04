@@ -8,13 +8,14 @@ export const postRequest = async (url, body) => {
     return response.data;
   } catch (error) {
     const isResponseError = error.response && error.response.data;
-    const message = isResponseError && error.response.data.message
-      ? error.response.data.message
-      : 'Unknown error occurred';
+    const message =
+      isResponseError && error.response.data.message
+        ? error.response.data.message
+        : 'Unknown error occurred';
     return {
       error: true,
       status: isResponseError ? error.response.status : 500,
-      message: message
+      message: message,
     };
   }
 };

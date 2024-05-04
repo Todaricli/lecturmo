@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   Container,
   Box,
@@ -8,8 +8,12 @@ import {
   CardContent,
   Typography,
   Button,
-  Table, TableHead, TableCell, TableRow, TableBody
-} from "@mui/material";
+  Table,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody,
+} from '@mui/material';
 
 const LecturerPage = () => {
   const [coursesList, setCoursesList] = useState(undefined);
@@ -46,28 +50,28 @@ const LecturerPage = () => {
     <Container
       maxWidth="lg"
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         mt: 10,
       }}
     >
       <Card
         sx={{
-          bgcolor: "primary.main",
-          height: "250px",
-          width: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          bgcolor: 'primary.main',
+          height: '250px',
+          width: '100vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <CardMedia
           title="lecturer img"
           image="/assets/dog.jpg"
           component="img"
-          sx={{ width: 180, height: "200px", borderRadius: 4 }}
+          sx={{ width: 180, height: '200px', borderRadius: 4 }}
         />
         <CardContent>
           <Typography variant="h6" color="initial">
@@ -80,42 +84,42 @@ const LecturerPage = () => {
       </Card>
       <Box
         sx={{
-          bgcolor: "secondary.main",
-          height: "100vh",
-          width: "100vw",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          bgcolor: 'secondary.main',
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <Typography
           variant="h4"
           color="background.default"
-          sx={{ fontWeight: "bold", mt: 5, mb: 3 }}
+          sx={{ fontWeight: 'bold', mt: 5, mb: 3 }}
         >
           Classes Taking
         </Typography>
         <Box
           sx={{
-            bgcolor: "light.main",
-            width: "200px",
-            height: "150px",
+            bgcolor: 'light.main',
+            width: '200px',
+            height: '150px',
             borderRadius: 5,
-            display: "flex",
-            justifyContent: "center",
-            p: "10px",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "10px",
+            display: 'flex',
+            justifyContent: 'center',
+            p: '10px',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '10px',
           }}
         >
-          <Typography variant="h5" color="initial" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h5" color="initial" sx={{ fontWeight: 'bold' }}>
             Compsci 732
           </Typography>
           <Typography
             variant="body2"
             color="initial"
-            sx={{ fontWeight: "bold" }}
+            sx={{ fontWeight: 'bold' }}
           >
             Semester 2 - 2024
           </Typography>
@@ -123,12 +127,12 @@ const LecturerPage = () => {
             variant="text"
             color="primary"
             sx={{
-              bgcolor: "background.default",
+              bgcolor: 'background.default',
               borderRadius: 4,
-              width: "100px",
-              "&:hover": {
-                backgroundColor: "secondary.main",
-                color: "#000000"
+              width: '100px',
+              '&:hover': {
+                backgroundColor: 'secondary.main',
+                color: '#000000',
               },
             }}
           >
@@ -138,27 +142,27 @@ const LecturerPage = () => {
         <Typography
           variant="h4"
           color="background.default"
-          sx={{ fontWeight: "bold", mt: 5, mb: 3 }}
+          sx={{ fontWeight: 'bold', mt: 5, mb: 3 }}
         >
           Student Attendance
         </Typography>
         <Box
           sx={{
-            bgcolor: "primary.main",
-            width: "100%",
-            height: "400px",
-            p: "20px",
+            bgcolor: 'primary.main',
+            width: '100%',
+            height: '400px',
+            p: '20px',
           }}
         >
-          <Typography variant="h6" color="initial" sx={{ mb: "5px" }}>
+          <Typography variant="h6" color="initial" sx={{ mb: '5px' }}>
             Compsci 732
           </Typography>
-          <Table sx={{ maxWidth: "100%", bgcolor: "grey.main" }}>
-            <TableHead sx={{ bgcolor: "background.default" }}>
+          <Table sx={{ maxWidth: '100%', bgcolor: 'grey.main' }}>
+            <TableHead sx={{ bgcolor: 'background.default' }}>
               <TableRow>
-                <TableCell sx={{ color: "light.main" }}>Title</TableCell>
-                <TableCell sx={{ color: "light.main" }}>Date</TableCell>
-                <TableCell sx={{ color: "light.main" }}>
+                <TableCell sx={{ color: 'light.main' }}>Title</TableCell>
+                <TableCell sx={{ color: 'light.main' }}>Date</TableCell>
+                <TableCell sx={{ color: 'light.main' }}>
                   Student Attendance
                 </TableCell>
               </TableRow>

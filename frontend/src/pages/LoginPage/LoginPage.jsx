@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -15,32 +16,34 @@ import {
   IconButton,
   OutlinedInput,
   InputLabel,
-  FormControl
+  FormControl,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
   Visibility,
-  VisibilityOff
+  VisibilityOff,
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { AppContext } from '../../contexts/AppContextProvider';
-import { postRequest } from '../../services/postRequest';
+import { AuthContext } from '../../contexts/AuthContextProvider';
 
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
+  const { loginUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { updateData, getData } = useContext(AppContext);
 
-  const handleSubmit = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    const res = await postRequest('http://localhost:3000/api/auth/login', {
+    const body = {
       username: username,
       password: password,
-    });
-    console.log("res:", res);
+    };
+    await loginUser(JSON.stringify(body));
+    navigate('/');
   };
 
   const handleUsernameChange = (event) => {
@@ -77,7 +80,7 @@ export default function LoginPage() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleLogin}
             noValidate
             sx={{ mt: 1 }}
           >

@@ -1,4 +1,4 @@
-import { isUserLoggedIn } from '../services/auth/isUserLogin';
+import { useFetchUserDetails } from '../services/auth/useFetchUserDetails';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -7,7 +7,8 @@ export const useRedirectToLoginIfNotLoggedIn = () => {
 
   useEffect(() => {
     const redirectToLoginIfNotLoggedIn = async () => {
-      const isLoggedIn = await isUserLoggedIn()
+      const res = await useFetchUserDetails();
+      const isLoggedIn = res.status !== 401;
       if (!isLoggedIn) {
         navigate('/login');
       }

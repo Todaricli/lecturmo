@@ -15,7 +15,6 @@ function convertToDateObject(date) {
   return timezOb;
 }
 
-
 QrRouters.post('/qr-code', async (req, res) => {
   const date = req.body.date;
   const courseId = req.body.courseId;
@@ -38,7 +37,7 @@ QrRouters.post('/qr-code', async (req, res) => {
   console.log(user[0].courses);
 
   const difference = (dateNowObject - dateObject) / 1000;
-  const usernameIdObject = new mongoose.Types.ObjectId(username._id)
+  const usernameIdObject = new mongoose.Types.ObjectId(username._id);
 
   if (date == undefined || courseId == undefined) {
     res.send('yagotproblems');
@@ -46,12 +45,17 @@ QrRouters.post('/qr-code', async (req, res) => {
   }
 
   try {
-    console.log("skeet")
-    const sket = await User.updateOne({_id: usernameIdObject, courses:{$elemMatch:{"course.id":courseId}}},
-    {$push:{"courses.$.lectures": 576}}).exec()
-    console.log(sket)
+    console.log('skeet');
+    const sket = await User.updateOne(
+      {
+        _id: usernameIdObject,
+        courses: { $elemMatch: { 'course.id': courseId } },
+      },
+      { $push: { 'courses.$.lectures': 576 } },
+    ).exec();
+    console.log(sket);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 
   //---------------------------set expiry time here skeet ------------------------------------
