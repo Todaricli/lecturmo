@@ -13,10 +13,8 @@ const userSchema = new Schema({
   avatarPicture: String,
   roles: { type: String, enum: ['student', 'lecturer', 'admin'], default: 'student' },
   courses: [{
-    course: {
-      id: { type: Schema.Types.ObjectId, ref: 'Course' },
-      dummy: { type: String }
-    },
+    courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
+    dummyId: { String },
     lecturesAttended: [{ lecture: { type: String, index: true } }]
   }],
   isVerified: { type: Boolean, default: false, required: true },

@@ -33,8 +33,8 @@ export async function updateUserForeignKeys(users, courses) {
     const courseMap = await fetchCourseIds(courses);
     const updates = users.map(async (user) => {
       user.courses = user.courses.map(courseEntry => {
-        if (courseMap[courseEntry.course.dummy]) {
-          courseEntry.course.id = courseMap[courseEntry.course.dummy];
+        if (courseMap[courseEntry.dummyId]) {
+          courseEntry.courseId = courseMap[courseEntry.dummyId];
         }
         return courseEntry;
       });
