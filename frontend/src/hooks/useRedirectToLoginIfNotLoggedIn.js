@@ -1,19 +1,18 @@
-import { useFetchUserDetails } from '../services/auth/useFetchUserDetails';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContextProvider';
 
 export const useRedirectToLoginIfNotLoggedIn = () => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const redirectToLoginIfNotLoggedIn = async () => {
-      const res = await useFetchUserDetails();
-      const isLoggedIn = res.status !== 401;
-      if (!isLoggedIn) {
+    const redirectToLoginIfNotLoggedIn = () => {
+      if (!user) {
         navigate('/login');
       }
     };
 
     redirectToLoginIfNotLoggedIn();
-  }, [navigate]);
+  }, [navigate, user]);
 };
