@@ -1,46 +1,55 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import React, { useState, useContext } from 'react';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  FormControl
+} from '@mui/material';
+import {
+  LockOutlined as LockOutlinedIcon,
+  Visibility,
+  VisibilityOff
+} from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../contexts/AppContextProvider';
+import { postRequest } from '../../services/postRequest';
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { updateData, getData } = useContext(AppContext);
 
-  useEffect(() => {
-    console.log('1234:', 1234);
-    console.log("getData('user'):", getData('user'));
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Login Attempt with:', username, password);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const res = await postRequest('http://localhost:3000/api/auth/login', {
+      username: username,
+      password: password,
+    });
+    console.log("res:", res);
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -76,29 +85,23 @@ export default function LoginPage() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
+              value={username}
+              onChange={handleUsernameChange}
             />
-            {/* <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            /> */}
-            <FormControl fullWidth required variant="outlined">
+            <FormControl fullWidth required variant="outlined" margin="normal">
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={handlePasswordChange}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -130,13 +133,11 @@ export default function LoginPage() {
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item></Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              href="/"
             >
               Login
             </Button>
