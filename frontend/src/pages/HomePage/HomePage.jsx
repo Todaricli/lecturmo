@@ -23,6 +23,7 @@ const HomePage = () => {
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      data-testid='home'
     >
       <Typography variant="h1">Hello Lectermo</Typography>
       <SearchBar />
