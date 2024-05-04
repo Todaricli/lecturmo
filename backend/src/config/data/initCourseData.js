@@ -1,7 +1,62 @@
 import { faker } from '@faker-js/faker';
 import { Course } from '../../schemas/courseSchema.js';
+import { coursesJSON } from './raw/coursesJSON.js';
 
 const NUMBER_OF_COURSES = 5;
+
+export async function initCourses() {
+  try {
+    const intialCourses = await Course.insertMany(coursesJSON);
+    console.log('Courses initialized.');
+    return intialCourses;
+  } catch (error) {
+    console.error('Error adding courses:', error);
+    throw error;
+  }
+}
+
+// find the actual generated _id based off dummy id
+async function fetchUserIds(users) {
+  const userMap = {};
+  users.forEach(user => {
+    userMap[user.user_dummy_id] = user._id;
+  });
+  return userMap;
+}
+
+export async function updateCourseForeignKeys(users, courses) {
+  try {
+    // Retrieve the map of dummy IDs to actual user IDs
+    const userMap = await fetchUserIds(users);
+
+    // Map the courses and update their nested references
+    const updates = courses.map(async (course) => {
+      // Update lecturer reference
+      if (course.dummyLecId && userMap[course.dummyLecId]) {
+        course.lecturerId = userMap[course.dummyLecId];
+      }
+
+      // Update reviews references
+      course.reviews.forEach(review => {
+        if (review.dummyId && userMap[review.dummyId]) {
+          review.userId = userMap[review.dummyId];
+        }
+        review.likes = review.dummyLikes.map(dummy => ({
+          userId: userMap[dummy]
+        }));
+      });
+
+      // Save the updated course
+      await course.save();
+    });
+
+    await Promise.all(updates);
+    console.log('Course foreign keys updated successfully.');
+  } catch (error) {
+    console.error('Error updating course foreign keys:', error);
+    throw error;
+  }
+}
 
 export async function createEmptyCourses() {
   const courses = await Promise.all(

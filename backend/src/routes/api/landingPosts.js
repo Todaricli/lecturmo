@@ -40,7 +40,7 @@ landingPosts.get('/landing-posts', async (req, res) => {
       {
         $project: {
           _id: 1,
-          courseNumber: 1,
+          course_dummy_id: 1,
           updatedAt: 1,
           highestRatedReview: {
             $arrayElemAt: ['$reviewsWithMaxLikesSorted', 0],
