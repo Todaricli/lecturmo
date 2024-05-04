@@ -8,11 +8,11 @@ import {
   Typography,
   Rating,
   CardContent,
-} from "@mui/material";
-import React from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { useTheme } from "@emotion/react";
+} from '@mui/material';
+import React from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { useTheme } from '@emotion/react';
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
@@ -20,11 +20,11 @@ const LandingPosts = ({ posts }) => {
   return (
     <Grid
       container
-      direction={{ xs: "column", sm: "column", md: "row", lg: "row" }}
+      direction={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }}
       justifyContent="center"
       alignItems="center"
       spacing={2}
-      sx={{ mt: "20px" }}
+      sx={{ mt: '20px' }}
     >
       {[...Array(2)].map((_, columnIndex) => (
         <Grid item lg={2} key={columnIndex}>
@@ -35,8 +35,8 @@ const LandingPosts = ({ posts }) => {
               <Box
                 key={index}
                 sx={{
-                  marginTop: "15px",
-                  width: "400px",
+                  marginTop: '15px',
+                  width: '400px',
                   boxShadow: theme.shadows[1],
                 }}
               >
@@ -44,44 +44,44 @@ const LandingPosts = ({ posts }) => {
                   variant="outlined"
                   sx={{
                     borderRadius: 5,
-                    bgcolor: index % 2 === 0 ? "primary.main" : "light.main",
+                    bgcolor: index % 2 === 0 ? 'primary.main' : 'light.main',
                   }}
                 >
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      flexDirection: "row",
-                      height: "100%",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      height: '100%',
                     }}
                   >
                     <CardHeader title={post.courseNumber} />
                   </Box>
                   <Box
                     sx={{
-                      margin: "10px 10px 16px 16px",
-                      display: "flex",
-                      justifyContent: "space-between",
+                      margin: '10px 10px 16px 16px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
                     }}
                   >
                     <Box
                       sx={{
-                        display: "flex",
-                        bgcolor: "secondary.main",
-                        padding: "5px",
+                        display: 'flex',
+                        bgcolor: 'secondary.main',
+                        padding: '5px',
                         width: 190,
                         borderRadius: 3,
                       }}
                     >
                       <LocationOnOutlinedIcon
                         fontSize="small"
-                        sx={{ marginRight: "5px" }}
+                        sx={{ marginRight: '5px' }}
                       />
                       <Typography variant="body2" color="initial">
                         University of Auckland
                       </Typography>
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Typography variant="body2" color="initial">
                         Ratings:
                       </Typography>
@@ -97,9 +97,9 @@ const LandingPosts = ({ posts }) => {
                     <CardContent>
                       <Box
                         sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
                         }}
                       >
                         <Typography
@@ -112,13 +112,13 @@ const LandingPosts = ({ posts }) => {
                         </Typography>
                         <Box
                           sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}
                         >
                           <FavoriteIcon
-                            sx={{ mr: "5px", color: "heart.primary" }}
+                            sx={{ mr: '5px', color: 'heart.primary' }}
                           />
                           <Typography variant="body1" color="initial">
                             {post.highestRatedReview.likes.length}

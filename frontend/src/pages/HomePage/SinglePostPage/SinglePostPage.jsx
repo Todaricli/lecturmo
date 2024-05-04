@@ -11,28 +11,28 @@ import {
   Select,
   FormControl,
   Card,
-  CardContent
-} from "@mui/material";
-import React from "react";
-import RateReviewIcon from "@mui/icons-material/RateReview";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+  CardContent,
+} from '@mui/material';
+import React from 'react';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 const SinglePostPage = () => {
   return (
     <Container
       maxWidth="lg"
       sx={{
-        display: "flex",
-        justifyContent: "flex",
-        alignItems: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        justifyContent: 'flex',
+        alignItems: 'flex',
+        flexDirection: 'column',
       }}
     >
       <Box
         sx={{
-          bgcolor: "light.main",
-          height: "100%",
-          p: "20px",
+          bgcolor: 'light.main',
+          height: '100%',
+          p: '20px',
           borderRadius: 5,
         }}
       >
@@ -43,7 +43,7 @@ const SinglePostPage = () => {
           Software Tools and Technique
         </Typography>
         <Divider sx={{ borderBottomWidth: 3 }} />
-        <Grid container spacing={{ xs: 2, md: 1 }} sx={{ p: "20px 0" }}>
+        <Grid container spacing={{ xs: 2, md: 1 }} sx={{ p: '20px 0' }}>
           <Grid item xs={9} lg={10}>
             <Typography variant="body2" color="initial" align="justify">
               State-of-the-art software development, particularly in teams,
@@ -63,41 +63,41 @@ const SinglePostPage = () => {
           </Grid>
 
           <Grid item xs={2} lg={1}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography
                 variant="body2"
                 color="initial"
-                sx={{ width: "300px", fontWeight: "bold" }}
+                sx={{ width: '300px', fontWeight: 'bold' }}
               >
                 Overall:
               </Typography>
               <Rating size="small" defaultValue={3} readOnly />
             </Box>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: 'flex' }}>
               <Typography
                 variant="body2"
                 color="initial"
-                sx={{ width: "300px", mr: "" }}
+                sx={{ width: '300px', mr: '' }}
               >
                 Difficulty:
               </Typography>
               <Rating size="small" defaultValue={3} />
             </Box>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: 'flex' }}>
               <Typography
                 variant="body2"
                 color="initial"
-                sx={{ width: "300px", mr: "" }}
+                sx={{ width: '300px', mr: '' }}
               >
                 Content:
               </Typography>
               <Rating size="small" defaultValue={3} />
             </Box>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: 'flex' }}>
               <Typography
                 variant="body2"
                 color="initial"
-                sx={{ width: "300px", mr: "" }}
+                sx={{ width: '300px', mr: '' }}
               >
                 Quality:
               </Typography>
@@ -108,29 +108,29 @@ const SinglePostPage = () => {
 
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
           <Button
-            sx={{ border: "2px solid grey", borderRadius: 4, color: "#000000" }}
+            sx={{ border: '2px solid grey', borderRadius: 4, color: '#000000' }}
           >
             Write a Review
-            <RateReviewIcon color="icon" sx={{ height: "20px" }} />
+            <RateReviewIcon color="icon" sx={{ height: '20px' }} />
           </Button>
           <Box
             sx={{
-              display: "flex",
-              bgcolor: "secondary.main",
-              padding: "8px",
+              display: 'flex',
+              bgcolor: 'secondary.main',
+              padding: '8px',
               width: 190,
               borderRadius: 3,
             }}
           >
             <LocationOnOutlinedIcon
               fontSize="small"
-              sx={{ marginRight: "5px" }}
+              sx={{ marginRight: '5px' }}
             />
             <Typography variant="body2" color="initial">
               University of Auckland
@@ -154,7 +154,7 @@ const SinglePostPage = () => {
             labelId="post-select"
             id="post-select"
             defaultValue={10}
-            sx={{ borderRadius: 5, bgcolor: "light.main" }}
+            sx={{ borderRadius: 5, bgcolor: 'light.main' }}
             // MenuProps={{
             //   PaperProps: {
             //     sx: {
@@ -177,9 +177,9 @@ const SinglePostPage = () => {
 
       <Grid>
         <Card>
-            <CardContent>
+          <CardContent>
             <Typography variant="body1" color="initial"></Typography>
-            </CardContent>
+          </CardContent>
         </Card>
       </Grid>
     </Container>

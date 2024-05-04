@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Box, Typography, LinearProgress } from "@mui/material";
+import React from 'react';
+import { Container, Box, Typography, LinearProgress } from '@mui/material';
 
 const StatsPage = () => {
   return (
@@ -7,10 +7,10 @@ const StatsPage = () => {
       <Container
         maxWidth="lg"
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
           mt: 10,
         }}
       >
@@ -19,19 +19,19 @@ const StatsPage = () => {
         </Typography>
         <Box
           sx={{
-            bgcolor: "primary.main",
-            height: "300px",
-            width: "100vw",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            bgcolor: 'primary.main',
+            height: '300px',
+            width: '100vw',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Box
             sx={{
-              bgcolor: "light.main",
-              width: "200px",
-              height: "200px",
+              bgcolor: 'light.main',
+              width: '200px',
+              height: '200px',
               borderRadius: 10,
               mr: 5,
             }}
@@ -47,46 +47,46 @@ const StatsPage = () => {
 
         <Box
           sx={{
-            bgcolor: "secondary.main",
-            height: "100vh",
-            width: "100vw",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            bgcolor: 'secondary.main',
+            height: '100vh',
+            width: '100vw',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
           <Typography
             variant="h4"
             color="background.default"
-            sx={{ fontWeight: "bold", mt: 5, mb: 3 }}
+            sx={{ fontWeight: 'bold', mt: 5, mb: 3 }}
           >
             Classes Taking
           </Typography>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               //   justifyContent: "center",
-              alignItems: "center",
-              width: "80%",
-              height: "150px",
-              bgcolor: "light.main",
-              borderRadius: 4
+              alignItems: 'center',
+              width: '80%',
+              height: '150px',
+              bgcolor: 'light.main',
+              borderRadius: 4,
             }}
           >
             <Box
               sx={{
-                p: "30px",
+                p: '30px',
                 pb: 2,
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%',
               }}
             >
               <Typography
                 variant="h5"
                 color="initial"
-                sx={{ fontWeight: "bold" }}
+                sx={{ fontWeight: 'bold' }}
               >
                 Compsci 732
               </Typography>
@@ -94,14 +94,19 @@ const StatsPage = () => {
                 20/50 Classes
               </Typography>
             </Box>
-            <Box sx={{ width: "100%", p: "0 30px" }}>
+            <Box sx={{ width: '100%', p: '0 30px' }}>
               <LinearProgress variant="determinate" value={50} />
             </Box>
 
             <Typography
               variant="h6"
               color="#000200"
-              sx={{ fontSize: 18, fontStyle: "italic", ml: "auto", p: "10px 30px" }}
+              sx={{
+                fontSize: 18,
+                fontStyle: 'italic',
+                ml: 'auto',
+                p: '10px 30px',
+              }}
             >
               Semester 2 - 2024
             </Typography>
