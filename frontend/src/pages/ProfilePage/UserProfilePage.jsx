@@ -139,7 +139,7 @@ const UserProfilePage = () => {
             <Typography variant="h6" color="initial">
               Resend email verification
             </Typography>
-            <Paper component="form" sx={{boxShadow: 'none', bgcolor: 'grey.main', display:'flex', justifyContent:'space-between'}}>
+            <Paper elevation={1} component="form" sx={{boxShadow: 'none', bgcolor: 'grey.main', display:'flex', justifyContent:'space-between'}}>
               <InputBase
                 placeholder="Enter your email"
                 sx={{padding: 1}}

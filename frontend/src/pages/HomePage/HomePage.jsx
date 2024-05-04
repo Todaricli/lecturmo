@@ -7,10 +7,13 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Footer from "../../components/Footer";
 import { useTheme } from "@emotion/react";
 import { Box, IconButton } from "@mui/material";
+import { useRedirectToLoginIfNotLoggedIn } from "../../hooks/redirectIfNotLoggedIn";
 import axios from "axios";
 
 
 const HomePage = () => {
+  // useRedirectToLoginIfNotLoggedIn()
+
   const theme = useTheme();
 
   const { user, fetchUserDetails, isFetchUserLoading, fetchUserError } = useContext(AuthContext);

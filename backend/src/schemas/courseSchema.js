@@ -6,7 +6,8 @@ const courseSchema = new Schema(
   {
     course_dummy_id: String,
     courseName: { type: String },
-    lecturerId: {type: Schema.Types.ObjectId, ref: 'User' },
+    totalAttendance: { type: Number, default: 0 },
+    lecturerId: { type: Schema.Types.ObjectId, ref: 'User' },
     dummyLecId: String,
     description: { type: String },
     category: String,
@@ -18,7 +19,7 @@ const courseSchema = new Schema(
         content: String,
         likes: [{
           userId: { type: Schema.Types.ObjectId, ref: 'User' },
-          },
+        },
         ],
         dummyLikes: [String],
         difficultyRating: { type: Number, min: 1, max: 5 },
