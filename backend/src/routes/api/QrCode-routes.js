@@ -3,6 +3,8 @@ import { Router } from 'express';
 import { User } from '../../schemas/userSchema.js';
 import { Course } from '../../schemas/courseSchema.js';
 import { authenticate } from '../../middleware/authMW.js';
+import mongoose from 'mongoose';
+
 
 const QrRouters = Router();
 
@@ -17,8 +19,10 @@ function convertToDateObject(date) {
 QrRouters.post('/qr-code', async (req, res) => {
   const date = req.body.date;
   const courseId = req.body.courseId;
-  const username = req.body.username;
+  const lectureId = req.body.lecture
+  const username = req.user
   
+  const usernameIdObject = new mongoose.Types.ObjectId(username._id)
 
   const dateNowSkeet = await fetch(
     `http://worldtimeapi.org/api/timezone/Pacific/Auckland`,
@@ -29,8 +33,25 @@ QrRouters.post('/qr-code', async (req, res) => {
   const dateObject = convertToDateObject(date);
   const dateNowObject = convertToDateObject(dateNow);
 
-  const user = await User.find({ username: username });
-  console.log(user)
+  // const user = await User.find({ username: username });
+  console.log(username)
+
+  try {
+    console.log("skeet")
+    const sket = await User.updateOne({_id: usernameIdObject, courses:{$elemMatch:{courseId:"663551f24b2d02b3835a7774"}}},
+    {$push:{"courses.$.lectures": 576}}).exec()
+    console.log(sket)
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+  // console.log(sket)
+
+//   const sket = await User.upsert({ _id: usernameIdObject, courses: }, {
+//     $push: { lectures: lecture }
+// }).exec()
 
   // console.log(dateObject);
   // console.log(dateNowObject);

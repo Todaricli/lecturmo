@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 
-const QrCode = () => {
+const QrCode = ({lecture, course}) => {
   const [qrCode, setQrCode] = useState('');
   const [courseId, setCourseId] = useState('comp_sci_751');
   const [currentTime, setCurrentTime] = useState('');
@@ -21,9 +21,13 @@ const QrCode = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(()=>{
+    setCourseId(course)
+  },[])
+
   useEffect(() => {
     setQrCode(
-      `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}`
+      `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}&lecture=${lecture}`
     );
   }, [currentTime]);
 

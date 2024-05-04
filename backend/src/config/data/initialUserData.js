@@ -51,9 +51,7 @@ export async function populateUsers(users, courses) {
         user.profileDescription = faker.lorem.sentence();
         user.avatarPicture = faker.image.avatar();
         user.isVerified = faker.datatype.boolean();
-        user.roles = ['student', 'lecturer', 'admin'].filter(() =>
-          faker.datatype.boolean(),
-        );
+        user.roles = 'lecturer'
         user.courses = userCourses;
 
         return user.save();

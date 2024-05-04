@@ -1,18 +1,18 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-const AddNewLecture = () => {
-    const [user, setUser] = useState()
+const AddNewLecture = ({lectureId, courseList}) => {
     const [lectureName, setLectureName] = useState("")
+    const [selectedLecture, setSelectedLecture] = useState("")
 
-    const getClasses = async () => {
-        console.log("asd")
-        await axios.get(`http://localhost:3000/api/lecture-list`)
-            .then((res) => {
-                console.log(res.data)
-                setUser(res.data)
-            })
-    }
+    // const getClasses = async () => {
+    //     console.log("asd")
+    //     await axios.get(`http://localhost:3000/api/lecture-list`)
+    //         .then((res) => {
+    //             console.log(res.data)
+    //             setUser(res.data)
+    //         })
+    // }
 
     const createLecture = async (courseId) => {
         console.log("fucccccck")
@@ -29,8 +29,8 @@ const AddNewLecture = () => {
     }
 
     useEffect(() => {
-        console.log(user)
-    }, [user])
+        console.log(courseList)
+    }, [courseList])
 
     return (
         <>
@@ -44,8 +44,8 @@ const AddNewLecture = () => {
 
 
             <ul style={{ color: "white" }}>
-                {user != undefined
-                    ? user.map((items, i) => (
+                {courseList != undefined
+                    ? courseList.map((items, i) => (
                         <>
                             <li key={items._id}>{items.courseName}</li>
                             <input
@@ -61,11 +61,26 @@ const AddNewLecture = () => {
                             >
                                 create lecture
                             </button>
+                            <h2>list of lectures</h2>
+                            {items.lectures.map((item, i) =>
+                                <>
+                                    <div onClick={()=>{
+                                        console.log(item._id)
+                                        setSelectedLecture(item._id)
+                                        lectureId(item._id, items._id)
+                                    }}>
+                                        <p>{item.lectureName}</p>
+                                        <p>{item.date}</p>
+                                        <p>{item.attendence}</p>
+                                    </div>
+                                </>
+                            )}
                         </>
                     ))
                     : null
                 }
             </ul>
+
         </>
     )
 }

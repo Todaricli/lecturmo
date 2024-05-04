@@ -7,6 +7,13 @@ import mongoose from 'mongoose';
 
 const LectureRouter = Router();
 
+function convertToDateObject(date) {
+    const [time, rubbish] = date.split('.');
+    const timez = time + 'z';
+    const timezOb = new Date(timez);
+  
+    return timezOb;
+  }
 
 LectureRouter.post('/add-lecture', async (req, res) => {
     const lectureName = req.body.lectureName
@@ -17,11 +24,15 @@ LectureRouter.post('/add-lecture', async (req, res) => {
     const dateNowSkeet = await fetch(
         `http://worldtimeapi.org/api/timezone/Pacific/Auckland`,
     );
+    const dateNowSkeetJson = await dateNowSkeet.json()
+    console.log(dateNowSkeetJson.utc_datetime)
 
     const lecture = {
         lectureName: lectureName,
         attendenace: 0,
-        date: dateNowSkeet
+        date: dateNowSkeetJson.utc_datetime,
+        qrCreationTime: dateNowSkeetJson.utc_datetime
+
     }
 
     const sket = await Course.updateOne({ _id: courseIdObject }, {
@@ -36,7 +47,7 @@ LectureRouter.get('/lecture-list', async (req, res) => {
         const user = req.user
         console.log(user._id)
 
-        const course = await Course.find({ lecturer: user._id }).exec()
+        const course = await Course.find({ lecturer: "663551f24b2d02b3835a7770" }).exec()
         console.log("skeet")
         console.log(course)
 

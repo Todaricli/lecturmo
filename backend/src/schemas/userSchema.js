@@ -17,7 +17,7 @@ const userSchema = new Schema(
       {
         courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
         lectures: [{
-          lectureId: String,
+
         }]
       },
     ]
