@@ -28,14 +28,14 @@ const LandingPosts = ({ posts }) => {
   return (
     (<Grid
       container
-      direction={{ xs: "column", sm: "column", md: "row", lg: 'row' }}
+      direction={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }}
       justifyContent="center"
       alignItems="center"
       spacing={2}
-      sx={{ mt: "20px" }}
+      sx={{ mt: '20px' }}
     >
       {[...Array(2)].map((_, columnIndex) => (
-        <Grid item lg={2} key={columnIndex} >
+        <Grid item lg={2} key={columnIndex}>
           {/* Each column */}
           {posts
             .filter((_, index) => columnIndex === index % 3)
@@ -43,8 +43,8 @@ const LandingPosts = ({ posts }) => {
               <Box
                 key={index}
                 sx={{
-                  marginTop: "15px",
-                  width: "400px",
+                  marginTop: '15px',
+                  width: '400px',
                   boxShadow: theme.shadows[1],
                 }}
               >
@@ -52,18 +52,18 @@ const LandingPosts = ({ posts }) => {
                   variant="outlined"
                   sx={{
                     borderRadius: 5,
-                    bgcolor: index % 2 === 0 ? "primary.main" : "light.main",
+                    bgcolor: index % 2 === 0 ? 'primary.main' : 'light.main',
                   }}
                 >
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      flexDirection: "row",
-                      height: "100%",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      height: '100%',
                     }}
                   >
-                    <CardHeader title={course.courseNumber} />
+                    <CardHeader title={course.course_dummy_id} />
                     <CardActions>
                       <IconButton
                         aria-label="favourite"
@@ -78,23 +78,23 @@ const LandingPosts = ({ posts }) => {
                   </Box>
                   <Box
                     sx={{
-                      margin: "10px 10px 16px 16px",
-                      display: "flex",
-                      justifyContent: "space-between",
+                      margin: '10px 10px 16px 16px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
                     }}
                   >
                     <Box
                       sx={{
-                        display: "flex",
-                        bgcolor: "secondary.main",
-                        padding: "5px",
+                        display: 'flex',
+                        bgcolor: 'secondary.main',
+                        padding: '5px',
                         width: 190,
                         borderRadius: 3,
                       }}
                     >
                       <LocationOnOutlinedIcon
                         fontSize="small"
-                        sx={{ marginRight: "5px" }}
+                        sx={{ marginRight: '5px' }}
                       />
                       <Typography variant="body2" color="initial">
                         University of Auckland

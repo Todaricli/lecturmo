@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import PageLayout from './layouts/PageLayout';
-import LoginPage from "./pages/LoginPage/LoginPage";
-import VerifyEmail from "./pages/VerifyEmail";
+import LoginPage from './pages/LoginPage/LoginPage';
+import VerifyEmail from './pages/VerifyEmail';
 import HomePage from './pages/HomePage/HomePage';
 import QrCode from './pages/QrCode/QrCode';
 import QrLandingPage from './pages/QrCode/QrLandingPage';
@@ -15,6 +15,7 @@ import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
 import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 import StatsPage from './pages/ProfilePage/StatsPage';
 import LecturerPage from './pages/LecturerPage/LecturerPage';
+import SinglePostPage from './pages/HomePage/SinglePostPage/SinglePostPage';
 
 function App() {
   return (
@@ -32,10 +33,10 @@ function App() {
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
         <Route path="fetchExample" element={<FetchExamplePage />} />
-        <Route path="/verifyEmail" element={<VerifyEmail/>}/>
+        <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="stats" element={<StatsPage />} />
         <Route path="lecturer" element={<LecturerPage />} />
-
+        <Route path="post" element={<SinglePostPage />} />
       </Route>
     </Routes>
   );

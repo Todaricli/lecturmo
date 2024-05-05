@@ -8,7 +8,7 @@ import {
   CardActions,
   IconButton,
   Paper,
-  InputBase
+  InputBase,
 } from '@mui/material';
 import React from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -28,7 +28,7 @@ const UserProfilePage = () => {
         height: '100vh',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        paddingBottom: 5
+        paddingBottom: 5,
       }}
     >
       <IconButton
@@ -139,12 +139,17 @@ const UserProfilePage = () => {
             <Typography variant="h6" color="initial">
               Resend email verification
             </Typography>
-            <Paper component="form" sx={{boxShadow: 'none', bgcolor: 'grey.main', display:'flex', justifyContent:'space-between'}}>
-              <InputBase
-                placeholder="Enter your email"
-                sx={{padding: 1}}
-              />
-              <IconButton sx={{ p: "10px" }} aria-label="menu">
+            <Paper
+              component="form"
+              sx={{
+                boxShadow: 'none',
+                bgcolor: 'grey.main',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <InputBase placeholder="Enter your email" sx={{ padding: 1 }} />
+              <IconButton sx={{ p: '10px' }} aria-label="menu">
                 <EmailIcon />
               </IconButton>
             </Paper>
