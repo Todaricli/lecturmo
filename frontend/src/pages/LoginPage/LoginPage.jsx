@@ -110,8 +110,6 @@ export default function LoginPage() {
             id="username"
             label="Username"
             name="username"
-            autoComplete="username"
-            autoFocus
             value={username}
             onChange={handleUsernameChange}
             onFocus={() => setError('')}

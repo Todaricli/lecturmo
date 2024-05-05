@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Avatar,
   Button,
@@ -18,6 +18,7 @@ import {
   FormControl,
   MenuItem,
   Select,
+  FormHelperText,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
@@ -25,12 +26,10 @@ import {
   VisibilityOff,
   ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Calendar from '../../components/Calendar';
 import AvatarSelector from '../../components/AvatarSelect';
-import { checkIfUserExists } from '../../services/auth/registerAPIFetch';
+import { checkIfUserExists, checkEmailInput, checkPasswordInput, checkPasswordsMatch } from '../../services/auth/registerAPIFetch';
 
-const defaultTheme = createTheme();
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,7 +44,21 @@ export default function RegisterPage() {
     gender: '',
   });
   const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  let timeout = null;
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
     setFormData((prevData) => ({
@@ -53,16 +66,29 @@ export default function RegisterPage() {
       // if checkbox, use the checked, else use the value property
       [name]: type === 'checkbox' ? checked : value,
     }));
-    if (name === 'username') {
-      const res = await checkIfUserExists({
-        username: value,
-      });
-      if (res && res.error) {
-        setUsernameError(res.message);
-      } else {
-        setUsernameError('');
-      }
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
+
+    timeoutRef.current = setTimeout(async () => {
+      if (name === 'username') {
+        const res = await checkIfUserExists({ username: value });
+        setUsernameError(res && res.error ? res.message : '');
+      } else if (name === 'email') {
+        const res = await checkEmailInput({ email: value });
+        setEmailError(res && res.error && value.length > 0 ? res.message : '');
+      } else if (name === 'password') {
+        const res = await checkPasswordInput({ password: value });
+        setPasswordError(res && res.error && value.length > 0 ? res.message : '');
+      } else if (name === 'confirmPassword') {
+        const res = await checkPasswordsMatch({
+          password: formData.password,
+          confirmPassword: value,
+        });
+        setConfirmPasswordError(res && res.error && value.length > 0 ? res.message : '');
+      }
+    }, 500);
   };
 
   const handleSubmit = (event) => {
@@ -116,40 +142,6 @@ export default function RegisterPage() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                label="First Name"
-                name="firstName"
-                autoComplete="given-name"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 required
@@ -173,6 +165,8 @@ export default function RegisterPage() {
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={handleChange}
+                  error={Boolean(passwordError)}
+                  helperText={passwordError}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -187,6 +181,7 @@ export default function RegisterPage() {
                   }
                   label="Password"
                 />
+                <FormHelperText style={{ color: '#d74343' }}>{passwordError}</FormHelperText>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -198,10 +193,46 @@ export default function RegisterPage() {
                 type="password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                error={Boolean(confirmPasswordError)}
+                helperText={confirmPasswordError}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl fullWidth required variant="outlined">
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
+                error={Boolean(emailError)}
+                helperText={emailError}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="First Name"
+                name="firstName"
+                autoComplete="given-name"
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth variant="outlined">
                 <InputLabel id="gender-label">Gender</InputLabel>
                 <Select
                   labelId="gender-label"
@@ -241,6 +272,7 @@ export default function RegisterPage() {
             type="submit"
             fullWidth
             variant="contained"
+            disabled={usernameError !== '' || emailError !== '' || passwordError !== '' || confirmPasswordError !== ''}
             sx={{
               mt: 3,
               mb: 2,

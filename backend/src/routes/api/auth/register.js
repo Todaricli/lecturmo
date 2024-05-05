@@ -4,6 +4,7 @@ import validator from 'validator';
 import crypto from 'crypto';
 import { hashPassword } from '../../../utils/useBcrypt.js';
 import jwt from 'jsonwebtoken';
+import { isValidEmail } from '../../../controllers/emailRegex.js';
 
 const router = express.Router();
 
@@ -24,7 +25,6 @@ const router = express.Router();
 router.post('/register/check-username', async (req, res) => {
   const { username } = req.body;
   const user = await User.find({ username });
-  console.log('user:', user);
   if (user.length !== 0)
     return res.status(403).json({ message: 'Username already exists' }); //email or username taken.
   return res.sendStatus(200);
@@ -33,12 +33,14 @@ router.post('/register/check-username', async (req, res) => {
 /**
  * Check if the email is already exist
  */
-router.get('/register/check-email', async (req, res) => {
+router.post('/register/check-email', async (req, res) => {
   const { email } = req.body;
-
-  const user = await User.find({ email });
-  if (user) return res.status(403).json({ message: 'Email already exists' });
-  return res.sendStatus(200);
+  if (isValidEmail(email)) {
+    const user = await User.find({ email });
+    if (user.length !== 0) return res.status(403).json({ message: 'Email already exists' });
+    return res.sendStatus(200);
+  }
+  return res.status(403).json({ message: 'Please enter a valid email' });
 });
 
 /**
