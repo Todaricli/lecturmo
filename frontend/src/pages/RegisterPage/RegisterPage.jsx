@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -20,21 +21,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -61,23 +47,40 @@ export default function RegisterPage() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Create your Account
-          </Typography>
+    <Container component="main" maxWidth="xs" sx={{
+      marginTop: '50px',
+      bgcolor: 'primary.main',
+      height: '100vh',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+      paddingBottom: 5,
+    }}>
+      <IconButton
+        sx={{ marginTop: 3, }}
+        color="initial"
+        component={Link}
+        href='/'
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Create your Account
+        </Typography>
+        <ThemeProvider theme={defaultTheme}>
           <Box
             component="form"
             noValidate
@@ -95,17 +98,6 @@ export default function RegisterPage() {
                   autoComplete="email"
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid> */}
               <Grid item xs={12}>
                 <FormControl fullWidth required variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
@@ -132,7 +124,7 @@ export default function RegisterPage() {
               </Grid>
 
               <Grid item xs={12}>
-              <FormControl fullWidth required variant="outlined">
+                <FormControl fullWidth required variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
@@ -153,7 +145,7 @@ export default function RegisterPage() {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Checkbox value="allowExtraEmails" color="primary" />
@@ -161,28 +153,45 @@ export default function RegisterPage() {
                   label="I want to receive notifications, updates via email."
                   name="allowExtraEmails"
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#382e7f', '&:hover': {
+                bgcolor: 'rgb(255,199,71)',
+              },}}
               href="/register/profile"
             >
               Continue
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
-        </Box>
-        <Copyright />
-      </Container>
-    </ThemeProvider>
+        </ThemeProvider>
+      </Box>
+      <Copyright />
+    </Container>
+  );
+}
+
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {'Already have an account? ' }
+      <Link href="/login" variant="body2" sx={{
+        textDecoration: 'none', color: '#1C89B6', '&:hover': {
+          textDecoration:'underline',
+          color: '#1c69b6',
+        },
+        }}>
+        {'Sign in'}
+      </Link>
+
+    </Typography>
   );
 }
