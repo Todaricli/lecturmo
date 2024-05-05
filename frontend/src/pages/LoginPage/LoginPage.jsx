@@ -17,7 +17,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../contexts/AppContextProvider';
@@ -49,21 +49,25 @@ export default function LoginPage() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{
-      marginTop: '50px',
-      bgcolor: 'primary.main',
-      height: '100vh',
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      borderBottomLeftRadius: 20,
-      borderBottomRightRadius: 20,
-      paddingBottom: 5,
-    }}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        marginTop: '50px',
+        bgcolor: 'primary.main',
+        height: '100vh',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        paddingBottom: 5,
+      }}
+    >
       <IconButton
-        sx={{ marginTop: 3, }}
+        sx={{ marginTop: 3 }}
         color="initial"
         component={Link}
-        href='/'
+        href="/"
       >
         <ArrowBackIcon />
       </IconButton>
@@ -152,15 +156,21 @@ export default function LoginPage() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
-                bgcolor: 'rgb(255,199,71)',
-                color: '#382e7f'
-              },}}
+              sx={{
+                mt: 5,
+                mb: 2,
+                borderRadius: 2,
+                bgcolor: 'rgb(255,207,96)',
+                color: '#808080',
+                '&:hover': {
+                  bgcolor: 'rgb(255,199,71)',
+                  color: '#382e7f',
+                },
+              }}
               href="/"
             >
               Login
             </Button>
-
           </Box>
         </ThemeProvider>
       </Box>
@@ -178,13 +188,19 @@ function Copyright(props) {
       {...props}
     >
       {"Don't have an account? "}
-      <Link href="/register" variant="body2" sx={{
-        textDecoration: 'none', color: '#1C89B6', '&:hover': {
-          textDecoration:'underline',
-          color: '#1c69b6',
-        },
-      }}>
-        {" Sign Up"}
+      <Link
+        href="/register"
+        variant="body2"
+        sx={{
+          textDecoration: 'none',
+          color: '#1C89B6',
+          '&:hover': {
+            textDecoration: 'underline',
+            color: '#1c69b6',
+          },
+        }}
+      >
+        {' Sign Up'}
       </Link>
     </Typography>
   );

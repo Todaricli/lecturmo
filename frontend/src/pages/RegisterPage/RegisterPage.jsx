@@ -22,17 +22,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Calendar from '../../components/Calendar';
 import AvatarSelector from '../../components/AvatarSelect';
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function RegisterPage() {
-
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -60,21 +58,25 @@ export default function RegisterPage() {
   };
 
   return (
-    <Container component="main" maxWidth="sm" sx={{
-      marginTop: '50px',
-      bgcolor: 'primary.main',
+    <Container
+      component="main"
+      maxWidth="sm"
+      sx={{
+        marginTop: '50px',
+        bgcolor: 'primary.main',
 
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      borderBottomLeftRadius: 20,
-      borderBottomRightRadius: 20,
-      paddingBottom: 5,
-    }}>
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        paddingBottom: 5,
+      }}
+    >
       <IconButton
-        sx={{ marginTop: 1, }}
+        sx={{ marginTop: 1 }}
         color="initial"
         component={Link}
-        href='/'
+        href="/"
       >
         <ArrowBackIcon />
       </IconButton>
@@ -112,7 +114,7 @@ export default function RegisterPage() {
                   autoComplete="username"
                 />
               </Grid>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -123,18 +125,19 @@ export default function RegisterPage() {
                 />
               </Grid>
               <Grid
-              item xs={12}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Are you from Auckland Uni?"
-              />
-            </Grid>
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Are you from Auckland Uni?"
+                />
+              </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth required variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
@@ -162,7 +165,9 @@ export default function RegisterPage() {
 
               <Grid item xs={12}>
                 <FormControl fullWidth required variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+                  <InputLabel htmlFor="outlined-adornment-password">
+                    Confirm Password
+                  </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
                     type={showPassword ? 'text' : 'password'}
@@ -191,7 +196,9 @@ export default function RegisterPage() {
                   name="firstName"
                   autoComplete="first-name"
                   InputProps={{
-                    startAdornment: <InputAdornment position="start"></InputAdornment>,
+                    startAdornment: (
+                      <InputAdornment position="start"></InputAdornment>
+                    ),
                   }}
                 />
               </Grid>
@@ -204,13 +211,20 @@ export default function RegisterPage() {
                   name="lastName"
                   autoComplete="family-name"
                   InputProps={{
-                    startAdornment: <InputAdornment position="start"></InputAdornment>,
+                    startAdornment: (
+                      <InputAdornment position="start"></InputAdornment>
+                    ),
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} sx={{ display: 'flex', alignItems: 'center', marginTop: '6px', }}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{ display: 'flex', alignItems: 'center', marginTop: '6px' }}
+              >
                 <FormControl fullWidth required>
-                  <InputLabel id="gender-label" >Gender</InputLabel>
+                  <InputLabel id="gender-label">Gender</InputLabel>
                   <Select
                     labelId="gender-label"
                     id="gender"
@@ -236,14 +250,18 @@ export default function RegisterPage() {
               </Grid>
             </Grid>
 
-
             <Button
-              href='/register/verification'
+              href="/register/verification"
               type="submit"
               fullWidth
               variant="contained"
               sx={{
-                mt: 3, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
+                mt: 3,
+                mb: 2,
+                borderRadius: 2,
+                bgcolor: 'rgb(255,207,96)',
+                color: '#808080',
+                '&:hover': {
                   bgcolor: 'rgb(255,199,71)',
                   color: '#382e7f',
                 },
@@ -252,11 +270,10 @@ export default function RegisterPage() {
               Register
             </Button>
           </Box>
-        </ThemeProvider >
+        </ThemeProvider>
       </Box>
       <Copyright />
     </Container>
-
   );
 }
 
@@ -269,12 +286,18 @@ function Copyright(props) {
       {...props}
     >
       {'Already have an account? '}
-      <Link href="/login" variant="body2" sx={{
-        textDecoration: 'none', color: '#1C89B6', '&:hover': {
-          textDecoration: 'underline',
-          color: '#1c69b6',
-        },
-      }}>
+      <Link
+        href="/login"
+        variant="body2"
+        sx={{
+          textDecoration: 'none',
+          color: '#1C89B6',
+          '&:hover': {
+            textDecoration: 'underline',
+            color: '#1c69b6',
+          },
+        }}
+      >
         {'Sign in'}
       </Link>
     </Typography>
