@@ -57,16 +57,32 @@ const Navbar = () => {
           <Button color="inherit" sx={styles.buttonStyle}>
             Courses
           </Button>
-          <Button
-            onClick={() => navigate('/login')}
-            color="inherit"
-            sx={styles.buttonStyle}
-          >
-            Log In{' '}
-          </Button>
-          <Button color="inherit" sx={styles.register} href="/register">
-            Register
-          </Button>
+          {user ? (
+            <Button
+              onClick={handleLogout}
+              color="inherit"
+              sx={styles.register}
+            >
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={() => navigate('/login')}
+                color="inherit"
+                sx={styles.buttonStyle}
+              >
+                Log In
+              </Button>
+              <Button
+                onClick={() => navigate('/register')}
+                color="inherit"
+                sx={styles.register}
+              >
+                Register
+              </Button>
+            </>
+          )}
         </Box>
 
         <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 'auto' }}>
