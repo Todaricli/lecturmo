@@ -1,60 +1,71 @@
-import React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import React, { useState } from 'react';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+  FormHelperText
+} from '@mui/material';
+import {
+  LockOutlined as LockOutlinedIcon,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { checkIfUserExists } from '../../services/auth/registerAPIFetch';
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function RegisterPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-      allowExtraEmails: data.get('allowExtraEmails'),
-    });
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    allowExtraEmails: false,
+  });
+  const [usernameError, setUsernameError] = useState('');
+
+  const handleChange = async (event) => {
+    const { name, value, checked, type } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      // if checkbox, use the checked, else use the value property
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+    if (name === 'username') {
+      const res = await checkIfUserExists({
+        username: value
+      });
+      if (res && res.error) {
+        setUsernameError(res.message);
+      } else {
+        setUsernameError('');
+      }
+    }
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+  };
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -93,27 +104,38 @@ export default function RegisterPage() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  error={Boolean(usernameError)}
+                  helperText={usernameError}
                 />
-              </Grid> */}
+              </Grid>
+              {/* {usernameError && (
+                  <FormHelperText usernameError>
+                    {usernameError}
+                  </FormHelperText>
+              )} */}
               <Grid item xs={12}>
                 <FormControl fullWidth required variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Password
-                  </InputLabel>
+                  <InputLabel htmlFor="password">Password</InputLabel>
                   <OutlinedInput
-                    id="outlined-adornment-password"
+                    id="password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
+                    value={formData.password}
+                    onChange={handleChange}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -130,25 +152,30 @@ export default function RegisterPage() {
                   />
                 </FormControl>
               </Grid>
-
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="confirm-password"
+                  name="confirmPassword"
                   label="Confirm Password"
                   type="password"
                   id="confirm-password"
                   autoComplete="confirm-password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                    <Checkbox
+                      name="allowExtraEmails"
+                      color="primary"
+                      checked={formData.allowExtraEmails}
+                      onChange={handleChange}
+                    />
                   }
                   label="I want to receive notifications, updates via email."
-                  name="allowExtraEmails"
                 />
               </Grid>
             </Grid>
@@ -157,7 +184,7 @@ export default function RegisterPage() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              href="/register/profile"
+              // href="/register/profile"
             >
               Continue
             </Button>
@@ -170,8 +197,23 @@ export default function RegisterPage() {
             </Grid>
           </Box>
         </Box>
-        <Copyright />
+        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
+
+  function Copyright(props) {
+    return (
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        {...props}
+      >
+        {'Copyright © '}
+        <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
 }
