@@ -27,6 +27,9 @@ export const theme = createTheme({
     icon: {
       main: '#1C89B6',
     },
+    heart: {
+      main: '#D74545',
+    },
   },
   shadows: {
     0: 'none',

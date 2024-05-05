@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material';
 
 const SearchBar = () => {
   const theme = useTheme();
+
   return (
     <Box
       sx={{

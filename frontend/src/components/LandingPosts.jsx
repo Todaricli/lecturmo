@@ -8,6 +8,7 @@ import {
   Typography,
   Rating,
   CardContent,
+  Stack,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -17,16 +18,18 @@ import { useTheme } from "@emotion/react";
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
 
+  const averageRating = (ratings) => {
+    const sum = ratings.reduce((acc, rating) => acc + rating, 0);
+    const average = sum / ratings.length;
+    return average;
+  }
+
   useEffect(() => {
     console.log("posts:", posts);
-    if (posts.length > 0) {
-      console.log("posts[0]:", posts[0]);
-      console.log("posts[0].reviews:", posts[0].reviews);
-    }
-  }, [posts]);
+  }, [posts])
 
   return (
-    (<Grid
+    <Grid
       container
       direction={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }}
       justifyContent="center"
@@ -39,7 +42,7 @@ const LandingPosts = ({ posts }) => {
           {/* Each column */}
           {posts
             .filter((_, index) => columnIndex === index % 3)
-            .map((course, index) => (
+            .map((post, index) => (
               <Box
                 key={index}
                 sx={{
@@ -59,22 +62,11 @@ const LandingPosts = ({ posts }) => {
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       height: '100%',
                     }}
                   >
-                    <CardHeader title={course.course_dummy_id} />
-                    <CardActions>
-                      <IconButton
-                        aria-label="favourite"
-                        sx={{
-                          border: "3px solid #D74545",
-                          padding: "5px",
-                        }}
-                      >
-                        <FavoriteBorderIcon />
-                      </IconButton>
-                    </CardActions>
+                    <CardHeader title={post.courseCode} />
                   </Box>
                   <Box
                     sx={{
@@ -100,54 +92,62 @@ const LandingPosts = ({ posts }) => {
                         University of Auckland
                       </Typography>
                     </Box>
-                    {course.reviews && course.reviews.length > 0 &&
-                      (<Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Typography variant="body2" color="initial">
-                          Ratings:
-                        </Typography>
-                        <Rating
-                          name="size-small"
-                          value={course.reviews[0].contentRating}
-                          readOnly
-                          size="small"
-                        />
-                      </Box>)}
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Typography variant="body2" color="initial">
+                        Ratings:
+                      </Typography>
+                      <Rating
+                        name="size-small"
+                        value={averageRating([
+                          post?.reviews[0]?.difficultyRating,
+                          post?.reviews[0]?.contentRating,
+                          post?.reviews[0]?.qualityRating,
+                        ])}
+                        readOnly
+                        size="small"
+                      />
+                    </Box>
                   </Box>
-                  {course.reviews && course.reviews.length > 0 &&
-                    (<Box>
-                      <CardContent>
+                  <Box>
+                    <CardContent>
+                      <Box sx={{display: 'flex', justifyContent:"space-between", alignItems:'center'}} >
                         <Typography
-                          variant="subtitle2"
+                          variant="h6"
                           color="initial"
                           fontSize={15}
                           sx={{ lineHeight: 3 }}
                         >
                           Review:
                         </Typography>
-                        <Typography
-                          variant="body2"
-                          color="initial"
-                          fontSize={15}
-                          sx={{ lineHeight: 2 }}
-                        >
-                          {course.reviews[0].content}
-                        </Typography>
+                        <Stack direction="row">
+                          <FavoriteBorderIcon color="heart" sx={{width: "20px"}}/>
+                          <Typography variant="body1" color="heart.main">{post?.reviews?.length}</Typography>
+                        </Stack>
+                      </Box>
+                      <Typography
+                        variant="body2"
+                        color="initial"
+                        fontSize={15}
+                        sx={{ lineHeight: 2 }}
+                      >
+                        {post?.reviews[0]?.content}
+                      </Typography>
 
-                        <Typography
-                          variant="caption"
-                          color="#78858F"
-                          sx={{ lineHeight: 3 }}
-                        >
-                          {new Date(course.createdAt).toLocaleDateString()}
-                        </Typography>
-                      </CardContent>
-                    </Box>)}
+                      <Typography
+                        variant="caption"
+                        color="#78858F"
+                        sx={{ lineHeight: 3 }}
+                      >
+                        {new Date(post.updatedAt).toLocaleDateString()}
+                      </Typography>
+                    </CardContent>
+                  </Box>
                 </Card>
               </Box>
             ))}
         </Grid>
       ))}
-    </Grid>)
+    </Grid>
   );
 };
 
