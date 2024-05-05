@@ -72,14 +72,12 @@ router.post('/register', async (req, res) => {
 
     await user.save();
 
-    res
-      .status(200)
-      .json({
-        _id: user._id,
-        username: username,
-        email: email,
-        isVerified: user.isVerified,
-      });
+    res.status(200).json({
+      _id: user._id,
+      username: username,
+      email: email,
+      isVerified: user.isVerified,
+    });
   } catch (e) {
     console.log(e.message);
   }

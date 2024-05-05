@@ -18,7 +18,7 @@ export async function initCourses() {
 // find the actual generated _id based off dummy id
 async function fetchUserIds(users) {
   const userMap = {};
-  users.forEach(user => {
+  users.forEach((user) => {
     userMap[user.user_dummy_id] = user._id;
   });
   return userMap;
@@ -37,12 +37,12 @@ export async function updateCourseForeignKeys(users, courses) {
       }
 
       // Update reviews references
-      course.reviews.forEach(review => {
+      course.reviews.forEach((review) => {
         if (review.dummyId && userMap[review.dummyId]) {
           review.userId = userMap[review.dummyId];
         }
-        review.likes = review.dummyLikes.map(dummy => ({
-          userId: userMap[dummy]
+        review.likes = review.dummyLikes.map((dummy) => ({
+          userId: userMap[dummy],
         }));
       });
 

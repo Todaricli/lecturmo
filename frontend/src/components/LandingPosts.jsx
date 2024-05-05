@@ -8,25 +8,25 @@ import {
   Typography,
   Rating,
   CardContent,
-} from "@mui/material";
-import React, { useEffect } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { useTheme } from "@emotion/react";
+} from '@mui/material';
+import React, { useEffect } from 'react';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { useTheme } from '@emotion/react';
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
 
   useEffect(() => {
-    console.log("posts:", posts);
+    console.log('posts:', posts);
     if (posts.length > 0) {
-      console.log("posts[0]:", posts[0]);
-      console.log("posts[0].reviews:", posts[0].reviews);
+      console.log('posts[0]:', posts[0]);
+      console.log('posts[0].reviews:', posts[0].reviews);
     }
   }, [posts]);
 
   return (
-    (<Grid
+    <Grid
       container
       direction={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }}
       justifyContent="center"
@@ -68,8 +68,8 @@ const LandingPosts = ({ posts }) => {
                       <IconButton
                         aria-label="favourite"
                         sx={{
-                          border: "3px solid #D74545",
-                          padding: "5px",
+                          border: '3px solid #D74545',
+                          padding: '5px',
                         }}
                       >
                         <FavoriteBorderIcon />
@@ -100,8 +100,8 @@ const LandingPosts = ({ posts }) => {
                         University of Auckland
                       </Typography>
                     </Box>
-                    {course.reviews && course.reviews.length > 0 &&
-                      (<Box sx={{ display: "flex", alignItems: "center" }}>
+                    {course.reviews && course.reviews.length > 0 && (
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant="body2" color="initial">
                           Ratings:
                         </Typography>
@@ -111,10 +111,11 @@ const LandingPosts = ({ posts }) => {
                           readOnly
                           size="small"
                         />
-                      </Box>)}
+                      </Box>
+                    )}
                   </Box>
-                  {course.reviews && course.reviews.length > 0 &&
-                    (<Box>
+                  {course.reviews && course.reviews.length > 0 && (
+                    <Box>
                       <CardContent>
                         <Typography
                           variant="subtitle2"
@@ -141,13 +142,14 @@ const LandingPosts = ({ posts }) => {
                           {new Date(course.createdAt).toLocaleDateString()}
                         </Typography>
                       </CardContent>
-                    </Box>)}
+                    </Box>
+                  )}
                 </Card>
               </Box>
             ))}
         </Grid>
       ))}
-    </Grid>)
+    </Grid>
   );
 };
 
