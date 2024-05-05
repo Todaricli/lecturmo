@@ -5,16 +5,25 @@ import { authenticate } from '../../../middleware/authMW.js';
 const router = express.Router();
 
 // expects username and password
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    failureMessage: true,
-  }),
-  (req, res) => {
-    // console.log("req.session:", req.session)
-    res.status(200).json({ message: 'Login Successful' });
-  },
-);
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    // err only happens for outside of auth issues
+    if (err) {
+      const status = err.status || 500;
+      return res.status(status).json({ message: err.message });
+    }
+    // auth issues
+    if (!user) {
+      return res.status(401).json({ message: info.message });
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+      res.status(200).json({ message: 'Login Successful' });
+    });
+  })(req, res, next);
+});
 
 router.get('/status', authenticate, (req, res) => {
   console.log('req.session:', req.session);

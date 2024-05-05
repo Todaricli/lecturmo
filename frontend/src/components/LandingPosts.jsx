@@ -17,13 +17,12 @@ import { useTheme } from '@emotion/react';
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
 
-  useEffect(() => {
-    console.log('posts:', posts);
-    if (posts.length > 0) {
-      console.log('posts[0]:', posts[0]);
-      console.log('posts[0].reviews:', posts[0].reviews);
-    }
-  }, [posts]);
+  // useEffect(() => {
+  //   if (posts.length > 0) {
+  //     console.log('posts[0]:', posts[0]);
+  //     console.log('posts[0].reviews:', posts[0].reviews);
+  //   }
+  // }, [posts]);
 
   return (
     <Grid

@@ -1,73 +1,70 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useState, useEffect, useContext } from 'react';
-import { AppContext } from '../../contexts/AppContextProvider';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+} from '@mui/material';
+import {
+  LockOutlined as LockOutlinedIcon,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { AuthContext } from '../../contexts/AuthContextProvider';
+import axios from 'axios';
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 
 
 export default function LoginPage() {
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
-  const { updateData, getData } = useContext(AppContext);
-  const [validLogin, setValidLogin] = useState(null)
+  const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const login = async () => {
-    const response = await axios
-      .post(
-        `http://localhost:3000/api/login`,
-        {
-          username: username,
-          password: password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      ).then((res) => {
-        console.log(res.status)
-        if(res.status == 200){
-          navigate("/")
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
-          //CHANGE LATER
-        }else if(res.status == 400){
-            setValidLogin(false)
-            console.log(validLogin)
-        }
-      })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Login Attempt with:', username, password);
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const body = {
+      username: username,
+      password: password,
+    };
+    const res = await loginUser(JSON.stringify(body));
+    if (res && res.error) {
+      setError(res.message);
+    } else {
+      setError('');
+      navigate('/');
+    }
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+    setError('');
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    setError('');
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -92,7 +89,6 @@ export default function LoginPage() {
       sx={{
         marginTop: '50px',
         bgcolor: 'primary.main',
-        height: '100vh',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderBottomLeftRadius: 20,
@@ -100,15 +96,6 @@ export default function LoginPage() {
         paddingBottom: 5,
       }}
     >
-      <IconButton
-        sx={{ marginTop: 3 }}
-        color="initial"
-        component={Link}
-        href="/"
-      >
-        <ArrowBackIcon />
-      </IconButton>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
@@ -123,102 +110,83 @@ export default function LoginPage() {
         <Typography component="h1" variant="h5">
           Hi, Welcome Back! 👋
         </Typography>
-        <ThemeProvider theme={defaultTheme}>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              onChange={(e)=>{
-                handleEmail(e.target.value)
-              }}
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            {/* <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
+        <Box
+          component="form"
+          onSubmit={handleLogin}
+          noValidate
+          sx={{ mt: 1 }}
+        >
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            value={username}
+            onChange={handleUsernameChange}
+            onFocus={() => setError('')}
+          />
+          <FormControl fullWidth required variant="outlined" margin="normal">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={handlePasswordChange}
+              onFocus={() => setError('')}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
               label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            /> */}
-            <FormControl fullWidth required variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? 'text' : 'password'}
-                onChange={(e) =>{handlePassword(e.target.value)}}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
-            <Grid
-              container
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              {/* <Link href="#" variant="body2">
-                Forgot password?
-              </Link> */}
-            </Grid>
-
-            <Button
-              onClick={() => {
-                login()
-              }}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 5,
-                mb: 2,
-                borderRadius: 2,
-                bgcolor: 'rgb(255,207,96)',
-                color: '#808080',
-                '&:hover': {
-                  bgcolor: 'rgb(255,199,71)',
-                  color: '#382e7f',
-                },
-              }}
-              href="/"
-            >
-              Login
-            </Button>
-          </Box>
-        </ThemeProvider>
+            />
+            {error && <FormHelperText error>{error}</FormHelperText>}
+          </FormControl>
+          <Grid
+            container
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Link href="#" variant="body2">
+              Forgot password?
+            </Link>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Login
+          </Button>
+          <Grid container>
+            <Link href="/register" variant="body2">
+              {"Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
+        </Box>
       </Box>
-      <Copyright sx={{ mt: 7 }} />
+      <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
 }
@@ -231,21 +199,9 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Don't have an account? "}
-      <Link
-        href="/register"
-        variant="body2"
-        sx={{
-          textDecoration: 'none',
-          color: '#1C89B6',
-          '&:hover': {
-            textDecoration: 'underline',
-            color: '#1c69b6',
-          },
-        }}
-      >
-        {' Sign Up'}
-      </Link>
+      {'Copyright © '}
+      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
+      {'.'}
     </Typography>
   );
 }

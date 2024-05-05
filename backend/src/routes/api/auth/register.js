@@ -21,10 +21,12 @@ const router = express.Router();
 /**
  * check if the username is already exist
  */
-router.get('/register/check-username', async (req, res) => {
+router.post('/register/check-username', async (req, res) => {
   const { username } = req.body;
   const user = await User.find({ username });
-  if (user) return res.sendStatus(400); //email or username taken.
+  console.log('user:', user);
+  if (user.length !== 0)
+    return res.status(403).json({ message: 'Username already exists' }); //email or username taken.
   return res.sendStatus(200);
 });
 
@@ -33,8 +35,9 @@ router.get('/register/check-username', async (req, res) => {
  */
 router.get('/register/check-email', async (req, res) => {
   const { email } = req.body;
+
   const user = await User.find({ email });
-  if (user) return res.sendStatus(400);
+  if (user) return res.status(403).json({ message: 'Email already exists' });
   return res.sendStatus(200);
 });
 
@@ -46,11 +49,11 @@ router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    return res.status(400).json('All key credentials fields are required.');
+    return res.status(403).json('All key credentials fields are required.');
   }
 
   if (!validator.isEmail(email))
-    return res.status(400).json('Please provide valid email.');
+    return res.status(403).json('Please provide valid email.');
 
   // if (!validator.isStrongPassword(password))
   // return res.status(400).json("Password must be a strong password..");
