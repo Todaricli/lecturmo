@@ -49,10 +49,10 @@ const Navbar = () => {
           <Button color="inherit" sx={styles.buttonStyle}>
             Courses
           </Button>
-          <Button color="inherit" sx={styles.buttonStyle}>
+          <Button color="inherit" sx={styles.buttonStyle} href="/login">
             Log In{' '}
           </Button>
-          <Button color="inherit" sx={styles.register}>
+          <Button color="inherit" sx={styles.register} href="/register">
             Register
           </Button>
         </Box>

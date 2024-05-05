@@ -29,6 +29,7 @@ const AddNewLecture = ({lectureId, courseList}) => {
     }
 
     useEffect(() => {
+        console.log("sjkjetjejtejtj")
         console.log(courseList)
     }, [courseList])
 
@@ -45,38 +46,39 @@ const AddNewLecture = ({lectureId, courseList}) => {
 
             <ul style={{ color: "white" }}>
                 {courseList != undefined
-                    ? courseList.map((items, i) => (
-                        <>
-                            <li key={items._id}>{items.courseName}</li>
-                            <input
-                                style={{ color: "black" }}
-                                onChange={(e) => {
-                                    setLectureName(e.target.value)
-                                }}>
+                    ? null
+                    //  courseList.map((items, i) => (
+                    //     <>
+                    //         <li key={items._id}>{items.courseName}</li>
+                    //         <input
+                    //             style={{ color: "black" }}
+                    //             onChange={(e) => {
+                    //                 setLectureName(e.target.value)
+                    //             }}>
 
-                            </input >
-                            <button
-                                style={{ background: "black" }}
-                                onClick={() => createLecture(items._id)}
-                            >
-                                create lecture
-                            </button>
-                            <h2>list of lectures</h2>
-                            {items.lectures.map((item, i) =>
-                                <>
-                                    <div onClick={()=>{
-                                        console.log(item._id)
-                                        setSelectedLecture(item._id)
-                                        lectureId(item._id, items._id)
-                                    }}>
-                                        <p>{item.lectureName}</p>
-                                        <p>{item.date}</p>
-                                        <p>{item.attendence}</p>
-                                    </div>
-                                </>
-                            )}
-                        </>
-                    ))
+                    //         </input >
+                    //         <button
+                    //             style={{ background: "black" }}
+                    //             onClick={() => createLecture(items._id)}
+                    //         >
+                    //             create lecture
+                    //         </button>
+                    //         <h2>list of lectures</h2>
+                    //         {items.lectures.map((item, i) =>
+                    //             <>
+                    //                 <div onClick={()=>{
+                    //                     console.log(item._id)
+                    //                     setSelectedLecture(item._id)
+                    //                     lectureId(item._id, items._id)
+                    //                 }}>
+                    //                     <p>{item.lectureName}</p>
+                    //                     <p>{item.date}</p>
+                    //                     <p>{item.attendence}</p>
+                    //                 </div>
+                    //             </>
+                    //         )}
+                    //     </>
+                    // ))
                     : null
                 }
             </ul>

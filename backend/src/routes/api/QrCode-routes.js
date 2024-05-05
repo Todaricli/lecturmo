@@ -5,7 +5,6 @@ import { Course } from '../../schemas/courseSchema.js';
 import { authenticate } from '../../middleware/authMW.js';
 import mongoose from 'mongoose';
 
-
 const QrRouters = Router();
 
 function convertToDateObject(date) {
@@ -38,6 +37,20 @@ QrRouters.post('/qr-code', async (req, res) => {
 
   if (date == undefined || courseId == undefined) {
     return res.json('Date or courseId or lectureId undefined');
+  }
+
+  try {
+    console.log('skeet');
+    const sket = await User.updateOne(
+      {
+        _id: usernameIdObject,
+        courses: { $elemMatch: { 'course.id': courseId } },
+      },
+      { $push: { 'courses.$.lectures': 576 } },
+    ).exec();
+    console.log(sket);
+  } catch (error) {
+    console.log(error);
   }
 
   //---------------------------set expiry time here skeet ------------------------------------
