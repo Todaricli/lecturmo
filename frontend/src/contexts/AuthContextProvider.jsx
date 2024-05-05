@@ -19,8 +19,8 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     console.log('Updated user:', user); // This will log updated user details
   }, [user]);
-   // Function to fetch user details if not already in memory
-   const fetchUserDetails = useCallback(async () => {
+  // Function to fetch user details if not already in memory
+  const fetchUserDetails = useCallback(async () => {
     if (user) return; // If user exists, do nothing
     const res = await updateUserDetails();
     return res;
@@ -44,24 +44,27 @@ export const AuthContextProvider = ({ children }) => {
     }
   }, []);
 
-  const loginUser = useCallback(async (body) => {
-    try {
-      setIsLoginUserLoading(true);
-      setLoginUserError(null);
-      const res = await postRequest(`${BASE_URL}/auth/login`, body);
-      await updateUserDetails();
+  const loginUser = useCallback(
+    async (body) => {
+      try {
+        setIsLoginUserLoading(true);
+        setLoginUserError(null);
+        const res = await postRequest(`${BASE_URL}/auth/login`, body);
+        await updateUserDetails();
 
-      if (res.error) {
-        setLoginUserError(res);
+        if (res.error) {
+          setLoginUserError(res);
+          return res;
+        }
+        setIsLoginUserLoading(false);
         return res;
+      } catch (error) {
+        console.error('Login failed:', error);
+        setIsLoginUserLoading(false);
       }
-      setIsLoginUserLoading(false);
-      return res
-    } catch (error) {
-      console.error('Login failed:', error);
-      setIsLoginUserLoading(false);
-    }
-  }, [updateUserDetails]);
+    },
+    [updateUserDetails]
+  );
 
   const logoutUser = async () => {
     try {

@@ -24,8 +24,9 @@ const router = express.Router();
 router.post('/register/check-username', async (req, res) => {
   const { username } = req.body;
   const user = await User.find({ username });
-  console.log("user:", user)
-  if (user.length !== 0) return res.status(403).json({ message: 'Username already exists' }); //email or username taken.
+  console.log('user:', user);
+  if (user.length !== 0)
+    return res.status(403).json({ message: 'Username already exists' }); //email or username taken.
   return res.sendStatus(200);
 });
 
@@ -74,14 +75,12 @@ router.post('/register', async (req, res) => {
 
     await user.save();
 
-    res
-      .status(200)
-      .json({
-        _id: user._id,
-        username: username,
-        email: email,
-        isVerified: user.isVerified,
-      });
+    res.status(200).json({
+      _id: user._id,
+      username: username,
+      email: email,
+      isVerified: user.isVerified,
+    });
   } catch (e) {
     console.log(e.message);
   }

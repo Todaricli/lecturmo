@@ -16,7 +16,7 @@ import {
   OutlinedInput,
   InputLabel,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
@@ -48,7 +48,7 @@ export default function RegisterPage() {
     }));
     if (name === 'username') {
       const res = await checkIfUserExists({
-        username: value
+        username: value,
       });
       if (res && res.error) {
         setUsernameError(res.message);

@@ -26,8 +26,8 @@ const Navbar = () => {
   const styles = navbarStyles();
 
   const handleLogout = async () => {
-    logoutUser()
-  }
+    logoutUser();
+  };
 
   return (
     <AppBar position="static">
@@ -57,7 +57,11 @@ const Navbar = () => {
           <Button color="inherit" sx={styles.buttonStyle}>
             Courses
           </Button>
-          <Button onClick={() => navigate('/login')} color="inherit" sx={styles.buttonStyle}>
+          <Button
+            onClick={() => navigate('/login')}
+            color="inherit"
+            sx={styles.buttonStyle}
+          >
             Log In{' '}
           </Button>
           <Button color="inherit" sx={styles.register}>
@@ -103,11 +107,26 @@ const Navbar = () => {
               <MenuItem sx={styles.menuItemStyles}>Members</MenuItem>
               <MenuItem sx={styles.menuItemStyles}>Courses</MenuItem>
               {user ? (
-                <MenuItem onClick={() => handleLogout()} sx={styles.menuItemStyles}>Logout</MenuItem>
+                <MenuItem
+                  onClick={() => handleLogout()}
+                  sx={styles.menuItemStyles}
+                >
+                  Logout
+                </MenuItem>
               ) : (
                 <div>
-                  <MenuItem onClick={() => navigate('/login')} sx={styles.menuItemStyles}>Log In</MenuItem>
-                  <MenuItem onClick={() => navigate('/register')} sx={styles.menuItemStyles}>Register</MenuItem>
+                  <MenuItem
+                    onClick={() => navigate('/login')}
+                    sx={styles.menuItemStyles}
+                  >
+                    Log In
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => navigate('/register')}
+                    sx={styles.menuItemStyles}
+                  >
+                    Register
+                  </MenuItem>
                 </div>
               )}
             </MenuList>

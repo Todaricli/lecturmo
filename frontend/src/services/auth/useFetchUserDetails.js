@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContextProvider";
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../contexts/AuthContextProvider';
 
 export const useFetchUserDetails = () => {
   const { fetchUserDetails } = useContext(AuthContext);
@@ -13,5 +13,3 @@ export const useFetchUserDetails = () => {
 
   return userDetails;
 };
-
-

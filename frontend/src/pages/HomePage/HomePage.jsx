@@ -11,7 +11,7 @@ import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginI
 import axios from 'axios';
 
 const HomePage = () => {
-  useRedirectToLoginIfNotLoggedIn()
+  useRedirectToLoginIfNotLoggedIn();
 
   const theme = useTheme();
 

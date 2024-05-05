@@ -17,7 +17,7 @@ import {
   OutlinedInput,
   InputLabel,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
@@ -55,12 +55,12 @@ export default function LoginPage() {
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
-    setError('')
+    setError('');
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-    setError('')
+    setError('');
   };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -130,11 +130,7 @@ export default function LoginPage() {
                 }
                 label="Password"
               />
-              {error && (
-                  <FormHelperText error>
-                    {error}
-                  </FormHelperText>
-              )}
+              {error && <FormHelperText error>{error}</FormHelperText>}
             </FormControl>
             <Grid
               container
