@@ -2,7 +2,10 @@ export const usersJSON = [
   // LECTURERS
   {
     user_dummy_id: 'lec1',
-    name: 'Professor Da Man',
+    fname: 'Professor',
+    lname: 'Da Man',
+    gender: 'male',
+    dob: new Date('1970-01-01'),
     username: 'lec1',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'john.smith@example.com',
@@ -22,7 +25,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 'lec2',
-    name: 'Jane Doe',
+    fname: 'Jane',
+    lname: 'Doe',
+    gender: 'female',
+    dob: new Date('1985-05-15'), 
     username: 'lec2',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'jane.doe@example.com',
@@ -37,7 +43,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 'lec3',
-    name: 'Alice Johnson',
+    fname: 'Alice',
+    lname: 'Johnson',
+    gender: 'female',
+    dob: new Date('1980-07-12'), // Assuming date of birth is July 12, 1980
     username: 'lec3',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'alice.johnson@example.com',
@@ -52,7 +61,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 'lec4',
-    name: 'Bob Brown',
+    fname: 'Bob',
+    lname: 'Brown',
+    gender: 'male',
+    dob: new Date('1975-11-28'), 
     username: 'lec4',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'bob.brown@example.com',
@@ -67,7 +79,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 'lec5',
-    name: 'Clara Blue',
+    fname: 'Clara',
+    lname: 'Blue',
+    gender: 'female',
+    dob: new Date('1988-04-05'), // Assuming date of birth is April 5, 1988
     username: 'lec5',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'clara.blue@example.com',
@@ -84,7 +99,10 @@ export const usersJSON = [
   // STUDENTS
   {
     user_dummy_id: 's1',
-    name: 'John Smith',
+    fname: 'John',
+    lname: 'Smith',
+    gender: 'male',
+    dob: new Date('1998-03-20'), 
     username: 'user1',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'john.doe@example.com',
@@ -99,7 +117,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 's2',
-    name: 'Emily White',
+    fname: 'Emily',
+    lname: 'White',
+    gender: 'female',
+    dob: new Date('2000-09-10'),
     username: 'user2',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'emily.white@example.com',
@@ -114,7 +135,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 's3',
-    name: 'Michael Brown',
+    fname: 'Michael',
+    lname: 'Brown',
+    gender: 'male',
+    dob: new Date('1999-02-15'),
     username: 'student3',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'michael.brown@example.com',
@@ -129,7 +153,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 's4',
-    name: 'Sophia Green',
+    fname: 'Sophia',
+    lname: 'Green',
+    gender: 'female',
+    dob: new Date('2001-08-20'),
     username: 'student4',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'sophia.green@example.com',
@@ -144,7 +171,10 @@ export const usersJSON = [
   },
   {
     user_dummy_id: 's5',
-    name: 'Oliver Smith',
+    fname: 'Oliver',
+    lname: 'Smith',
+    gender: 'male',
+    dob: new Date('1997-12-10'),
     username: 'student5',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
     email: 'oliver.smith@example.com',

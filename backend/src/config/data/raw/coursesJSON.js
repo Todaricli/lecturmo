@@ -62,7 +62,6 @@ export const coursesJSON = [
       },
     ],
     lectures: [
-    lectures: [
       {
         title: 'Introduction to Software Development Tools',
         lectureDate: '2024-02-01T09:00:00Z',
@@ -99,7 +98,7 @@ export const coursesJSON = [
         qrExpiry: '24 hours',
         qrCreation: '2024-02-22T08:00:00Z',
       },
-    ],
+      {
         title: 'Issues in Advanced Database Systems',
         lectureDate: '2024-02-22T09:00:00Z',
         qrExpiry: '24 hours',
@@ -143,7 +142,7 @@ export const coursesJSON = [
         qrExpiry: '24 hours',
         qrCreation: '2024-03-15T08:00:00Z',
       },
-    ],
+      {
         title: 'Polymorphism and Composition',
         lectureDate: '2024-03-15T09:00:00Z',
         qrExpiry: '24 hours',
@@ -187,7 +186,7 @@ export const coursesJSON = [
         qrExpiry: '24 hours',
         qrCreation: '2024-10-15T08:00:00Z',
       },
-    ],
+      {
         title: 'Server-Side Development and Relational Databases',
         lectureDate: '2024-10-15T09:00:00Z',
         qrExpiry: '24 hours',
@@ -251,7 +250,7 @@ export const coursesJSON = [
         qrExpiry: '24 hours',
         qrCreation: '2024-03-03T09:00:00Z',
       },
-    ],
+      {
         title: 'Distributed Databases and Future Trends',
         lectureDate: '2024-03-03T10:00:00Z',
         qrExpiry: '24 hours',
@@ -315,7 +314,7 @@ export const coursesJSON = [
         qrExpiry: '24 hours',
         qrCreation: '2024-03-04T09:00:00Z',
       },
-    ],
+      {
         title: 'Disaster Recovery and Contingency Planning',
         lectureDate: '2024-03-04T10:00:00Z',
         qrExpiry: '24 hours',

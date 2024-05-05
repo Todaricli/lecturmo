@@ -76,7 +76,6 @@ export default function LoginPage() {
       sx={{
         marginTop: '50px',
         bgcolor: 'primary.main',
-        height: '100vh',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderBottomLeftRadius: 20,
@@ -84,15 +83,6 @@ export default function LoginPage() {
         paddingBottom: 5,
       }}
     >
-      <IconButton
-        sx={{ marginTop: 3 }}
-        color="initial"
-        component={Link}
-        href="/"
-      >
-        <ArrowBackIcon />
-      </IconButton>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
@@ -107,91 +97,83 @@ export default function LoginPage() {
         <Typography component="h1" variant="h5">
           Hi, Welcome Back! 👋
         </Typography>
-        <ThemeProvider theme={defaultTheme}>
-          <Box
-            component="form"
-            onSubmit={handleLogin}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              value={username}
-              onChange={handleUsernameChange}
+        <Box
+          component="form"
+          onSubmit={handleLogin}
+          noValidate
+          sx={{ mt: 1 }}
+        >
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            value={username}
+            onChange={handleUsernameChange}
+            onFocus={() => setError('')}
+          />
+          <FormControl fullWidth required variant="outlined" margin="normal">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={handlePasswordChange}
               onFocus={() => setError('')}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
             />
-            <FormControl fullWidth required variant="outlined" margin="normal">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={handlePasswordChange}
-                onFocus={() => setError('')}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-              {error && <FormHelperText error>{error}</FormHelperText>}
-            </FormControl>
-            <Grid
-              container
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              {/* <Link href="#" variant="body2">
-                Forgot password?
-              </Link> */}
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 5,
-                mb: 2,
-                borderRadius: 2,
-                bgcolor: 'rgb(255,207,96)',
-                color: '#808080',
-                '&:hover': {
-                  bgcolor: 'rgb(255,199,71)',
-                  color: '#382e7f',
-                },
-              }}
-              href="/"
-            >
-              Login
-            </Button>
-          </Box>
-        </ThemeProvider>
+            {error && <FormHelperText error>{error}</FormHelperText>}
+          </FormControl>
+          <Grid
+            container
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Link href="#" variant="body2">
+              Forgot password?
+            </Link>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Login
+          </Button>
+          <Grid container>
+            <Link href="/register" variant="body2">
+              {"Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
+        </Box>
       </Box>
-      <Copyright sx={{ mt: 7 }} />
+      <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
 }
@@ -204,21 +186,9 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Don't have an account? "}
-      <Link
-        href="/register"
-        variant="body2"
-        sx={{
-          textDecoration: 'none',
-          color: '#1C89B6',
-          '&:hover': {
-            textDecoration: 'underline',
-            color: '#1c69b6',
-          },
-        }}
-      >
-        {' Sign Up'}
-      </Link>
+      {'Copyright © '}
+      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
+      {'.'}
     </Typography>
   );
 }
