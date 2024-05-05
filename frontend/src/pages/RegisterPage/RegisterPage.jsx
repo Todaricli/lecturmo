@@ -1,31 +1,46 @@
-import React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import React, { useState } from 'react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Checkbox,
+  CssBaseline,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  Link,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+  OutlinedInput,
+} from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Calendar from '../../components/Calendar';
+import AvatarSelector from '../../components/AvatarSelect';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function RegisterPage() {
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,19 +53,17 @@ export default function RegisterPage() {
     });
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [gender, setGender] = useState('');
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{
+    <Container component="main" maxWidth="sm" sx={{
       marginTop: '50px',
       bgcolor: 'primary.main',
-      height: '100vh',
+
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       borderBottomLeftRadius: 20,
@@ -58,7 +71,7 @@ export default function RegisterPage() {
       paddingBottom: 5,
     }}>
       <IconButton
-        sx={{ marginTop: 3, }}
+        sx={{ marginTop: 1, }}
         color="initial"
         component={Link}
         href='/'
@@ -68,7 +81,7 @@ export default function RegisterPage() {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -83,11 +96,22 @@ export default function RegisterPage() {
         <ThemeProvider theme={defaultTheme}>
           <Box
             component="form"
+            fullWidth
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2} >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                />
+              </Grid>
               <Grid item xs={12} >
                 <TextField
                   required
@@ -98,6 +122,19 @@ export default function RegisterPage() {
                   autoComplete="email"
                 />
               </Grid>
+              <Grid
+              item xs={12}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Are you from Auckland Uni?"
+              />
+            </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth required variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
@@ -145,24 +182,81 @@ export default function RegisterPage() {
                   />
                 </FormControl>
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="First Name"
+                  id="firstName"
+                  name="firstName"
+                  autoComplete="first-name"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start"></InputAdornment>,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start"></InputAdornment>,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} sx={{ display: 'flex', alignItems: 'center', marginTop: '6px', }}>
+                <FormControl fullWidth required>
+                  <InputLabel id="gender-label" >Gender</InputLabel>
+                  <Select
+                    labelId="gender-label"
+                    id="gender"
+                    value={gender}
+                    input={<OutlinedInput label="gender" />}
+                    onChange={handleGenderChange}
+                    autoComplete="gender"
+                  >
+                    <MenuItem value="">Select Gender</MenuItem>
+                    {genderOptions.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Calendar />
+              </Grid>
+              <Grid item xs={12}>
+                <AvatarSelector />
+              </Grid>
             </Grid>
+
+
             <Button
+              href='/register/verification'
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
-                bgcolor: 'rgb(255,199,71)',
-                color:'#382e7f',
-              },}}
-              href="/register/profile"
+              sx={{
+                mt: 3, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
+                  bgcolor: 'rgb(255,199,71)',
+                  color: '#382e7f',
+                },
+              }}
             >
-              Continue
+              Register
             </Button>
           </Box>
-        </ThemeProvider>
+        </ThemeProvider >
       </Box>
       <Copyright />
     </Container>
+
   );
 }
 
@@ -174,16 +268,21 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {'Already have an account? ' }
+      {'Already have an account? '}
       <Link href="/login" variant="body2" sx={{
         textDecoration: 'none', color: '#1C89B6', '&:hover': {
-          textDecoration:'underline',
+          textDecoration: 'underline',
           color: '#1c69b6',
         },
-        }}>
+      }}>
         {'Sign in'}
       </Link>
-
     </Typography>
   );
 }
+
+const genderOptions = [
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' },
+  { value: 'other', label: 'Other' },
+];
