@@ -47,38 +47,49 @@ export default function RegisterPage() {
 
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        width: 400,
-                    }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: 'indigo' }}>
-                        <AccountBalanceIcon />
-                    </Avatar>
 
-                    <Typography component="h1" variant="h5">
-                        Verify your Uni Account
-                    </Typography>
+        <Container component="main" maxWidth="xs" sx={{
+            marginTop: '50px',
+            bgcolor: 'primary.main',
+            height: '100vh',
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            paddingBottom: 5,
+        }}>
+            <CssBaseline />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: 400,
+                }}
+            >
+                <Avatar sx={{ marginTop: 10, bgcolor: 'indigo', color: 'white', marginBottom:1, }}>
+                    <AccountBalanceIcon />
+                </Avatar>
+
+                <Typography component="h1" variant="h5">
+                    Verify your Uni Account
+                </Typography>
+                <ThemeProvider theme={defaultTheme}>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sx={{ width:'300px' }}>
                                 <TextField
                                     required
                                     fullWidth
                                     id="email"
-                                    label="Email Address"
+                                    label="Uni Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sx={{ width:'300px' }}>
                                 <FormControl fullWidth required>
                                     <InputLabel id="Uni-label" >University</InputLabel>
                                     <Select
@@ -104,35 +115,33 @@ export default function RegisterPage() {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
+                                bgcolor: 'rgb(255,199,71)',
+                                color: '#382e7f',
+                              },}}
                             href='/'
                         >
                             Verify
                         </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/" variant="body2">
-                                    Verify Later
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </Box>
-                </Box>
-                <Copyright />
-            </Container>
-        </ThemeProvider>
+                </ThemeProvider>
+            </Box>
+            <Copyright />
+        </Container>
     );
 }
 
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit">
-                Lectermo
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
+            <Link href="/" variant="body2" sx={{
+                textDecoration: 'none', color: '#1C89B6', '&:hover': {
+                    textDecoration: 'underline',
+                    color: '#1c69b6',
+                },
+            }}>
+                {'Verify Later'}
+            </Link>
         </Typography>
     );
 }

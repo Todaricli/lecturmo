@@ -13,7 +13,7 @@ export default function DatePickerValue() {
       <DemoContainer components={['DatePicker', 'DatePicker']}>
         {/* <DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} /> */}
         <DatePicker
-          label="Date of Birth"
+          label="Date of Birth*"
           value={value}
           onChange={(newValue) => setValue(newValue)}
         />

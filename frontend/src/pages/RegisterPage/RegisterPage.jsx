@@ -87,8 +87,8 @@ export default function RegisterPage() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+            <Grid container spacing={2} >
+              <Grid item xs={12} >
                 <TextField
                   required
                   fullWidth
@@ -145,22 +145,14 @@ export default function RegisterPage() {
                   />
                 </FormControl>
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive notifications, updates via email."
-                  name="allowExtraEmails"
-                />
-              </Grid> */}
             </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#382e7f', '&:hover': {
+              sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
                 bgcolor: 'rgb(255,199,71)',
+                color:'#382e7f',
               },}}
               href="/register/profile"
             >

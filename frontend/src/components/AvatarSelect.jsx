@@ -15,7 +15,7 @@ export default function AvatarSelect() {
 
   return (
     <FormControl>
-      <FormLabel id="avatar">Choose your avatar</FormLabel>
+      <FormLabel id="avatar">Choose your avatar*</FormLabel>
       <ImageList sx={{ height: 350, border: '1px solid #ccc', }} cols={4}>
         {itemData.map((item, index) => (
           <ImageListItem

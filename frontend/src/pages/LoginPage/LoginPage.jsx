@@ -152,8 +152,9 @@ export default function LoginPage() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#382e7f', '&:hover': {
+              sx={{ mt: 5, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
                 bgcolor: 'rgb(255,199,71)',
+                color: '#382e7f'
               },}}
               href="/"
             >

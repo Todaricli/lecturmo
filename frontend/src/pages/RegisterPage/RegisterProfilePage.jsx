@@ -60,7 +60,7 @@ export default function RegisterProfilePage() {
       paddingBottom: 5,
     }}>
       <IconButton
-        sx={{ marginTop: 3, }}
+        sx={{ marginTop: 1, }}
         color="initial"
         component={Link}
         href='/register'
@@ -70,7 +70,7 @@ export default function RegisterProfilePage() {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -117,7 +117,7 @@ export default function RegisterProfilePage() {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6} sx={{display: 'flex', alignItems:'center', marginTop:'6px',}}>
                 <FormControl fullWidth required>
                   <InputLabel id="gender-label" >Gender</InputLabel>
                   <Select
@@ -137,23 +137,12 @@ export default function RegisterProfilePage() {
                   </Select>
                 </FormControl>
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControl fullWidth required>
-                  <InputLabel id="dob-label" >Date of birth</InputLabel>
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                  />
-                </FormControl>
-              </Grid> */}
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <Calendar />
               </Grid>
               <Grid item xs={12}>
                 <AvatarSelector />
               </Grid>
-
             </Grid>
 
 
@@ -162,9 +151,12 @@ export default function RegisterProfilePage() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#382e7f', '&:hover': {
-                bgcolor: 'rgb(255,199,71)',
-              },}}
+              sx={{
+                mt: 3, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#808080', '&:hover': {
+                  bgcolor: 'rgb(255,199,71)',
+                  color: '#382e7f',
+                },
+              }}
             >
               Register
             </Button>
