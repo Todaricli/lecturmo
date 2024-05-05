@@ -15,9 +15,14 @@ import {
   Select,
   TextField,
   Typography,
+  OutlinedInput,
 } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Calendar from '../../components/Calendar';
+import AvatarSelector from '../../components/AvatarSelect';
+
 
 function Copyright(props) {
   return (
@@ -54,12 +59,6 @@ export default function RegisterProfilePage() {
     setGender(event.target.value);
   };
 
-  const [selectedDate, setSelectedDate] = useState('');
-
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
-  };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -82,13 +81,15 @@ export default function RegisterProfilePage() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
                   required
                   fullWidth
-                  id="firstName"
                   label="First Name"
-                  autoFocus
+                  id="firstName"
+                  name="firstName"
+                  autoComplete="first-name"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start"></InputAdornment>,
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -99,15 +100,19 @@ export default function RegisterProfilePage() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start"></InputAdornment>,
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth required>
-                  <InputLabel id="gender-label">Gender</InputLabel>
+                  <InputLabel id="gender-label" >Gender</InputLabel>
                   <Select
                     labelId="gender-label"
                     id="gender"
                     value={gender}
+                    input={<OutlinedInput label="gender" />}
                     onChange={handleGenderChange}
                     autoComplete="gender"
                   >
@@ -120,20 +125,28 @@ export default function RegisterProfilePage() {
                   </Select>
                 </FormControl>
               </Grid>
+              {/* <Grid item xs={12}>
+                <FormControl fullWidth required>
+                  <InputLabel id="dob-label" >Date of birth</InputLabel>
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                  />
+                </FormControl>
+              </Grid> */}
               <Grid item xs={12}>
-                <InputLabel id="dob-label">Date of birth</InputLabel>
-                <input
-                  type="date"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                />
+                <Calendar />
               </Grid>
               <Grid item xs={12}>
-                
+                <AvatarSelector />
               </Grid>
 
             </Grid>
+
+
             <Button
+              href='/register/verification'
               type="submit"
               fullWidth
               variant="contained"
@@ -152,7 +165,7 @@ export default function RegisterProfilePage() {
         </Box>
         <Copyright />
       </Container>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 
