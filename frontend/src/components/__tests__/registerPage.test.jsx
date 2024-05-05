@@ -34,7 +34,7 @@ test('renders RegisterPage component correctly', () => {
     expect(screen.getByRole('button')).toBeEnabled();
   });
   
-  // Test password visibility toggle (if applicable)
+  // Test password visibility toggle 
   test('password visibility toggle works', () => {
     render(<RegisterPage />);
   
