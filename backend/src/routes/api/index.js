@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.use('/', QrRouters);
 router.use('/auth', authRoutes);
-router.use('/landing-posts', landingPosts);
-router.use('/single-page', SinglePageRouters)
+router.use('/', landingPosts);
+router.use('/', SinglePageRouters)
 
 export default router;
