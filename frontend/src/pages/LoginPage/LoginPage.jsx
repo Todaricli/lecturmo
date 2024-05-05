@@ -17,7 +17,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../contexts/AppContextProvider';
@@ -51,6 +51,14 @@ export default function LoginPage() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
+        <IconButton
+          sx={{ marginTop: 3, marginLeft: 3 }}
+          color="initial"
+          component={Link}
+          href='/'
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <CssBaseline />
         <Box
           sx={{
