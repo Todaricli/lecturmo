@@ -6,13 +6,13 @@ import {
   createEmptyCourses,
   populateCourses,
   initCourses,
-  updateCourseForeignKeys
+  updateCourseForeignKeys,
 } from './data/initCourseData.js';
 import {
   createEmptyUsers,
   populateUsers,
   initUsers,
-  updateUserForeignKeys
+  updateUserForeignKeys,
 } from './data/initUserData.js';
 
 // This is a standalone program which will populate the database with initial data.

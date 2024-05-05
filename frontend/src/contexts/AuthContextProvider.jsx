@@ -16,31 +16,14 @@ export const AuthContextProvider = ({ children }) => {
   const [logoutUserError, setLogoutUserError] = useState(null);
   const [isLogoutUserLoading, setIsLogoutUserLoading] = useState(false);
 
-  // Function to fetch user details if not already in memory
-  const loginUser = useCallback(async (body) => {
-    try {
-      setIsLoginUserLoading(true);
-      setLoginUserError(null);
-      const res = await postRequest(`${BASE_URL}/auth/login`, body);
-      await updateUserDetails();
-      setIsLoginUserLoading(false);
-      if (res.error) {
-        return setLoginUserError(res);
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      setIsLoginUserLoading(false);
-    }
-  }, []);
-
+  useEffect(() => {
+    console.log('Updated user:', user); // This will log updated user details
+  }, [user]);
   // Function to fetch user details if not already in memory
   const fetchUserDetails = useCallback(async () => {
     if (user) return; // If user exists, do nothing
-    await updateUserDetails();
-  }, [user]);
-
-  useEffect(() => {
-    console.log('Updated user:', user); // This will log updated user details
+    const res = await updateUserDetails();
+    return res;
   }, [user]);
 
   // Function to update user details from the backend
@@ -54,11 +37,34 @@ export const AuthContextProvider = ({ children }) => {
         return setUpdateUserError(res);
       }
       setUser(res); // Set user in context
+      return res;
     } catch (error) {
       console.error('Updating user details failed:', error);
       setIsUpdateUserLoading(false);
     }
   }, []);
+
+  const loginUser = useCallback(
+    async (body) => {
+      try {
+        setIsLoginUserLoading(true);
+        setLoginUserError(null);
+        const res = await postRequest(`${BASE_URL}/auth/login`, body);
+        await updateUserDetails();
+
+        if (res.error) {
+          setLoginUserError(res);
+          return res;
+        }
+        setIsLoginUserLoading(false);
+        return res;
+      } catch (error) {
+        console.error('Login failed:', error);
+        setIsLoginUserLoading(false);
+      }
+    },
+    [updateUserDetails]
+  );
 
   const logoutUser = async () => {
     try {
@@ -86,6 +92,7 @@ export const AuthContextProvider = ({ children }) => {
         updateUserError,
         isLogoutUserLoading,
         logoutUserError,
+        setUser,
         loginUser,
         fetchUserDetails,
         updateUserDetails,
