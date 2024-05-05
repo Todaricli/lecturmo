@@ -70,23 +70,44 @@ export default function LoginPage() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Hi, Welcome Back! 👋
-          </Typography>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        marginTop: '50px',
+        bgcolor: 'primary.main',
+        height: '100vh',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        paddingBottom: 5,
+      }}
+    >
+      <IconButton
+        sx={{ marginTop: 3 }}
+        color="initial"
+        component={Link}
+        href="/"
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Hi, Welcome Back! 👋
+        </Typography>
+        <ThemeProvider theme={defaultTheme}>
           <Box
             component="form"
             onSubmit={handleLogin}
@@ -144,28 +165,34 @@ export default function LoginPage() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Link href="#" variant="body2">
+              {/* <Link href="#" variant="body2">
                 Forgot password?
-              </Link>
+              </Link> */}
             </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 5,
+                mb: 2,
+                borderRadius: 2,
+                bgcolor: 'rgb(255,207,96)',
+                color: '#808080',
+                '&:hover': {
+                  bgcolor: 'rgb(255,199,71)',
+                  color: '#382e7f',
+                },
+              }}
+              href="/"
             >
               Login
             </Button>
-            <Grid container>
-              <Link href="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+        </ThemeProvider>
+      </Box>
+      <Copyright sx={{ mt: 7 }} />
+    </Container>
   );
 }
 
@@ -177,9 +204,21 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {'Copyright © '}
-      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
-      {'.'}
+      {"Don't have an account? "}
+      <Link
+        href="/register"
+        variant="body2"
+        sx={{
+          textDecoration: 'none',
+          color: '#1C89B6',
+          '&:hover': {
+            textDecoration: 'underline',
+            color: '#1c69b6',
+          },
+        }}
+      >
+        {' Sign Up'}
+      </Link>
     </Typography>
   );
 }

@@ -11,11 +11,11 @@ import VerificationErrorPage from './pages/ScanVerificationPage/VerificationErro
 import UserProfilePage from './pages/ProfilePage/UserProfilePage';
 import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
-import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
 import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 import StatsPage from './pages/ProfilePage/StatsPage';
 import LecturerPage from './pages/LecturerPage/LecturerPage';
 import SinglePostPage from './pages/HomePage/SinglePostPage/SinglePostPage';
+import RegisterVerification from './pages/RegisterPage/RegisterVerification';
 
 function App() {
   return (
@@ -25,7 +25,10 @@ function App() {
         <Route path="home" element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="register/profile" element={<RegisterProfilePage />} />
+        <Route
+          path="register/verification"
+          element={<RegisterVerification />}
+        />
         <Route path="profile" element={<UserProfilePage />} />
         <Route path="edit-profile" element={<EditProfilePage />} />
         <Route path="qr" element={<QrCode />} />

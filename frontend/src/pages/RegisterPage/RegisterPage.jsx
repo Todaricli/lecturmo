@@ -72,30 +72,62 @@ export default function RegisterPage() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Create your Account
-          </Typography>
+    <Container
+      component="main"
+      maxWidth="sm"
+      sx={{
+        marginTop: '50px',
+        bgcolor: 'primary.main',
+
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        paddingBottom: 5,
+      }}
+    >
+      <IconButton
+        sx={{ marginTop: 1 }}
+        color="initial"
+        component={Link}
+        href="/"
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Create your Account
+        </Typography>
+        <ThemeProvider theme={defaultTheme}>
           <Box
             component="form"
+            fullWidth
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -121,12 +153,7 @@ export default function RegisterPage() {
                   error={Boolean(usernameError)}
                   helperText={usernameError}
                 />
-              </Grid>
-              {/* {usernameError && (
-                  <FormHelperText usernameError>
-                    {usernameError}
-                  </FormHelperText>
-              )} */}
+              </Grid> */
               <Grid item xs={12}>
                 <FormControl fullWidth required variant="outlined">
                   <InputLabel htmlFor="password">Password</InputLabel>
@@ -153,6 +180,33 @@ export default function RegisterPage() {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
+                <FormControl fullWidth required variant="outlined"> 
+                  <InputLabel htmlFor="outlined-adornment-password">
+                    Confirm Password
+                  </InputLabel>
+                  <OutlinedInput
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={formData.password}
+                    onChange={handleChange}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Confirm-Password"
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}> 
                 <TextField
                   required
                   fullWidth
@@ -178,42 +232,99 @@ export default function RegisterPage() {
                   label="I want to receive notifications, updates via email."
                 />
               </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{ display: 'flex', alignItems: 'center', marginTop: '6px' }}
+              >
+                <FormControl fullWidth required>
+                  <InputLabel id="gender-label">Gender</InputLabel>
+                  <Select
+                    labelId="gender-label"
+                    id="gender"
+                    value={gender}
+                    input={<OutlinedInput label="gender" />}
+                    onChange={handleGenderChange}
+                    autoComplete="gender"
+                  >
+                    <MenuItem value="">Select Gender</MenuItem>
+                    {genderOptions.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Calendar />
+              </Grid>
+              <Grid item xs={12}>
+                <AvatarSelector />
+              </Grid>
             </Grid>
+
             <Button
+              href="/register/verification"
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              // href="/register/profile"
+              sx={{
+                mt: 3,
+                mb: 2,
+                borderRadius: 2,
+                bgcolor: 'rgb(255,207,96)',
+                color: '#808080',
+                '&:hover': {
+                  bgcolor: 'rgb(255,199,71)',
+                  color: '#382e7f',
+                },
+              }}
             >
-              Continue
+              Register
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+        </ThemeProvider>
+      </Box>
+      <Copyright />
+    </Container>
   );
-
-  function Copyright(props) {
-    return (
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        {...props}
-      >
-        {'Copyright © '}
-        <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
 }
+
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {'Already have an account? '}
+      <Link
+        href="/login"
+        variant="body2"
+        sx={{
+          textDecoration: 'none',
+          color: '#1C89B6',
+          '&:hover': {
+            textDecoration: 'underline',
+            color: '#1c69b6',
+          },
+        }}
+      >
+        {'Sign in'}
+      </Link>
+    </Typography>
+  );
+}
+
+const genderOptions = [
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' },
+  { value: 'other', label: 'Other' },
+];

@@ -64,7 +64,7 @@ const Navbar = () => {
           >
             Log In{' '}
           </Button>
-          <Button color="inherit" sx={styles.register}>
+          <Button color="inherit" sx={styles.register} href="/register">
             Register
           </Button>
         </Box>
