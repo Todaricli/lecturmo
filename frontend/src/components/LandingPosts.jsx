@@ -66,7 +66,7 @@ const LandingPosts = ({ posts }) => {
                       height: '100%',
                     }}
                   >
-                    <CardHeader title={post.courseCode} />
+                    {/* <CardHeader title={post.courseCode} /> */}
                   </Box>
                   <Box
                     sx={{
@@ -98,11 +98,11 @@ const LandingPosts = ({ posts }) => {
                       </Typography>
                       <Rating
                         name="size-small"
-                        value={averageRating([
-                          post?.reviews[0]?.difficultyRating,
-                          post?.reviews[0]?.contentRating,
-                          post?.reviews[0]?.qualityRating,
-                        ])}
+                        // value={averageRating([
+                        //   post?.reviews[0]?.difficultyRating,
+                        //   post?.reviews[0]?.contentRating,
+                        //   post?.reviews[0]?.qualityRating,
+                        // ])}
                         readOnly
                         size="small"
                       />
@@ -121,7 +121,7 @@ const LandingPosts = ({ posts }) => {
                         </Typography>
                         <Stack direction="row">
                           <FavoriteBorderIcon color="heart" sx={{width: "20px"}}/>
-                          <Typography variant="body1" color="heart.main">{post?.reviews?.length}</Typography>
+                          {/* <Typography variant="body1" color="heart.main">{post?.reviews?.length}</Typography> */}
                         </Stack>
                       </Box>
                       <Typography
@@ -138,7 +138,7 @@ const LandingPosts = ({ posts }) => {
                         color="#78858F"
                         sx={{ lineHeight: 3 }}
                       >
-                        {new Date(post.updatedAt).toLocaleDateString()}
+                        {/* {new Date(post.updatedAt).toLocaleDateString()} */}
                       </Typography>
                     </CardContent>
                   </Box>
