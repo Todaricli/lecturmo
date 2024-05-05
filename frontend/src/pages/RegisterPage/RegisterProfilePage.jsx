@@ -22,22 +22,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Calendar from '../../components/Calendar';
 import AvatarSelector from '../../components/AvatarSelect';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import IconButton from '@mui/material/IconButton';
 
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -62,25 +49,43 @@ export default function RegisterProfilePage() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Almost There
-          </Typography>
+    <Container component="main" maxWidth="sm" sx={{
+      marginTop: '50px',
+      bgcolor: 'primary.main',
+
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+      paddingBottom: 5,
+    }}>
+      <IconButton
+        sx={{ marginTop: 3, }}
+        color="initial"
+        component={Link}
+        href='/register'
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Almost There
+        </Typography>
+        <ThemeProvider theme={defaultTheme}>
           <Box
             component="form"
+            fullWidth
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
@@ -157,22 +162,39 @@ export default function RegisterProfilePage() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, borderRadius: 2, bgcolor: 'rgb(255,207,96)', color: '#382e7f', '&:hover': {
+                bgcolor: 'rgb(255,199,71)',
+              },}}
             >
               Register
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
-        </Box>
-        <Copyright />
-      </Container>
-    </ThemeProvider >
+        </ThemeProvider >
+      </Box>
+      <Copyright />
+    </Container>
+
+  );
+}
+
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {'Already have an account? '}
+      <Link href="/login" variant="body2" sx={{
+        textDecoration: 'none', color: '#1C89B6', '&:hover': {
+          textDecoration: 'underline',
+          color: '#1c69b6',
+        },
+      }}>
+        {'Sign in'}
+      </Link>
+    </Typography>
   );
 }
 
