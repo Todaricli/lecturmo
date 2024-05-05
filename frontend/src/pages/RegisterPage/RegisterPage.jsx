@@ -1,60 +1,86 @@
 import React, { useState } from 'react';
 import {
   Avatar,
-  Box,
   Button,
-  Container,
-  Checkbox,
   CssBaseline,
-  FormControl,
+  TextField,
   FormControlLabel,
-  Grid,
-  InputLabel,
+  Checkbox,
   Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
   MenuItem,
   Select,
-  TextField,
-  Typography,
-  OutlinedInput,
 } from '@mui/material';
-import InputAdornment from '@mui/material/InputAdornment';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import {
+  LockOutlined as LockOutlinedIcon,
+  Visibility,
+  VisibilityOff,
+  ArrowBack as ArrowBackIcon,
+} from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Calendar from '../../components/Calendar';
 import AvatarSelector from '../../components/AvatarSelect';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { checkIfUserExists } from '../../services/auth/registerAPIFetch';
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function RegisterPage() {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    allowExtraEmails: false,
+    gender: '',
+  });
+  const [usernameError, setUsernameError] = useState('');
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleChange = async (event) => {
+    const { name, value, checked, type } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      // if checkbox, use the checked, else use the value property
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+    if (name === 'username') {
+      const res = await checkIfUserExists({
+        username: value,
+      });
+      if (res && res.error) {
+        setUsernameError(res.message);
+      } else {
+        setUsernameError('');
+      }
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+    // Add your logic to proceed with form submission
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-      allowExtraEmails: data.get('allowExtraEmails'),
-    });
-  };
-
-  const [gender, setGender] = useState('');
-
   const handleGenderChange = (event) => {
-    setGender(event.target.value);
+    setFormData({ ...formData, gender: event.target.value });
   };
 
   return (
@@ -64,7 +90,6 @@ export default function RegisterPage() {
       sx={{
         marginTop: '50px',
         bgcolor: 'primary.main',
-
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderBottomLeftRadius: 20,
@@ -72,15 +97,9 @@ export default function RegisterPage() {
         paddingBottom: 5,
       }}
     >
-      <IconButton
-        sx={{ marginTop: 1 }}
-        color="initial"
-        component={Link}
-        href="/"
-      >
+      <IconButton sx={{ marginTop: 1 }} color="initial" component={Link} href="/">
         <ArrowBackIcon />
       </IconButton>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 1,
@@ -95,187 +114,154 @@ export default function RegisterPage() {
         <Typography component="h1" variant="h5">
           Create your Account
         </Typography>
-        <ThemeProvider theme={defaultTheme}>
-          <Box
-            component="form"
-            fullWidth
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Are you from Auckland Uni?"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth required variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Password
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                  />
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControl fullWidth required variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Confirm Password
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Confirm-Password"
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="First Name"
-                  id="firstName"
-                  name="firstName"
-                  autoComplete="first-name"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start"></InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start"></InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                sx={{ display: 'flex', alignItems: 'center', marginTop: '6px' }}
-              >
-                <FormControl fullWidth required>
-                  <InputLabel id="gender-label">Gender</InputLabel>
-                  <Select
-                    labelId="gender-label"
-                    id="gender"
-                    value={gender}
-                    input={<OutlinedInput label="gender" />}
-                    onChange={handleGenderChange}
-                    autoComplete="gender"
-                  >
-                    <MenuItem value="">Select Gender</MenuItem>
-                    {genderOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Calendar />
-              </Grid>
-              <Grid item xs={12}>
-                <AvatarSelector />
-              </Grid>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                label="First Name"
+                name="firstName"
+                autoComplete="given-name"
+                value={formData.firstName}
+                onChange={handleChange}
+              />
             </Grid>
-
-            <Button
-              href="/register/verification"
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                borderRadius: 2,
-                bgcolor: 'rgb(255,207,96)',
-                color: '#808080',
-                '&:hover': {
-                  bgcolor: 'rgb(255,199,71)',
-                  color: '#382e7f',
-                },
-              }}
-            >
-              Register
-            </Button>
-          </Box>
-        </ThemeProvider>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                value={formData.username}
+                onChange={handleChange}
+                error={Boolean(usernameError)}
+                helperText={usernameError}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth required variant="outlined">
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <OutlinedInput
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password}
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth required variant="outlined">
+                <InputLabel id="gender-label">Gender</InputLabel>
+                <Select
+                  labelId="gender-label"
+                  id="gender"
+                  value={formData.gender}
+                  onChange={handleGenderChange}
+                  label="Gender"
+                >
+                  <MenuItem value="">Select Gender</MenuItem>
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="allowExtraEmails"
+                    color="primary"
+                    checked={formData.allowExtraEmails}
+                    onChange={handleChange}
+                  />
+                }
+                label="I want to receive notifications, updates via email."
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Calendar />
+            </Grid>
+            <Grid item xs={12}>
+              <AvatarSelector />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3,
+              mb: 2,
+              borderRadius: 2,
+              bgcolor: 'rgb(255,207,96)',
+              color: '#808080',
+              '&:hover': {
+                bgcolor: 'rgb(255,199,71)',
+                color: '#382e7f',
+              },
+            }}
+          >
+            Register
+          </Button>
+        </Box>
       </Box>
-      <Copyright />
-    </Container>
+      <Copyright sx={{ mt: 8, mb: 4 }} />
+    </Container >
   );
 }
+
 
 function Copyright(props) {
   return (
