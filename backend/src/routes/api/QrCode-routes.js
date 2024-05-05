@@ -57,19 +57,22 @@ QrRouters.post('/qr-code', async (req, res) => {
       if (existingCourse && existingCourse.courses.length > 0) {
         const course = existingCourse.courses[0];
         const lectureExists = course.lectures.some(lecture => lecture.lectureId === lectureId);
-
-        if(lectureExists){
+        if(!lectureExists){
           const addLecture = await User.updateOne({_id: usernameIdObject, courses:{$elemMatch:{courseId: courseId}}},
             {$addToSet:{"courses.$.lectures": {lectureId: lectureId}}}).exec()
-          
             const result = await Course.updateOne(
               { _id: courseId, "lectures._id": lectureId},
               { $inc: { 'lectures.$.attendence': 1 } }
             ).exec();
+        }else{
+          return res.json({validity: false})
         }
       }
     } catch (error) {
-      return res.json({errorMessage: error})
+      return res.json({
+        errorMessage: error,
+        validity: false
+      })
     }
 
     return res.status(200).json({
