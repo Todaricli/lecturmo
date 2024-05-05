@@ -7,26 +7,28 @@ import {
   Typography,
   CardActions,
   IconButton,
-  Paper
-} from "@mui/material";
-import React from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import EmailIcon from "@mui/icons-material/Email";
-import { Link } from "react-router-dom";
+  Paper,
+  InputBase,
+} from '@mui/material';
+import React from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import EmailIcon from '@mui/icons-material/Email';
+import { Link } from 'react-router-dom';
 
 const UserProfilePage = () => {
   return (
     <Box
       sx={{
-        marginTop: "50px",
-        bgcolor: "primary.main",
-        height: "100vh",
+        marginTop: '50px',
+        bgcolor: 'primary.main',
+        height: '100vh',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+        paddingBottom: 5,
       }}
     >
       <IconButton
@@ -40,32 +42,32 @@ const UserProfilePage = () => {
 
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <Box sx={{ width: 600 }}>
           <Card
             sx={{
-              padding: "10px",
-              display: "flex",
+              padding: '10px',
+              display: 'flex',
               borderRadius: 4,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <CardMedia
               component="img"
               title="profile img"
               image="/assets/dog.jpg"
-              sx={{ width: 180, height: "230px", borderRadius: 4 }}
+              sx={{ width: 180, height: '230px', borderRadius: 4 }}
             />
             <CardContent>
               <Typography
                 variant="h3"
                 color="initial"
-                sx={{ paddingBottom: "10px" }}
+                sx={{ paddingBottom: '10px' }}
               >
                 Sheldon Sheldon
               </Typography>
@@ -116,16 +118,16 @@ const UserProfilePage = () => {
               Links
             </Typography>
             <CardActions sx={{ paddingLeft: 0 }}>
-              <IconButton aria-label="twitter" sx={{ border: "2px solid" }}>
+              <IconButton aria-label="twitter" sx={{ border: '2px solid' }}>
                 <TwitterIcon />
               </IconButton>
-              <IconButton aria-label="linkedin" sx={{ border: "2px solid" }}>
+              <IconButton aria-label="linkedin" sx={{ border: '2px solid' }}>
                 <LinkedInIcon />
               </IconButton>
-              <IconButton aria-label="facebook" sx={{ border: "2px solid" }}>
+              <IconButton aria-label="facebook" sx={{ border: '2px solid' }}>
                 <FacebookIcon />
               </IconButton>
-              <IconButton aria-label="instagram" sx={{ border: "2px solid" }}>
+              <IconButton aria-label="instagram" sx={{ border: '2px solid' }}>
                 <InstagramIcon />
               </IconButton>
             </CardActions>
@@ -133,19 +135,24 @@ const UserProfilePage = () => {
         </Card>
 
         <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>
-          <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant="h6" color="initial">
               Resend email verification
             </Typography>
-            {/* <Paper component="form">
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Enter your email"
-              />
-              <IconButton sx={{ p: "10px" }} aria-label="menu">
+            <Paper
+              component="form"
+              sx={{
+                boxShadow: 'none',
+                bgcolor: 'grey.main',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <InputBase placeholder="Enter your email" sx={{ padding: 1 }} />
+              <IconButton sx={{ p: '10px' }} aria-label="menu">
                 <EmailIcon />
               </IconButton>
-            </Paper> */}
+            </Paper>
           </CardContent>
         </Card>
 

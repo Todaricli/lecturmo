@@ -26,12 +26,14 @@ import AvatarSelector from '../../components/AvatarSelect';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {'Copyright © '}
-      <Link color="inherit">
-        Lectermo
-      </Link>{' '}
-      {new Date().getFullYear()}
+      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
@@ -77,7 +79,12 @@ export default function RegisterProfilePage() {
           <Typography component="h1" variant="h5">
             Almost There
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -174,4 +181,3 @@ const genderOptions = [
   { value: 'female', label: 'Female' },
   { value: 'other', label: 'Other' },
 ];
-

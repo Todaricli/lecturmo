@@ -74,7 +74,12 @@ export default function LoginPage() {
           <Typography component="h1" variant="h5">
             Hi, Welcome Back! 👋
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -96,7 +101,9 @@ export default function LoginPage() {
               autoComplete="current-password"
             /> */}
             <FormControl fullWidth required variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
@@ -115,11 +122,14 @@ export default function LoginPage() {
                 label="Password"
               />
             </FormControl>
-            <Grid container sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+            <Grid
+              container
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -134,7 +144,7 @@ export default function LoginPage() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              href='/'
+              href="/"
             >
               Login
             </Button>
@@ -149,18 +159,19 @@ export default function LoginPage() {
       </Container>
     </ThemeProvider>
   );
-};
+}
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {'Copyright © '}
-      <Link color="inherit">
-        Lectermo
-      </Link>{' '}
-      {new Date().getFullYear()}
+      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
 }
-

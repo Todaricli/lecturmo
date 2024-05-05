@@ -1,16 +1,21 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import PageLayout from './layouts/PageLayout';
-import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import QrCode from "./pages/QrCode/QrCode";
-import QrLandingPage from "./pages/QrCode/QrLandingPage";
-import VerificationSuccessPage from "./pages/ScanVerificationPage/VerificationSuccessPage";
-import VerificationErrorPage from "./pages/ScanVerificationPage/VerificationErrorPage";
-import UserProfilePage from "./pages/ProfilePage/UserProfilePage";
-import EditProfilePage from "./pages/ProfilePage/EditProfilePage";
+import VerifyEmail from './pages/VerifyEmail';
+import HomePage from './pages/HomePage/HomePage';
+import QrCode from './pages/QrCode/QrCode';
+import QrLandingPage from './pages/QrCode/QrLandingPage';
+import VerificationSuccessPage from './pages/ScanVerificationPage/VerificationSuccessPage';
+import VerificationErrorPage from './pages/ScanVerificationPage/VerificationErrorPage';
+import UserProfilePage from './pages/ProfilePage/UserProfilePage';
+import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
-import RegisterProfilePage from "./pages/RegisterPage/RegisterProfilePage";
+import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
+import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
+import StatsPage from './pages/ProfilePage/StatsPage';
+import LecturerPage from './pages/LecturerPage/LecturerPage';
+import SinglePostPage from './pages/HomePage/SinglePostPage/SinglePostPage';
 import RegisterVerification from "./pages/RegisterPage/RegisterVerification"
 
 function App() {
@@ -29,9 +34,14 @@ function App() {
         <Route path="qr-landing-page" element={<QrLandingPage />} />
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
+        <Route path="fetchExample" element={<FetchExamplePage />} />
+        <Route path="/verifyEmail" element={<VerifyEmail />} />
+        <Route path="stats" element={<StatsPage />} />
+        <Route path="lecturer" element={<LecturerPage />} />
+        <Route path="post" element={<SinglePostPage />} />
       </Route>
     </Routes>
-  );;
+  );
 }
 
 export default App;

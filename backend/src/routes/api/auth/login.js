@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { authenticate } from '../../middleware/authMW.js';
+import { authenticate } from '../../../middleware/authMW.js';
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.post(
   }),
   (req, res) => {
     // console.log("req.session:", req.session)
-    res.status(200).json({message: 'Login Successful'});
+    res.status(200).json({ message: 'Login Successful' });
   },
 );
 
@@ -26,7 +26,7 @@ router.get('/logout', (req, res) => {
   if (!req.user) return res.sendStatus(401);
   req.logout((err) => {
     if (err) return res.sendStatus(400);
-    res.status(200).json({message: 'Logout Successful'});
+    res.status(200).json({ message: 'Logout Successful' });
   });
 });
 
