@@ -1,27 +1,29 @@
 import { test, expect } from 'vitest';
-import vitest from 'vitest';
-import useGet from '../../hooks/useGet'; 
+import { renderHook } from '@testing-library/react-hooks';
 import axios from 'axios';
+import useGet from '../../hooks/useGet'; // Adjust the path as per your project structure
 
-test('useGet custom hook', async () => {
-  const mockData = { message: 'Mock data' };
-  const url = 'https://example.com/api/data';
+test('useGet hook', async () => {
   // Mock axios.get to return a promise with mock data
-  jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockData });
+  const mockData = { message: 'Mock data' };
+  jest.spyOn(axios, 'get').mockResolvedValue({ data: mockData });
 
-  // Render a functional component that uses the useGet hook
-  const { result, waitForNextUpdate } = await test(<Component />, { environment: 'jsdom' });
+  // Render the hook
+  const { result, waitForNextUpdate } = renderHook(() => useGet('/api/data'));
 
   // Wait for the hook to fetch data
   await waitForNextUpdate();
 
-  // Assert that data is fetched successfully
+  // Assert the initial state
+  expect(result.current.data).toBeNull();
+  expect(result.current.isLoading).toBe(true);
+  expect(result.current.error).toBe(false);
+
+  // Wait for the loading state to be false
+  await waitForNextUpdate();
+
+  // Assert the updated state after data fetching
   expect(result.current.data).toEqual(mockData);
   expect(result.current.isLoading).toBe(false);
   expect(result.current.error).toBe(false);
 });
-
-const Component = () => {
-  const { data, isLoading, error } = useGet('https://example.com/api/data');
-  return null; // Return null since we're only testing the hook
-};
