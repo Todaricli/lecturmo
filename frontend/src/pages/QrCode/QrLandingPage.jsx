@@ -8,15 +8,16 @@ const QrLandingPage = () => {
   const [params, setParams] = useSearchParams();
   const [date, setDate] = useState(undefined);
   const [course, setCourse] = useState(undefined);
+  const [lecture, setLecture] = useState(undefined)
   const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(undefined);
   const [validity, setValidity] = useState();
-  const [login, setLogin] = useState()
+  const [login, setLogin] = useState(true)
   const [user, setUser] = useState()
 
   const submit = async () => {
     console.log("hi")
-    if (date && course && user) {
+    if (date && course) {
       console.log("asdfsadf")
       const response = await axios
         .post(
@@ -24,7 +25,7 @@ const QrLandingPage = () => {
           {
             date: date,
             courseId: course,
-            username: user.data.username
+            lecture: lecture
           },
           {
             headers: {
@@ -39,23 +40,23 @@ const QrLandingPage = () => {
     }
   };
 
-  const checkUser = async () => {
-    const response = await axios
-      .post(
-        `http://localhost:3000/api/login`,
-        {
-          username: "user1",
-          password: "123",
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      ).then((res) => {
-        setLogin(true)
-      })
-  }
+  // const checkUser = async () => {
+  //   const response = await axios
+  //     .post(
+  //       `http://localhost:3000/api/login`,
+  //       {
+  //         username: "user1",
+  //         password: "123",
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //       }
+  //     ).then((res) => {
+  //       setLogin(true)
+  //     })
+  // }
 
   async function getStatus() {
     const response = await axios
@@ -67,31 +68,31 @@ const QrLandingPage = () => {
       })
   }
 
+  // useEffect(() => {
+  //   getStatus()
+  //   console.log(validity)
+
+  // }, [login])
+
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log(user.data)
+  //   }
+  // }, [user])
+
   useEffect(() => {
-    getStatus()
-    console.log(validity)
-
-  }, [login])
-
-  useEffect(() => {
-    if (user) {
-      console.log(user.data)
-    }
-  }, [user])
-
-  useEffect(() => {
-    checkUser()
-
     setDate(params.get('date'));
     setCourse(params.get('course'));
+    setLecture(params.get('lecture'))
   }, []);
 
   useEffect(() => {
     console.log("asd")
     submit();
-  }, [date, course, login]);
+  }, [date, course]);
 
   useEffect(() => {
+    console.log("here")
     console.log(response)
     if (response != undefined) {
       setValidity(response.data.validity);

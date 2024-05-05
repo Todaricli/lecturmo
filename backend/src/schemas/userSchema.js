@@ -15,7 +15,9 @@ const userSchema = new Schema(
     roles: String, //(student, lecturer, admin)
     courses: [
       {
-        courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
+
+        smthg: String,
+        courseId: String,
         lectures: [{
 
         }]

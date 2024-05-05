@@ -47,7 +47,7 @@ LectureRouter.get('/lecture-list', async (req, res) => {
         const user = req.user
         console.log(user._id)
 
-        const course = await Course.find({ lecturer: "663551f24b2d02b3835a7770" }).exec()
+        const course = await Course.find({ lecturer: user._id }).exec()
         console.log("skeet")
         console.log(course)
 
