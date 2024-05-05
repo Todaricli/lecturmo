@@ -29,8 +29,10 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/all-posts');
-        // console.log("data", response.data)
+        const response = await axios.get(
+          'http://localhost:3000/api/landing-posts'
+        );
+        console.log('data', response.data);
 
         setPosts(response.data);
       } catch (error) {

@@ -140,7 +140,6 @@ const UserProfilePage = () => {
               Resend email verification
             </Typography>
             <Paper
-              elevation={1}
               component="form"
               sx={{
                 boxShadow: 'none',

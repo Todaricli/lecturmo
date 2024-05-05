@@ -62,7 +62,7 @@ const LandingPosts = ({ posts }) => {
                       height: '100%',
                     }}
                   >
-                    <CardHeader title={course.courseNumber} />
+                    <CardHeader title={course.course_dummy_id} />
                     <CardActions>
                       <IconButton
                         aria-label="favourite"

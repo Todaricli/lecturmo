@@ -15,6 +15,7 @@ import RegisterProfilePage from './pages/RegisterPage/RegisterProfilePage';
 import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 import StatsPage from './pages/ProfilePage/StatsPage';
 import LecturerPage from './pages/LecturerPage/LecturerPage';
+import SinglePostPage from './pages/HomePage/SinglePostPage/SinglePostPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="stats" element={<StatsPage />} />
         <Route path="lecturer" element={<LecturerPage />} />
+        <Route path="post" element={<SinglePostPage />} />
       </Route>
     </Routes>
   );

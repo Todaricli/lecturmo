@@ -6,6 +6,7 @@ const courseSchema = new Schema(
   {
     course_dummy_id: String,
     courseName: { type: String },
+    courseCode: {type: String},
     totalAttendance: { type: Number, default: 0 },
     lecturerId: { type: Schema.Types.ObjectId, ref: 'User' },
     dummyLecId: String,
