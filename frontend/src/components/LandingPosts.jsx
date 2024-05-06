@@ -11,18 +11,35 @@ import {
   Stack,
 } from "@mui/material";
 import React, { useEffect } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useTheme } from "@emotion/react";
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
 
-  const averageRating = (ratings) => {
-    const sum = ratings.reduce((acc, rating) => acc + rating, 0);
-    const average = sum / ratings.length;
-    return average;
+  const calculateOverallRating = (post) => {
+    if (!post || !post.reviews || post.reviews.length === 0) {
+      return 0;
+    }
+
+    let totalRating = 0;
+    let totalReviews = post.reviews.length;
+
+    post.reviews.forEach((review) => {
+      const averageRating =
+        (review.difficultyRating +
+          review.contentRating +
+          review.qualityRating) /
+        3;
+      totalRating += averageRating;
+    });
+    const overallRating = totalRating / totalReviews;
+    console.log("course: ", post.courseCode)
+    console.log(overallRating);
+    return overallRating;
   }
+
 
   useEffect(() => {
     console.log("posts:", posts);
@@ -66,7 +83,10 @@ const LandingPosts = ({ posts }) => {
                       height: '100%',
                     }}
                   >
-                    {/* <CardHeader title={post.courseCode} /> */}
+                    <CardHeader
+                      title={post.courseCode}
+                      titleTypographyProps={{ variant: 'h5', fontWeight: "bold" }}
+                    />
                   </Box>
                   <Box
                     sx={{
@@ -98,11 +118,7 @@ const LandingPosts = ({ posts }) => {
                       </Typography>
                       <Rating
                         name="size-small"
-                        // value={averageRating([
-                        //   post?.reviews[0]?.difficultyRating,
-                        //   post?.reviews[0]?.contentRating,
-                        //   post?.reviews[0]?.qualityRating,
-                        // ])}
+                        value={calculateOverallRating(post)}
                         readOnly
                         size="small"
                       />
@@ -110,7 +126,13 @@ const LandingPosts = ({ posts }) => {
                   </Box>
                   <Box>
                     <CardContent>
-                      <Box sx={{display: 'flex', justifyContent:"space-between", alignItems:'center'}} >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
                         <Typography
                           variant="h6"
                           color="initial"
@@ -120,8 +142,10 @@ const LandingPosts = ({ posts }) => {
                           Review:
                         </Typography>
                         <Stack direction="row">
-                          <FavoriteBorderIcon color="heart" sx={{width: "20px"}}/>
-                          {/* <Typography variant="body1" color="heart.main">{post?.reviews?.length}</Typography> */}
+                          <FavoriteIcon color="heart" sx={{ width: '20px' }} />
+                          <Typography variant="body1" color="heart.main">
+                            {post?.reviews?.length}
+                          </Typography>
                         </Stack>
                       </Box>
                       <Typography
@@ -138,7 +162,9 @@ const LandingPosts = ({ posts }) => {
                         color="#78858F"
                         sx={{ lineHeight: 3 }}
                       >
-                        {new Date(post.updatedAt).toLocaleDateString()}
+                        {new Date(
+                          post?.reviews[0]?.createdAt
+                        ).toLocaleDateString()}
                       </Typography>
                     </CardContent>
                   </Box>

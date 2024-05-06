@@ -46,7 +46,7 @@ const SinglePostPage = () => {
     });
 
     const overallRating = totalRating / totalReviews;
-    // console.log(overallRating);
+    console.log(overallRating);
     return overallRating;
   };
 
@@ -317,17 +317,6 @@ const SinglePostPage = () => {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
-              // MenuProps={{
-              //   PaperProps: {
-              //     sx: {
-              //       borderRadius: 5,
-              //       mt: 1,
-              //     },
-              //     "& .MuiMenuItem-root:hover": {
-              //       bgcolor: "red",
-              //     },
-              //   },
-              // }}
             >
               <MenuItem value={20}>Newest</MenuItem>
               <MenuItem value={30}>Highest Rating</MenuItem>
@@ -452,7 +441,40 @@ const SinglePostPage = () => {
           );
         })
       ) : (
-        <Typography variant="h6">No Reviews</Typography>
+        <Box
+          mt={5}
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <Divider
+            sx={{
+              color: 'light.main',
+              '&::before, &::after': {
+                borderColor: 'light.main',
+              },
+              width: '100vw',
+              p: '30px',
+            }}
+          >
+            No reviews
+          </Divider>
+          <Button
+            variant="contained"
+            sx={{
+              width: '300px',
+              borderRadius: 5,
+              bgcolor: 'secondary.main',
+              '&.MuiButton-root:hover': {
+                bgcolor: 'secondary.main',
+              },
+            }}
+          >
+
+            Please help us write a review!
+          </Button>
+        </Box>
       )}
     </Container>
   );

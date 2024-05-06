@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Box, Typography, LinearProgress } from '@mui/material';
+import axios from 'axios';
+
 
 const StatsPage = () => {
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      
+      try {
+        const response = await axios.get(`http://localhost:3000/api/stats`).then((res) => {
+          console.log("user: ", res.data);
+          setUser(res.data)
+        })
+      } catch (error) {
+        console.log("Error fetching user: ", error);
+      }
+    }
+    fetchUser()
+  }, [])
+
+
   return (
     <>
       <Container

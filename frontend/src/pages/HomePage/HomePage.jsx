@@ -50,7 +50,7 @@ const HomePage = () => {
       <Typography variant="h1">Hello Lectermo</Typography>
       <SearchBar />
       <LandingPosts posts={posts} />
-      <IconButton
+      {/* <IconButton
         sx={{
           bgcolor: 'secondary.main',
           width: '60px',
@@ -67,9 +67,9 @@ const HomePage = () => {
         }}
       >
         <ArrowDownwardIcon sx={{ fontSize: 50 }} />
-      </IconButton>
+      </IconButton> */}
 
-      <Footer />
+      <Footer/>
     </Box>
   );
 };
