@@ -138,7 +138,7 @@ const LandingPosts = ({ posts }) => {
                         color="#78858F"
                         sx={{ lineHeight: 3 }}
                       >
-                        {/* {new Date(post.updatedAt).toLocaleDateString()} */}
+                        {new Date(post.updatedAt).toLocaleDateString()}
                       </Typography>
                     </CardContent>
                   </Box>

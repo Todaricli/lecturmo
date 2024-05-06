@@ -12,16 +12,150 @@ import {
   FormControl,
   Card,
   CardContent,
-  Avatar
+  Avatar,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-
-
+import axios from 'axios';
+import { useSearchParams } from 'react-router-dom';
 
 const SinglePostPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [course, setCourse] = useState([]);
+  const [courseId, setCourseId] = useState();
+  const [sortBy, setSortBy] = useState(20);
+  const [reviews, setReview] = useState()
+
+  const calculateOverallRating = (course) => {
+    if (!course || !course.reviews || course.reviews.length === 0) {
+      return 0;
+    }
+
+    let totalRating = 0;
+    let totalReviews = course.reviews.length;
+
+    course.reviews.forEach((review) => {
+      const averageRating =
+        (review.difficultyRating +
+          review.contentRating +
+          review.qualityRating) /
+        3;
+      totalRating += averageRating;
+    });
+
+    const overallRating = totalRating / totalReviews;
+    // console.log(overallRating);
+    return overallRating;
+  };
+
+  const calculateOverallDifficulty = (course) => {
+    if (!course || !course.reviews || course.reviews.length === 0) {
+      return 0;
+    }
+
+    let totalDifficulty = 0;
+    let totalReviews = course.reviews.length;
+
+    course.reviews.forEach((review) => {
+      totalDifficulty += review.difficultyRating;
+    });
+
+    const overallDifficulty = totalDifficulty / totalReviews;
+    // console.log(overallDifficulty);
+    return overallDifficulty;
+  };
+
+  const calculateOverallContent = (course) => {
+    if (!course || !course.reviews || course.reviews.length === 0) {
+      return 0;
+    }
+
+    let totalContent = 0;
+    let totalReviews = course.reviews.length;
+
+    course.reviews.forEach((review) => {
+      totalContent += review.contentRating;
+    });
+
+    const overallContent = totalContent / totalReviews;
+    // console.log(overallContent);
+    return overallContent;
+  };
+
+  const calculateOverallQuality = (course) => {
+    if (!course || !course.reviews || course.reviews.length === 0) {
+      return 0;
+    }
+
+    let totalQuality = 0;
+    let totalReviews = course.reviews.length;
+
+    course.reviews.forEach((review) => {
+      totalQuality += review.qualityRating;
+    });
+
+    const overallQuality = totalQuality / totalReviews;
+    return overallQuality;
+  };
+
+  const calculateSingleRating = (review) => {
+    if (!review.difficultyRating && !review.qualityRating && !review.contentRating) return 0;
+
+    let totalRating = (review.difficultyRating + review.contentRating + review.qualityRating) / 3
+    return totalRating;
+  }
+
+  const sortReviews = (reviews) => {
+    switch (sortBy) {
+      case 30: // Highest Rating
+        return reviews
+          .slice()
+          .sort((a, b) => calculateSingleRating(b) - calculateSingleRating(a));
+      case 40: // Lowest Rating
+        return reviews
+          .slice()
+          .sort((a, b) => calculateSingleRating(a) - calculateSingleRating(b));
+      default: // Newest
+        return reviews
+          .slice()
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+  }
+
+  useEffect(()=>{
+    if(reviews != undefined){
+      setReview(sortReviews(reviews));
+    }
+    
+  },[reviews])
+
+
+  useEffect(() => {
+    setCourseId(searchParams.get('courseId'));
+  }, []);
+
+  useEffect(() => {
+    if (courseId != undefined) {
+      console.log(courseId);
+      const fetchData = async () => {
+        try {
+          const response = await axios
+            .get(`http://localhost:3000/api/courses/${courseId}`)
+            .then((res) => {
+              console.log('single course: ', res.data.reviews);
+              setCourse(res.data);
+              setReview(res.data.reviews)
+            });
+        } catch (error) {
+          console.log('Error fetching single post data: ', error);
+        }
+      };
+      fetchData();
+    }
+  }, [courseId]);
+
   return (
     <Container
       sx={{
@@ -41,10 +175,10 @@ const SinglePostPage = () => {
         }}
       >
         <Typography variant="h4" color="initial">
-          Compsci 732
+          {course.courseCode}
         </Typography>
         <Typography variant="subtitle1" color="initial">
-          Software Tools and Technique
+          {course.courseName}
         </Typography>
         <Divider sx={{ borderBottomWidth: 3 }} />
         <Box
@@ -60,19 +194,7 @@ const SinglePostPage = () => {
             mr={{ xs: '10px', md: '20px' }}
           >
             <Typography variant="body2" color="initial" align="justify">
-              State-of-the-art software development, particularly in teams,
-              requires the use of advanced tools to deliver high-quality
-              software across the many platforms that we encounter today. It is
-              characterized by a wide variety of techniques ranging from formal
-              to informal, from automated to manual operations and covering
-              programs as well as data. In industry, there is an increasing
-              demand to apply recent research to software development tools.
-              This course has a lecture component and a group project component
-              which work together to give a broad picture of current software
-              development and data management tool research. The group projects
-              are often exploring a novel take on interesting problems and offer
-              both an authentic application of software development practices
-              and an opportunity to deliver an exciting result.
+              {course.description}
             </Typography>
           </Box>
 
@@ -91,7 +213,12 @@ const SinglePostPage = () => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Rating size="small" defaultValue={3} readOnly />
+                <Rating
+                  size="small"
+                  value={calculateOverallRating(course)}
+                  precision={0.5}
+                  readOnly
+                />
               </Grid>
             </Grid>
             <Grid container direction={{ xs: 'column', sm: 'row', md: 'row' }}>
@@ -101,7 +228,12 @@ const SinglePostPage = () => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Rating size="small" defaultValue={3} readOnly />
+                <Rating
+                  size="small"
+                  value={calculateOverallDifficulty(course)}
+                  precision={0.5}
+                  readOnly
+                />
               </Grid>
             </Grid>
             <Grid container direction={{ xs: 'column', sm: 'row', md: 'row' }}>
@@ -111,7 +243,12 @@ const SinglePostPage = () => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Rating size="small" defaultValue={3} readOnly />
+                <Rating
+                  size="small"
+                  value={calculateOverallContent(course)}
+                  precision={0.5}
+                  readOnly
+                />
               </Grid>
             </Grid>
             <Grid container direction={{ xs: 'column', sm: 'row', md: 'row' }}>
@@ -121,7 +258,12 @@ const SinglePostPage = () => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Rating size="small" defaultValue={3} readOnly />
+                <Rating
+                  size="small"
+                  value={calculateOverallQuality(course)}
+                  precision={0.5}
+                  readOnly
+                />
               </Grid>
             </Grid>
           </Grid>
@@ -172,7 +314,8 @@ const SinglePostPage = () => {
             <Select
               labelId="post-select"
               id="post-select"
-              defaultValue={10}
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
               sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
               // MenuProps={{
               //   PaperProps: {
@@ -186,7 +329,6 @@ const SinglePostPage = () => {
               //   },
               // }}
             >
-              <MenuItem value={10}>Most Relevant</MenuItem>
               <MenuItem value={20}>Newest</MenuItem>
               <MenuItem value={30}>Highest Rating</MenuItem>
               <MenuItem value={40}>Lowest Rating</MenuItem>
@@ -195,92 +337,123 @@ const SinglePostPage = () => {
         </Stack>
       </Box>
 
-      <Grid mt={5} sx={{ width: '80%' }}>
-        <Card sx={{ borderRadius: 5 }}>
-          <CardContent sx={{ p: '20px' }}>
-            <Typography variant="body1" color="initial">
-              Very interesting and straightfoward paper, internals (lab reports)
-              were harshly marked but other than that, the mid-terms/exams are
-              extremely easy to do well in. I only got 56 and 63% respectively
-              for my lab reports but still managed an A whilst only spending a
-              day or less studying for the finals/mid terms. A+ is very
-              achievable provided you put effort into your lab reports.
-            </Typography>
-            <Grid container justifyContent="space-between" mt={2}>
-              <Grid item>
-                <Stack direction="row">
-                  <Typography variant="body1" color="initial">
-                    Overall:
-                  </Typography>
-                  <Rating size="small" defaultValue={3} />
-                </Stack>
+      {course.reviews && course.reviews.length > 0 ? (
+        reviews.map((review, index) => {
+          return (
+            <>
+              <Grid mt={5} sx={{ width: '80%' }} key={index}>
+                <Card sx={{ borderRadius: 5 }}>
+                  <CardContent sx={{ p: '20px' }}>
+                    <Typography variant="body1" color="initial">
+                      {review.content}
+                    </Typography>
+                    <Grid container justifyContent="space-between" mt={2}>
+                      <Grid item>
+                        <Stack direction="row">
+                          <Typography variant="body1" color="initial">
+                            Overall:
+                          </Typography>
+                          <Rating
+                            size="small"
+                            value={calculateSingleRating(review)}
+                            precision={0.5}
+                          />
+                        </Stack>
+                      </Grid>
+                      <Grid item>
+                        <Stack direction="row">
+                          <Typography variant="body1" color="initial">
+                            Difficulty:
+                          </Typography>
+                          <Rating
+                            size="small"
+                            value={review.difficultyRating}
+                            precision={0.5}
+                          />
+                        </Stack>
+                      </Grid>
+                      <Grid item>
+                        <Stack direction="row">
+                          <Typography variant="body1" color="initial">
+                            Content:
+                          </Typography>
+                          <Rating
+                            size="small"
+                            value={review.contentRating}
+                            precision={0.5}
+                          />
+                        </Stack>
+                      </Grid>
+                      <Grid item>
+                        <Stack direction="row">
+                          <Typography variant="body1" color="initial">
+                            Quality:
+                          </Typography>
+                          <Rating
+                            size="small"
+                            value={review.qualityRating}
+                            precision={0.5}
+                          />
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        mt: '15px',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Avatar
+                          sx={{ mr: '15px' }}
+                          src={review.userId.avatarPicture}
+                        />
+                        <Box>
+                          <Typography
+                            variant="body1"
+                            color="initial"
+                            sx={{ fontWeight: 'bold' }}
+                          >
+                            {review.userId.username}
+                          </Typography>
+                          <Typography variant="caption" color="initial">
+                            {new Date(review.createdAt).toLocaleDateString(
+                              'en-US',
+                              {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                              }
+                            )}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <FavoriteBorderIcon sx={{ color: 'heart.main' }} />
+                          <Typography variant="body1" color="initial">
+                            {review.likes.length}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
               </Grid>
-              <Grid item>
-                <Stack direction="row">
-                  <Typography variant="body1" color="initial">
-                    Difficulty:
-                  </Typography>
-                  <Rating size="small" defaultValue={3} />
-                </Stack>
-              </Grid>
-              <Grid item>
-                <Stack direction="row">
-                  <Typography variant="body1" color="initial">
-                    Content:
-                  </Typography>
-                  <Rating size="small" defaultValue={3} />
-                </Stack>
-              </Grid>
-              <Grid item>
-                <Stack direction="row">
-                  <Typography variant="body1" color="initial">
-                    Quality:
-                  </Typography>
-                  <Rating size="small" defaultValue={3} />
-                </Stack>
-              </Grid>
-            </Grid>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                mt:'15px'
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Avatar sx={{ mr: '15px' }} />
-                <Box>
-                  <Typography
-                    variant="body1"
-                    color="initial"
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    Sardo
-                  </Typography>
-                  <Typography variant="caption" color="initial">
-                    24 Feb 2024
-                  </Typography>
-                </Box>
-              </Box>
-              <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <FavoriteBorderIcon sx={{color: "heart.main"}}/>
-                  <Typography variant="body1" color="initial">
-                    10
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
+            </>
+          );
+        })
+      ) : (
+        <Typography variant="h6">No Reviews</Typography>
+      )}
     </Container>
   );
 };
