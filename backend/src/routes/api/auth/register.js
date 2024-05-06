@@ -2,6 +2,7 @@ import express from 'express';
 import { checkUsername, checkEmail, checkPasswordInput, checkPasswordsMatch, registerUser } from '../../../controllers/registerController.js';
 import validator from 'validator';
 import { isValidUOAEmail } from '../../../controllers/registerController.js';
+import { sendVerifyUniEmail } from '../../../controllers/sendVerifyEmailController.js';
 
 const router = express.Router();
 
@@ -13,8 +14,9 @@ router.post('/register/check-username', async (req, res) => {
 });
 
 router.post('/register/check-email', async (req, res) => {
-  const { email } = req.body;
-  const { verifyEmail } = req.body;
+  console.log("req.body:", req.body)
+  const { email, verifyEmail } = req.body;
+  console.log("req.body:", req.body)
   if (await checkEmail(email))
     return res.status(403).json({ message: 'Email already exists' });
   else if (verifyEmail) {
@@ -29,7 +31,7 @@ router.post('/register/check-email', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { username, email, password, confirmPassword, firstName, lastName, gender, avatarURL } = req.body;
+  const { username, email, password, confirmPassword, firstName, lastName, gender, avatarURL, verifyEmail, emailToken } = req.body;
 
   if (!username || !email || !password || !confirmPassword) {
     return res
@@ -60,10 +62,10 @@ router.post('/register', async (req, res) => {
 
 
   try {
-    const user = await registerUser({ username, email, password, firstName, lastName, gender, avatarURL, verifyEmail });
+    const user = await registerUser({ username, email, password, firstName, lastName, gender, avatarURL, verifyEmail, emailToken });
     if (verifyEmail) {
       // send email verification 
-      
+      sendVerifyUniEmail({ username: username, emailToken: user.emailToken }, email);
     }
     res.status(200).json(user);
   } catch (e) {

@@ -31,6 +31,7 @@ import {
 } from '../../services/auth/registerAPIFetch';
 
 export default function RegisterPage() {
+  const [registerError, setRegisterError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -63,6 +64,7 @@ export default function RegisterPage() {
   // register dynamic validations and update form data
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
+    setRegisterError('')
     setFormData((prevData) => ({
       ...prevData,
       // if checkbox, use the checked, else use the value property
@@ -111,7 +113,8 @@ export default function RegisterPage() {
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
-    await registerUser(formData);
+    const res = await registerUser(formData);
+    setRegisterError(res && res.error ? res.message : '');
   };
 
   const handleClickShowPassword = () => {
@@ -271,6 +274,11 @@ export default function RegisterPage() {
           >
             Register
           </Button>
+          {registerError && (
+            <Typography color="error" align='center'>
+              {registerError}
+            </Typography>
+          )}
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />

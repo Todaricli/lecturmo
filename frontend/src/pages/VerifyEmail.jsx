@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import axios from 'axios';
+import { AuthContext } from '../contexts/AuthContextProvider';
 
-/**
- * This page just to show how frontend can be implemented to verify user's email
- * without authContext, it is bit tedious.
- */
 const VerifyEmail = () => {
+  const [open, setOpen] = useState(false);
   const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -14,38 +14,29 @@ const VerifyEmail = () => {
   const navigate = useNavigate();
 
   const emailToken = searchParams.get('emailToken');
+  console.log("emailToken:", emailToken)
 
   useEffect(() => {
     const process = async () => {
       try {
         setIsLoading(true);
 
-        const userFromSession = await axios.get(
-          'http://localhost:3000/api/auth/status'
-        );
-        if (!userFromSession) return navigate('/login');
+        if (emailToken) {
+          const justVerifiedUser = await axios
+            .post(
+              `http://localhost:3000/api/auth/verify-email-token`,
+              { emailToken }
+            )
+            .then((response) => {
+              setOpen(true);
+              setTimeout(() => {
+                navigate('/login', { replace: false });
+              }, 6000);
+              return response.data; // Return the response data
+            })
+            .catch((e) => alert(e));
 
-        setUser(userFromSession);
-
-        if (user?.isVerified) {
-          setTimeout(() => {
-            return navigate('/');
-          }, 3000);
-        } else {
-          if (emailToken) {
-            const justVerifiedUser = await axios
-              .post(
-                `http://localhost:3000/api/reg//verify-email-token`,
-                emailToken
-              )
-              .then(() => {
-                alert('redirect to login in');
-                navigate('/login', { replace: true });
-              })
-              .catch((e) => alert(e));
-
-            setUser(justVerifiedUser);
-          }
+          setUser(justVerifiedUser);
         }
       } catch {
         setError(true);
@@ -53,12 +44,12 @@ const VerifyEmail = () => {
     };
 
     process();
+  }, [emailToken, navigate]);
 
-    if (error) {
-      alert('Error, verification failed!');
-      return navigate('/login');
-    }
-  });
+  if (error) {
+    alert('Error, verification failed!');
+    return navigate('/login');
+  }
 
   return (
     <>
@@ -73,6 +64,11 @@ const VerifyEmail = () => {
           )}
         </div>
       )}
+      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
+        <Alert onClose={() => setOpen(false)} severity="success" sx={{ width: '100%' }}>
+          Successfully verified!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

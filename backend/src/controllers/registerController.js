@@ -36,6 +36,9 @@ export const checkPasswordsMatch = (password, confirmPassword) => {
 export const registerUser = async (userData) => {
   const { username, email, password, firstName, lastName, gender, avatarURL } = userData;
 
+  const emailToken = crypto.randomBytes(32).toString('hex');
+  console.log("emailToken:", emailToken)
+
   const user = new User({
     fname: firstName,
     lname: lastName,
@@ -44,7 +47,7 @@ export const registerUser = async (userData) => {
     email: email,
     password: await hashPassword(password),
     avatarPicture: avatarURL,
-    emailToken: crypto.randomBytes(32).toString('hex'),
+    emailToken: emailToken,
   });
 
   await user.save();
@@ -55,5 +58,6 @@ export const registerUser = async (userData) => {
     gender: gender,
     username: username,
     email: email,
+    emailToken: emailToken,
   };
 };
