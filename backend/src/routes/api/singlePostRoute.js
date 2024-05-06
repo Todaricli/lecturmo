@@ -7,22 +7,27 @@ import mongoose from 'mongoose';
 
 const SinglePageRouters = Router();
 
-SinglePageRouters.post('/single-page', async (req, res) => {
-  const courseId = '663724f42816e5b79db854a2';
+SinglePageRouters.get('/courses/:courseId', async (req, res) => {
+  const courseId = req.params.courseId;
 
-  const course = await Course.find({ _id: courseId }).populate({
-    path: 'reviews',
-    populate: {
-      path: 'userId',
-      select: 'name avatarPicture',
-    },
-  });
+ try {
+   const course = await Course.findById(courseId).populate({
+     path: 'reviews',
+     populate: {
+       path: 'userId',
+       select: 'username avatarPicture',
+     },
+   });
 
-  if (!course) {
-    return res.json({ error: 'Course not found' });
-  }
+   if (!course) {
+     return res.status(404).json({ error: 'Course not found' });
+   }
 
-  res.send(course);
+   res.json(course);
+ } catch (error) {
+   console.error('Error fetching course data:', error);
+   res.status(500).json({ error: 'Internal server error' });
+ }
 });
 
 export default SinglePageRouters;
