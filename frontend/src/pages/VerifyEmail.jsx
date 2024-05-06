@@ -8,8 +8,7 @@ import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContextProvider';
 
 const VerifyEmail = () => {
-  const { user, fetchUserDetails } =
-    useContext(AuthContext);
+  const { user, fetchUserDetails } = useContext(AuthContext);
 
   const [hasFetchedUserDetails, setHasFetchedUserDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +25,9 @@ const VerifyEmail = () => {
 
         if (emailToken) {
           await axios
-            .post(
-              `http://localhost:3000/api/auth/verify-email-token`,
-              { emailToken }
-            )
+            .post(`http://localhost:3000/api/auth/verify-email-token`, {
+              emailToken,
+            })
             .then(async (response) => {
               await fetchUserDetails();
               setHasFetchedUserDetails(true);
@@ -38,7 +36,7 @@ const VerifyEmail = () => {
             .catch((e) => alert(e));
         }
       } catch (err) {
-        console.log("err:", err)
+        console.log('err:', err);
         setError(true);
       }
     };
@@ -49,15 +47,21 @@ const VerifyEmail = () => {
   useEffect(() => {
     if (hasFetchedUserDetails) {
       if (user) {
-        navigate('/home', { state: { message: 'Successfully verified!' }, replace: true });
+        navigate('/home', {
+          state: { message: 'Successfully verified!' },
+          replace: true,
+        });
       } else {
-        navigate('/login', { state: { message: 'Successfully verified!' }, replace: true });
+        navigate('/login', {
+          state: { message: 'Successfully verified!' },
+          replace: true,
+        });
       }
     }
   }, [user, navigate, hasFetchedUserDetails]);
 
   if (error) {
-    console.log("error:", error)
+    console.log('error:', error);
     alert('Error, verification failed!');
     return navigate('/login');
   }
@@ -82,7 +86,9 @@ const VerifyEmail = () => {
       ) : (
         <>
           {user?.isVerified ? (
-            <Alert severity="success">Successfully verified, redirecting...</Alert>
+            <Alert severity="success">
+              Successfully verified, redirecting...
+            </Alert>
           ) : (
             <Alert severity="error">
               ERROR!!! {error.error ? error.message : 'unknown'}

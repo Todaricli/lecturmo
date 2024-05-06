@@ -18,7 +18,7 @@ import {
   FormControl,
   FormHelperText,
   Snackbar,
-  Alert
+  Alert,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
@@ -40,7 +40,7 @@ export default function LoginPage() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (message === "Successfully verified!") {
+    if (message === 'Successfully verified!') {
       setOpen(true);
     }
   }, [message]);

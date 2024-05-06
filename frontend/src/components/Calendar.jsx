@@ -15,7 +15,7 @@ export default function DatePickerValue({ value, onChange }) {
           onChange={(newValue) => onChange(newValue)}
           sx={{
             '& .Mui-error': {
-              color: '#666161', 
+              color: '#666161',
             },
             '.MuiOutlinedInput-notchedOutline': {
               borderColor: '#c4bbbb !important',

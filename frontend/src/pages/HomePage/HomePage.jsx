@@ -12,7 +12,6 @@ import { useLocation } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
 
 const HomePage = () => {
-
   const theme = useTheme();
   const location = useLocation();
   const message = location.state?.message;
@@ -29,10 +28,9 @@ const HomePage = () => {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
 
-
   useEffect(() => {
-    console.log("message:", message)
-    if (message === "Successfully verified!") {
+    console.log('message:', message);
+    if (message === 'Successfully verified!') {
       setOpen(true);
     }
   }, [message]);
@@ -78,14 +76,21 @@ const HomePage = () => {
       >
         <ArrowDownwardIcon sx={{ fontSize: 50 }} />
       </IconButton>
-      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
-        <Alert onClose={() => setOpen(false)} severity="success" sx={{ width: '100%' }}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
           Successfully verified!
         </Alert>
       </Snackbar>
 
       <Footer />
-
     </Box>
   );
 };

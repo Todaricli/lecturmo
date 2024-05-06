@@ -64,7 +64,7 @@ export default function RegisterPage() {
   // register dynamic validations and update form data
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
-    setRegisterError('')
+    setRegisterError('');
     setFormData((prevData) => ({
       ...prevData,
       // if checkbox, use the checked, else use the value property
@@ -83,7 +83,7 @@ export default function RegisterPage() {
       } else if (name === 'email') {
         const res = await checkEmailInput({
           email: value,
-          verifyEmail: formData.verifyEmail
+          verifyEmail: formData.verifyEmail,
         });
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       } else if (name === 'password') {
@@ -103,7 +103,7 @@ export default function RegisterPage() {
         setFormData((prevData) => ({ ...prevData, verifyEmail: checked }));
         const res = await checkEmailInput({
           email: formData.email,
-          verifyEmail: checked
+          verifyEmail: checked,
         });
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       }
@@ -244,10 +244,16 @@ export default function RegisterPage() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Calendar value={formData.dateOfBirth} onChange={handleDateOfBirthChange} />
+              <Calendar
+                value={formData.dateOfBirth}
+                onChange={handleDateOfBirthChange}
+              />
             </Grid>
             <Grid item xs={12}>
-              <AvatarSelector value={formData.avatarURL} onChange={handleAvatarChange} />
+              <AvatarSelector
+                value={formData.avatarURL}
+                onChange={handleAvatarChange}
+              />
             </Grid>
           </Grid>
           <Button
@@ -275,7 +281,7 @@ export default function RegisterPage() {
             Register
           </Button>
           {registerError && (
-            <Typography color="error" align='center'>
+            <Typography color="error" align="center">
               {registerError}
             </Typography>
           )}
