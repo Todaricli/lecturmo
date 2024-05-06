@@ -17,7 +17,7 @@ export const AuthContextProvider = ({ children }) => {
   const [isLogoutUserLoading, setIsLogoutUserLoading] = useState(false);
 
   useEffect(() => {
-    // console.log('Updated user:', user); // This will log updated user details
+    console.log('Updated user:', user); // This will log updated user details
   }, [user]);
   // Function to fetch user details if not already in memory
   const fetchUserDetails = useCallback(async () => {

@@ -14,16 +14,9 @@ import { Snackbar, Alert } from '@mui/material';
 const HomePage = () => {
   const theme = useTheme();
   const location = useLocation();
-  const message = location.state?.message;
+  const message = location.state?.message
 
-  const { user, fetchUserDetails, isFetchUserLoading, fetchUserError } =
-    useContext(AuthContext);
-  useEffect(() => {
-    fetchUserDetails();
-  }, [fetchUserDetails]);
-
-  if (isFetchUserLoading) return <div>Loading...</div>;
-  if (fetchUserError) return <div>Error: {JSON.stringify(fetchUserError)}</div>;
+  
 
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);

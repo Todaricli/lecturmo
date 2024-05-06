@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContextProvider';
+import Loading from '../components/Loading';
 
 const VerifyEmail = () => {
   const { user, fetchUserDetails } = useContext(AuthContext);

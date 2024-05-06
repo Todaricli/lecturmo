@@ -12,7 +12,7 @@ export const usersJSON = [
     rank: 'gold',
     profileDescription:
       'Senior Lecturer in Computer Science with a focus on AI and machine learning.',
-    avatarPicture: 'https://example.com/path/to/johnsmith/avatar.jpg',
+    avatarPicture: '/assets/Avatar/bird1.png',
     roles: 'lecturer',
     courses: [
       {
@@ -35,7 +35,7 @@ export const usersJSON = [
     rank: 'silver',
     profileDescription:
       'Expert in Data Structures and Algorithms, passionate about coding education.',
-    avatarPicture: 'https://example.com/path/to/janedoe/avatar.jpg',
+    avatarPicture:  '/assets/Avatar/girl1.png',
     roles: 'lecturer',
     courses: [],
     isVerified: true,
@@ -53,7 +53,7 @@ export const usersJSON = [
     rank: 'bronze',
     profileDescription:
       'Lecturer in Network Security, with a focus on cryptographic solutions.',
-    avatarPicture: 'https://example.com/path/to/alicejohnson/avatar.jpg',
+    avatarPicture: '/assets/Avatar/girl2.png',
     roles: 'lecturer',
     courses: [],
     isVerified: true,
@@ -71,7 +71,7 @@ export const usersJSON = [
     rank: 'gold',
     profileDescription:
       'Experienced lecturer in Software Engineering, specializing in Agile methodologies.',
-    avatarPicture: 'https://example.com/path/to/bobbrown/avatar.jpg',
+    avatarPicture: '/assets/Avatar/boy2.png',
     roles: 'lecturer',
     courses: [],
     isVerified: true,
@@ -89,7 +89,7 @@ export const usersJSON = [
     rank: 'gold',
     profileDescription:
       'Dedicated lecturer in Database Systems, passionate about scalable solutions.',
-    avatarPicture: 'https://example.com/path/to/clarablue/avatar.jpg',
+    avatarPicture: '/assets/Avatar/girl4.png',
     roles: 'lecturer',
     courses: [],
     isVerified: true,
@@ -109,7 +109,7 @@ export const usersJSON = [
     rank: 'none',
     profileDescription:
       'Eager learner in software development, with a focus on mobile applications.',
-    avatarPicture: 'https://example.com/path/to/johndoe/avatar.jpg',
+    avatarPicture: '/assets/Avatar/boy3.png',
     roles: 'student',
     courses: [],
     isVerified: false,
@@ -127,7 +127,7 @@ export const usersJSON = [
     rank: 'bronze',
     profileDescription:
       'Enthusiastic about environmental science and data analysis.',
-    avatarPicture: 'https://example.com/path/to/emilywhite/avatar.jpg',
+    avatarPicture: '/assets/Avatar/girl5.png',
     roles: 'student',
     courses: [],
     isVerified: true,
@@ -145,7 +145,7 @@ export const usersJSON = [
     rank: 'silver',
     profileDescription:
       'Studying computer networking, with a keen interest in cybersecurity.',
-    avatarPicture: 'https://example.com/path/to/michaelbrown/avatar.jpg',
+    avatarPicture: '/assets/Avatar/boy6.png',
     roles: 'student',
     courses: [],
     isVerified: false,
@@ -163,7 +163,7 @@ export const usersJSON = [
     rank: 'gold',
     profileDescription:
       'Future software engineer with an interest in AI and machine learning.',
-    avatarPicture: 'https://example.com/path/to/sophiagreen/avatar.jpg',
+    avatarPicture: '/assets/Avatar/girl7.png',
     roles: 'student',
     courses: [],
     isVerified: true,
@@ -181,7 +181,7 @@ export const usersJSON = [
     rank: 'gold',
     profileDescription:
       'Pursuing a degree in information systems with a passion for big data.',
-    avatarPicture: 'https://example.com/path/to/oliversmith/avatar.jpg',
+    avatarPicture: '/assets/Avatar/boy8.png',
     roles: 'student',
     courses: [],
     isVerified: false,

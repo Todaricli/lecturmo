@@ -9,8 +9,9 @@ import {
   IconButton,
   Paper,
   InputBase,
+  CircularProgress,
 } from '@mui/material';
-import React from 'react';
+import React, { useContext } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -18,8 +19,19 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import EmailIcon from '@mui/icons-material/Email';
 import { Link } from 'react-router-dom';
+import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
+import { AuthContext } from '../../contexts/AuthContextProvider';
+import Loading from '../../components/Loading';
+
 
 const UserProfilePage = () => {
+  const { user } = useContext(AuthContext);
+  useRedirectToLoginIfNotLoggedIn();
+
+  if (user === null) {
+    return <Loading />
+  }
+
   return (
     <Box
       sx={{
@@ -60,7 +72,7 @@ const UserProfilePage = () => {
             <CardMedia
               component="img"
               title="profile img"
-              image="/assets/dog.jpg"
+              image={user.avatarPicture}
               sx={{ width: 180, height: '230px', borderRadius: 4 }}
             />
             <CardContent>
@@ -69,31 +81,31 @@ const UserProfilePage = () => {
                 color="initial"
                 sx={{ paddingBottom: '10px' }}
               >
-                Sheldon Sheldon
+                {user.fname} {user.lname}
               </Typography>
               <Typography variant="body2" color="#78858F">
                 Email
               </Typography>
               <Typography variant="subtitle2" color="initial">
-                Sheldon.S@gmail.com
+                {user.email}
               </Typography>
               <Typography variant="body2" color="#78858F">
                 Date of Birth
               </Typography>
               <Typography variant="subtitle2" color="initial">
-                December 27, 2024
-              </Typography>
-              <Typography variant="body2" color="#78858F">
-                University
-              </Typography>
-              <Typography variant="subtitle2" color="initial">
-                University of Auckland
+                {new Date(user.dob).toLocaleDateString()}
               </Typography>
               <Typography variant="body2" color="#78858F">
                 Gender
               </Typography>
               <Typography variant="subtitle2" color="initial">
-                Female
+                {user.gender}
+              </Typography>
+              <Typography variant="body2" color="#78858F">
+                Rank
+              </Typography>
+              <Typography variant="subtitle2" color="initial">
+                {user.rank}
               </Typography>
             </CardContent>
           </Card>
@@ -105,9 +117,7 @@ const UserProfilePage = () => {
               Bio
             </Typography>
             <Typography variant="body2" color="initial">
-              Lorem ipsum dolor sit amet, consectetur adipi scing elit. Tortor
-              turpis sodales nulla velit. Nunc cum vitae, rhoncus leo id.
-              Volutpat Duis tinunt pretium luctus pulvinar pretium.
+              {user.profileDescription}
             </Typography>
           </CardContent>
         </Card>
@@ -134,27 +144,29 @@ const UserProfilePage = () => {
           </CardContent>
         </Card>
 
-        <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>
-          <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6" color="initial">
-              Resend email verification
-            </Typography>
-            <Paper
-              component="form"
-              sx={{
-                boxShadow: 'none',
-                bgcolor: 'grey.main',
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <InputBase placeholder="Enter your email" sx={{ padding: 1 }} />
-              <IconButton sx={{ p: '10px' }} aria-label="menu">
-                <EmailIcon />
-              </IconButton>
-            </Paper>
-          </CardContent>
-        </Card>
+        {!user.isVerified && (
+          <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>
+            <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="h6" color="initial">
+                Resend email verification
+              </Typography>
+              <Paper
+                component="form"
+                sx={{
+                  boxShadow: 'none',
+                  bgcolor: 'grey.main',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <InputBase placeholder="Enter your email" value={user.email} sx={{ padding: 1 }} />
+                <IconButton sx={{ p: '10px' }} aria-label="menu">
+                  <EmailIcon />
+                </IconButton>
+              </Paper>
+            </CardContent>
+          </Card>
+        )}
 
         <Button
           variant="contained"
