@@ -122,6 +122,14 @@ export default function RegisterPage() {
     setFormData({ ...formData, gender: event.target.value });
   };
 
+  const handleDateOfBirthChange = (date) => {
+    setFormData({ ...formData, dateOfBirth: date });
+  };
+
+  const handleAvatarChange = (avatarURL) => {
+    setFormData({ ...formData, avatarURL: avatarURL });
+  };
+
   return (
     <Container
       component="main"
@@ -229,10 +237,10 @@ export default function RegisterPage() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Calendar />
+              <Calendar value={formData.dateOfBirth} onChange={handleDateOfBirthChange}/>
             </Grid>
             <Grid item xs={12}>
-              <AvatarSelector />
+              <AvatarSelector value={formData.avatarURL} onChange={handleAvatarChange} />
             </Grid>
           </Grid>
           <Button

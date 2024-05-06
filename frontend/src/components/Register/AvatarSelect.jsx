@@ -7,12 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-export default function AvatarSelect() {
-  const [avatar, setAvatar] = useState('');
-  const handleChange = (event) => {
-    setAvatar(event.target.value);
-  };
-
+export default function AvatarSelect({ value, onChange }) {
   return (
     <FormControl>
       <FormLabel id="avatar">Choose your avatar*</FormLabel>
@@ -22,14 +17,14 @@ export default function AvatarSelect() {
             key={index}
             sx={{
               cursor: 'pointer',
-              ...(avatar === index && { backgroundColor: 'lightgray' }),
+              ...(value === item && { backgroundColor: 'lightgray' }),
             }}
           >
             <RadioGroup
               aria-labelledby="avatar-group"
               name="avatar-group"
-              value={avatar}
-              onClick={() => setAvatar(index)}
+              value={value}
+              onClick={() => onChange(item)}
               sx={{ '&:hover': { backgroundColor: 'lightgrey' } }}
             >
               <FormControlLabel
