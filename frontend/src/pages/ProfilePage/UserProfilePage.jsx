@@ -5,7 +5,6 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  CardActions,
   IconButton,
   Paper,
   InputBase,
@@ -31,6 +30,7 @@ const UserProfilePage = () => {
     <Box
       sx={{
         marginTop: '50px',
+        marginBottom: '50px',
         bgcolor: 'primary.main',
         height: '100vh',
         borderTopLeftRadius: 20,
@@ -68,7 +68,7 @@ const UserProfilePage = () => {
               component="img"
               title="profile img"
               image={user.avatarPicture}
-              sx={{ width: 250, height: '230px', borderRadius: 4 }}
+              sx={{ width: 250, height: 250, borderRadius: 4 }}
             />
             <CardContent>
               <Typography
@@ -158,7 +158,7 @@ const UserProfilePage = () => {
         <Button
           variant="contained"
           color="secondary"
-          sx={{ marginTop: 5, borderRadius: 4 }}
+          sx={{ marginTop: 5, borderRadius: 4, marginBottom: 5}}
           component={Link}
           to="/edit-profile"
         >
