@@ -23,7 +23,8 @@ const VerifyEmail = () => {
         const userFromSession = await axios.get(
           'http://localhost:3000/api/auth/status'
         );
-        if (!userFromSession) return navigate('/login');
+        
+        if (!userFromSession || userFromSession.status !== 201) return navigate('/login');
 
         setUser(userFromSession);
 
@@ -45,6 +46,11 @@ const VerifyEmail = () => {
               .catch((e) => alert(e));
 
             setUser(justVerifiedUser);
+          } else {
+            setError(true)
+            setIsLoading(false)
+            alert('rediect to login in')
+            navigate("/login")
           }
         }
       } catch {
