@@ -15,10 +15,6 @@ import {
   Typography,
   Container,
   IconButton,
-  InputLabel,
-  FormControl,
-  MenuItem,
-  Select,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
@@ -83,7 +79,10 @@ export default function RegisterPage() {
         const res = await checkIfUserExists({ username: value });
         setUsernameError(res && res.error ? res.message : '');
       } else if (name === 'email') {
-        const res = await checkEmailInput({ email: value });
+        const res = await checkEmailInput({
+          email: value,
+          verifyEmail: formData.verifyEmail
+        });
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       } else if (name === 'password') {
         const res = await checkPasswordInput({ password: value });
@@ -100,6 +99,11 @@ export default function RegisterPage() {
         );
       } else if (name === 'verifyEmail') {
         setFormData((prevData) => ({ ...prevData, verifyEmail: checked }));
+        const res = await checkEmailInput({
+          email: formData.email,
+          verifyEmail: checked
+        });
+        setEmailError(res && res.error && value.length > 0 ? res.message : '');
       }
     }, 500);
   };
@@ -237,7 +241,7 @@ export default function RegisterPage() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Calendar value={formData.dateOfBirth} onChange={handleDateOfBirthChange}/>
+              <Calendar value={formData.dateOfBirth} onChange={handleDateOfBirthChange} />
             </Grid>
             <Grid item xs={12}>
               <AvatarSelector value={formData.avatarURL} onChange={handleAvatarChange} />

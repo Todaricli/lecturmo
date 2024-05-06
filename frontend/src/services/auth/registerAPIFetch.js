@@ -11,7 +11,7 @@ export const checkIfUserExists = async (body) => {
 export const checkEmailInput = async (body) => {
   const res = await postRequest(
     'http://localhost:3000/api/auth/register/check-email',
-    body
+    body,
   );
   return res;
 };

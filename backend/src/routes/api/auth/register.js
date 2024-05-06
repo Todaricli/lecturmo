@@ -14,8 +14,14 @@ router.post('/register/check-username', async (req, res) => {
 
 router.post('/register/check-email', async (req, res) => {
   const { email } = req.body;
+  const { verifyEmail } = req.body;
   if (await checkEmail(email))
     return res.status(403).json({ message: 'Email already exists' });
+  else if (verifyEmail) {
+    if (!isValidUOAEmail(email)) {
+      return res.status(403).json({ message: 'Please provide valid University of Auckland email.' });
+    }
+  }
   else if (!validator.isEmail(email)) {
     return res.status(403).json({ message: 'Please provide valid email.' });
   }
@@ -42,14 +48,23 @@ router.post('/register', async (req, res) => {
     return res.status(403).json({ message: 'Passwords do not match.' });
   }
 
-  if (!validator.isEmail(email))
-    return res.status(403).json({ message: 'Please provide valid email.' });
-
   if (await checkEmail(email))
     return res.status(403).json({ message: 'Email already exists' });
 
+  if (!isValidUOAEmail(email)) {
+    return res.status(403).json({ message: 'Please provide valid University of Auckland email.' });
+  }
+
+  if (!validator.isEmail(email))
+    return res.status(403).json({ message: 'Please provide valid email.' });
+
+
   try {
-    const user = await registerUser({ username, email, password, firstName, lastName, gender, avatarURL });
+    const user = await registerUser({ username, email, password, firstName, lastName, gender, avatarURL, verifyEmail });
+    if (verifyEmail) {
+      // send email verification 
+      
+    }
     res.status(200).json(user);
   } catch (e) {
     console.log(e.message);
