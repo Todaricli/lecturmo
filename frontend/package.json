@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "vitest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost:5173/"
   },
   "scripts": {
     "dev": "vite",
@@ -26,6 +27,7 @@
     "@tanstack/react-query-devtools": "^5.32.0",
     "@testing-library/react": "^15.0.6",
     "@testing-library/user-event": "^14.5.2",
+    "@vitest/spy": "^1.6.0",
     "axios": "^1.6.8",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.11",
