@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   InputAdornment,
   IconButton,
@@ -7,10 +7,7 @@ import {
   FormControl,
   FormHelperText,
 } from '@mui/material';
-import {
-  Visibility,
-  VisibilityOff,
-} from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const PasswordField = ({
   showPassword,
@@ -18,7 +15,7 @@ const PasswordField = ({
   handleChange,
   passwordError,
   handleClickShowPassword,
-  handleMouseDownPassword
+  handleMouseDownPassword,
 }) => {
   return (
     <FormControl fullWidth required variant="outlined">
@@ -44,9 +41,11 @@ const PasswordField = ({
         }
         label="Password"
       />
-      <FormHelperText style={{ color: '#d74343' }}>{passwordError}</FormHelperText>
+      <FormHelperText style={{ color: '#d74343' }}>
+        {passwordError}
+      </FormHelperText>
     </FormControl>
-  )
-}
+  );
+};
 
-export default PasswordField
+export default PasswordField;

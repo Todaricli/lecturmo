@@ -1,5 +1,5 @@
-import React from 'react'
-import { TextField } from '@mui/material'
+import React from 'react';
+import { TextField } from '@mui/material';
 
 const EmailField = ({ value, error, onChange }) => {
   return (
@@ -15,7 +15,7 @@ const EmailField = ({ value, error, onChange }) => {
       error={Boolean(error)}
       helperText={error}
     />
-  )
-}
+  );
+};
 
-export default EmailField
+export default EmailField;

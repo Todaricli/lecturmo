@@ -58,11 +58,7 @@ const Navbar = () => {
             Courses
           </Button>
           {user ? (
-            <Button
-              onClick={handleLogout}
-              color="inherit"
-              sx={styles.register}
-            >
+            <Button onClick={handleLogout} color="inherit" sx={styles.register}>
               Logout
             </Button>
           ) : (

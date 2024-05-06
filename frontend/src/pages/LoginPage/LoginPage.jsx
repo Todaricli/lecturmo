@@ -97,12 +97,7 @@ export default function LoginPage() {
         <Typography component="h1" variant="h5">
           Hi, Welcome Back! 👋
         </Typography>
-        <Box
-          component="form"
-          onSubmit={handleLogin}
-          noValidate
-          sx={{ mt: 1 }}
-        >
+        <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required

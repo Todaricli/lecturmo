@@ -1,5 +1,5 @@
-import React from 'react'
-import { TextField } from '@mui/material'
+import React from 'react';
+import { TextField } from '@mui/material';
 
 const ConfirmPasswordField = ({ value, error, onChange }) => {
   return (
@@ -14,7 +14,7 @@ const ConfirmPasswordField = ({ value, error, onChange }) => {
       error={Boolean(error)}
       helperText={error}
     />
-  )
-}
+  );
+};
 
-export default ConfirmPasswordField
+export default ConfirmPasswordField;

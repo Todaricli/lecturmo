@@ -71,7 +71,7 @@ export const theme = createTheme({
           },
         },
       },
-    }, 
+    },
   },
   typography: {
     button: {

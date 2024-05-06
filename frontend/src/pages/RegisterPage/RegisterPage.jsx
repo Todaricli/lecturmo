@@ -26,8 +26,13 @@ import {
 } from '@mui/icons-material';
 import Calendar from '../../components/Calendar';
 import AvatarSelector from '../../components/Register/AvatarSelect';
-import { checkIfUserExists, checkEmailInput, checkPasswordInput, checkPasswordsMatch, registerUser } from '../../services/auth/registerAPIFetch';
-
+import {
+  checkIfUserExists,
+  checkEmailInput,
+  checkPasswordInput,
+  checkPasswordsMatch,
+  registerUser,
+} from '../../services/auth/registerAPIFetch';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -82,13 +87,17 @@ export default function RegisterPage() {
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       } else if (name === 'password') {
         const res = await checkPasswordInput({ password: value });
-        setPasswordError(res && res.error && value.length > 0 ? res.message : '');
+        setPasswordError(
+          res && res.error && value.length > 0 ? res.message : ''
+        );
       } else if (name === 'confirmPassword') {
         const res = await checkPasswordsMatch({
           password: formData.password,
           confirmPassword: value,
         });
-        setConfirmPasswordError(res && res.error && value.length > 0 ? res.message : '');
+        setConfirmPasswordError(
+          res && res.error && value.length > 0 ? res.message : ''
+        );
       } else if (name === 'verifyEmail') {
         setFormData((prevData) => ({ ...prevData, verifyEmail: checked }));
       }
@@ -127,7 +136,12 @@ export default function RegisterPage() {
         paddingBottom: 5,
       }}
     >
-      <IconButton sx={{ marginTop: 1 }} color="initial" component={Link} href="/">
+      <IconButton
+        sx={{ marginTop: 1 }}
+        color="initial"
+        component={Link}
+        href="/"
+      >
         <ArrowBackIcon />
       </IconButton>
       <Box
@@ -144,7 +158,12 @@ export default function RegisterPage() {
         <Typography component="h1" variant="h5">
           Create your Account
         </Typography>
-        <Box component="form" noValidate onSubmit={handleRegisterSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleRegisterSubmit}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <UsernameField
@@ -220,7 +239,12 @@ export default function RegisterPage() {
             type="submit"
             fullWidth
             variant="contained"
-            disabled={usernameError !== '' || emailError !== '' || passwordError !== '' || confirmPasswordError !== ''}
+            disabled={
+              usernameError !== '' ||
+              emailError !== '' ||
+              passwordError !== '' ||
+              confirmPasswordError !== ''
+            }
             sx={{
               mt: 3,
               mb: 2,
@@ -238,7 +262,7 @@ export default function RegisterPage() {
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
-    </Container >
+    </Container>
   );
 }
 

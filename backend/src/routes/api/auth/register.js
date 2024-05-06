@@ -37,7 +37,8 @@ router.post('/register/check-email', async (req, res) => {
   const { email } = req.body;
   if (isValidEmail(email)) {
     const user = await User.find({ email });
-    if (user.length !== 0) return res.status(403).json({ message: 'Email already exists' });
+    if (user.length !== 0)
+      return res.status(403).json({ message: 'Email already exists' });
     return res.sendStatus(200);
   }
   return res.status(403).json({ message: 'Please enter a valid email' });
@@ -49,16 +50,16 @@ router.post('/register/check-email', async (req, res) => {
  */
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
-  console.log("req.body:", req.body)
+  console.log('req.body:', req.body);
 
   if (!username || !email || !password) {
-    return res.status(403).json({message: 'All key credentials fields are required.'});
+    return res
+      .status(403)
+      .json({ message: 'All key credentials fields are required.' });
   }
 
   if (!validator.isEmail(email))
-    return res.status(403).json({message: 'Please provide valid email.'});
-
-
+    return res.status(403).json({ message: 'Please provide valid email.' });
 
   try {
     const user = new User({

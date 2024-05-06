@@ -1,10 +1,5 @@
-import React from 'react'
-import {
-  InputLabel,
-  FormControl,
-  MenuItem,
-  Select,
-} from '@mui/material';
+import React from 'react';
+import { InputLabel, FormControl, MenuItem, Select } from '@mui/material';
 
 const GenderSelect = ({ value, onChange }) => {
   return (
@@ -23,7 +18,7 @@ const GenderSelect = ({ value, onChange }) => {
         <MenuItem value="other">Other</MenuItem>
       </Select>
     </FormControl>
-  )
-}
+  );
+};
 
-export default GenderSelect
+export default GenderSelect;
