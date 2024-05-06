@@ -23,13 +23,12 @@ import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginI
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import Loading from '../../components/Loading';
 
-
 const UserProfilePage = () => {
   const { user } = useContext(AuthContext);
   useRedirectToLoginIfNotLoggedIn();
 
   if (user === null) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -159,7 +158,11 @@ const UserProfilePage = () => {
                   justifyContent: 'space-between',
                 }}
               >
-                <InputBase placeholder="Enter your email" value={user.email} sx={{ padding: 1 }} />
+                <InputBase
+                  placeholder="Enter your email"
+                  value={user.email}
+                  sx={{ padding: 1 }}
+                />
                 <IconButton sx={{ p: '10px' }} aria-label="menu">
                   <EmailIcon />
                 </IconButton>

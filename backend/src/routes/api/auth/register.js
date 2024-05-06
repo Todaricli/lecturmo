@@ -27,11 +27,9 @@ router.post('/register/check-email', async (req, res) => {
     return res.status(403).json({ message: 'Email already exists' });
   else if (verifyEmail) {
     if (!isValidUOAEmail(email)) {
-      return res
-        .status(403)
-        .json({
-          message: 'Please provide valid University of Auckland email.',
-        });
+      return res.status(403).json({
+        message: 'Please provide valid University of Auckland email.',
+      });
     }
   } else if (!validator.isEmail(email)) {
     return res.status(403).json({ message: 'Please provide valid email.' });
@@ -63,12 +61,10 @@ router.post('/register', async (req, res) => {
     return res.status(403).json({ message: 'Username already exists' });
 
   if (!checkPasswordInput(password)) {
-    return res
-      .status(403)
-      .json({
-        message:
-          'Password must be at least 5 characters long and contain at least one special character.',
-      });
+    return res.status(403).json({
+      message:
+        'Password must be at least 5 characters long and contain at least one special character.',
+    });
   }
 
   if (!checkPasswordsMatch(password, confirmPassword)) {

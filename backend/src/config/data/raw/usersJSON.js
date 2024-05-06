@@ -35,7 +35,7 @@ export const usersJSON = [
     rank: 'silver',
     profileDescription:
       'Expert in Data Structures and Algorithms, passionate about coding education.',
-    avatarPicture:  '/assets/Avatar/girl1.png',
+    avatarPicture: '/assets/Avatar/girl1.png',
     roles: 'lecturer',
     courses: [],
     isVerified: true,

@@ -18,7 +18,13 @@ import { navbarStyles } from '../layouts/navbarStyles';
 import { AuthContext } from '../contexts/AuthContextProvider';
 
 const Navbar = () => {
-  const { user, logoutUser, fetchUserDetails, isFetchUserLoading, fetchUserError } = useContext(AuthContext);
+  const {
+    user,
+    logoutUser,
+    fetchUserDetails,
+    isFetchUserLoading,
+    fetchUserError,
+  } = useContext(AuthContext);
 
   useEffect(() => {
     fetchUserDetails();

@@ -1,9 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContextProvider';
 import Loading from '../components/Loading';
@@ -70,20 +67,7 @@ const VerifyEmail = () => {
   return (
     <>
       {isLoading ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-          }}
-        >
-          <CircularProgress size={80} />
-          <Typography variant="h6" mt={2}>
-            Verifying...
-          </Typography>
-        </Box>
+        <Loading content="Verifying..." />
       ) : (
         <>
           {user?.isVerified ? (

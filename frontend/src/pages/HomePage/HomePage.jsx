@@ -14,9 +14,7 @@ import { Snackbar, Alert } from '@mui/material';
 const HomePage = () => {
   const theme = useTheme();
   const location = useLocation();
-  const message = location.state?.message
-
-  
+  const message = location.state?.message;
 
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
