@@ -305,7 +305,7 @@ export const coursesJSON = [
   {
     course_dummy_id: 'INFOSYS_727',
     courseName: 'Advanced Information Security',
-    coursesCode: 'INFOSYS 727',
+    courseCode: 'INFOSYS 727',
     dummyLecId: 'lec1',
     description:
       "Focuses on technical security issues of the systems used in today's information technology applications. Explores the practical issues of identification and authentication, security of operating systems, cryptography, disaster recovery and contingency planning, and discusses the relevant theoretical models. Managerial aspects of information security issues as well as legal and ethical issues arising from protecting computer files both from a New Zealand and global perspective will be addressed. The course follows the content of CISSP certification.",
