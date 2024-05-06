@@ -2,7 +2,7 @@ export const usersJSON = [
   // LECTURERS
   {
     user_dummy_id: 'lec1',
-    fname: 'Professor',
+    fname: 'Prof.',
     lname: 'Da Man',
     gender: 'male',
     dob: new Date('1970-01-01'),

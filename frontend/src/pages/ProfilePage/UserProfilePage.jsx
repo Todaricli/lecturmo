@@ -9,14 +9,10 @@ import {
   IconButton,
   Paper,
   InputBase,
-  CircularProgress,
 } from '@mui/material';
 import React, { useContext } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import { Link } from 'react-router-dom';
 import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
@@ -72,17 +68,26 @@ const UserProfilePage = () => {
               component="img"
               title="profile img"
               image={user.avatarPicture}
-              sx={{ width: 180, height: '230px', borderRadius: 4 }}
+              sx={{ width: 250, height: '230px', borderRadius: 4 }}
             />
             <CardContent>
               <Typography
                 variant="h3"
                 color="initial"
-                sx={{ paddingBottom: '10px' }}
+                sx={{ paddingBottom: '10px', display: 'flex', alignItems: 'center' }}
               >
                 {user.fname} {user.lname}
+               
               </Typography>
-              <Typography variant="body2" color="#78858F">
+              {user.isVerified &&
+                  <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
+                    <CheckCircleIcon style={{ color: 'green' }} />
+                    <Typography variant="body2" color="text.secondary" sx={{ marginLeft: '5px' }}>
+                      Verified
+                    </Typography>
+                  </Box>
+                }
+              <Typography variant="body2" color="#78858F" marginTop={5}>
                 Email
               </Typography>
               <Typography variant="subtitle2" color="initial">
@@ -98,13 +103,13 @@ const UserProfilePage = () => {
                 Gender
               </Typography>
               <Typography variant="subtitle2" color="initial">
-                {user.gender}
+                {`${user.gender.charAt(0).toUpperCase()}${user.gender.slice(1).toLowerCase()}`}
               </Typography>
               <Typography variant="body2" color="#78858F">
                 Rank
               </Typography>
               <Typography variant="subtitle2" color="initial">
-                {user.rank}
+                {`${user.rank.charAt(0).toUpperCase()}${user.rank.slice(1).toLowerCase()}`}
               </Typography>
             </CardContent>
           </Card>
@@ -113,7 +118,7 @@ const UserProfilePage = () => {
         <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>
           <CardContent>
             <Typography variant="h6" color="initial">
-              Bio
+              About
             </Typography>
             <Typography variant="body2" color="initial">
               {user.profileDescription}
@@ -121,27 +126,6 @@ const UserProfilePage = () => {
           </CardContent>
         </Card>
 
-        <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>
-          <CardContent>
-            <Typography variant="h6" color="initial">
-              Links
-            </Typography>
-            <CardActions sx={{ paddingLeft: 0 }}>
-              <IconButton aria-label="twitter" sx={{ border: '2px solid' }}>
-                <TwitterIcon />
-              </IconButton>
-              <IconButton aria-label="linkedin" sx={{ border: '2px solid' }}>
-                <LinkedInIcon />
-              </IconButton>
-              <IconButton aria-label="facebook" sx={{ border: '2px solid' }}>
-                <FacebookIcon />
-              </IconButton>
-              <IconButton aria-label="instagram" sx={{ border: '2px solid' }}>
-                <InstagramIcon />
-              </IconButton>
-            </CardActions>
-          </CardContent>
-        </Card>
 
         {!user.isVerified && (
           <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>

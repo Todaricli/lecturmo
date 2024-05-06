@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UsernameField from '../../components/Register/UsernameField';
 import PasswordField from '../../components/Register/PasswordField';
 import ConfirmPasswordField from '../../components/Register/ConfirmPasswordField';
@@ -30,6 +31,7 @@ import {
   registerUser,
 } from '../../services/auth/registerAPIFetch';
 
+
 export default function RegisterPage() {
   const [registerError, setRegisterError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -52,6 +54,7 @@ export default function RegisterPage() {
 
   // persists across re-renders, prevents unnecessary API calls
   const timeoutRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -87,9 +90,17 @@ export default function RegisterPage() {
         });
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       } else if (name === 'password') {
-        const res = await checkPasswordInput({ password: value });
+        const res1 = await checkPasswordInput({ password: value });
         setPasswordError(
-          res && res.error && value.length > 0 ? res.message : ''
+          res1 && res1.error && value.length > 0 ? res1.message : ''
+        );
+        const res2 = await checkPasswordsMatch({
+          password: value,
+          confirmPassword: formData.confirmPassword,
+        });
+        console.log("res2:", res2)
+        setConfirmPasswordError(
+          res2 && res2.error && formData.confirmPassword.length > 0 ? res2.message : ''
         );
       } else if (name === 'confirmPassword') {
         const res = await checkPasswordsMatch({
@@ -115,6 +126,9 @@ export default function RegisterPage() {
     console.log(formData);
     const res = await registerUser(formData);
     setRegisterError(res && res.error ? res.message : '');
+    if (!res.error) {
+      navigate('/login');
+    }
   };
 
   const handleClickShowPassword = () => {
@@ -149,6 +163,7 @@ export default function RegisterPage() {
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         paddingBottom: 5,
+        marginBottom: "50px",
       }}
     >
       <IconButton
