@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
+import { useSearchParams } from 'react-router-dom';
 
-const QrCode = ({lecture, course}) => {
+const QrCode = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [qrCode, setQrCode] = useState('');
-  const [courseId, setCourseId] = useState('comp_sci_751');
   const [currentTime, setCurrentTime] = useState('');
+
+  const courseId = searchParams.get("course")
+  const lecture = searchParams.get("lecture")
 
   const getServerTime = async () => {
     const time = await fetch(
@@ -21,9 +25,6 @@ const QrCode = ({lecture, course}) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(()=>{
-    setCourseId(course)
-  },[])
 
   useEffect(() => {
     setQrCode(

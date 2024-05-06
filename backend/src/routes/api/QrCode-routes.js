@@ -39,29 +39,37 @@ QrRouters.post('/qr-code', async (req, res) => {
     return res.json('Date or courseId or lectureId undefined');
   }
 
-  try {
-    console.log('skeet');
-    const sket = await User.updateOne(
-      {
-        _id: usernameIdObject,
-        courses: { $elemMatch: { 'course.id': courseId } },
-      },
-      { $push: { 'courses.$.lectures': 576 } },
-    ).exec();
-    console.log(sket);
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  //   console.log('skeet');
+  //   const sket = await User.updateOne(
+  //     {
+  //       _id: usernameIdObject,
+  //       courses: { $elemMatch: { 'course.id': courseId } },
+  //     },
+  //     { $push: { 'courses.$.lectures': 576 } },
+  //   ).exec();
+  //   console.log(sket);
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
   //---------------------------set expiry time here skeet ------------------------------------
   if (difference < 30) {
 
-    try {
-      const skeet = await User.updateOne({_id: usernameIdObject},
-        {
-          $addToSet: {"courses": {courseId: courseId}}
-        }
-      ).exec()
+    // try {
+    //   const skeet = await User.updateOne({_id: usernameIdObject},
+    //     {
+    //       $addToSet: {"courses": {courseId: courseId}}
+    //     }
+    //   ).exec()
+
+    try{
+    const skeet = await User.updateOne(
+      { _id: usernameIdObject, "courses": { $not: { $elemMatch: { courseId: courseId } } } },
+      {
+        $addToSet: { "courses": { courseId: courseId } }
+      }
+    ).exec();
 
       const existingCourse = await User.findOne(
         { _id: usernameIdObject, 'courses': { $elemMatch: { courseId: courseId } } },

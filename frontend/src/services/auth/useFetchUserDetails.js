@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 
-export const useFetchUserDetails = () => {
+export default useFetchUserDetails = () => {
   const { fetchUserDetails } = useContext(AuthContext);
 
   useEffect(() => {
