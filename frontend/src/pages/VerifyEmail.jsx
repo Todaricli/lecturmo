@@ -1,20 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import Snackbar from '@mui/material/Snackbar';
+import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContextProvider';
 
 const VerifyEmail = () => {
-  const [open, setOpen] = useState(false);
-  const [user, setUser] = useState('');
+  const { user, fetchUserDetails } =
+    useContext(AuthContext);
+
+  const [hasFetchedUserDetails, setHasFetchedUserDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const emailToken = searchParams.get('emailToken');
-  console.log("emailToken:", emailToken)
 
   useEffect(() => {
     const process = async () => {
@@ -22,31 +25,39 @@ const VerifyEmail = () => {
         setIsLoading(true);
 
         if (emailToken) {
-          const justVerifiedUser = await axios
+          await axios
             .post(
               `http://localhost:3000/api/auth/verify-email-token`,
               { emailToken }
             )
-            .then((response) => {
-              setOpen(true);
-              setTimeout(() => {
-                navigate('/login', { replace: false });
-              }, 6000);
-              return response.data; // Return the response data
+            .then(async (response) => {
+              await fetchUserDetails();
+              setHasFetchedUserDetails(true);
+              return response.data;
             })
             .catch((e) => alert(e));
-
-          setUser(justVerifiedUser);
         }
-      } catch {
+      } catch (err) {
+        console.log("err:", err)
         setError(true);
       }
     };
 
     process();
-  }, [emailToken, navigate]);
+  }, [emailToken, navigate, user, fetchUserDetails]);
+
+  useEffect(() => {
+    if (hasFetchedUserDetails) {
+      if (user) {
+        navigate('/home', { state: { message: 'Successfully verified!' }, replace: true });
+      } else {
+        navigate('/login', { state: { message: 'Successfully verified!' }, replace: true });
+      }
+    }
+  }, [user, navigate, hasFetchedUserDetails]);
 
   if (error) {
+    console.log("error:", error)
     alert('Error, verification failed!');
     return navigate('/login');
   }
@@ -54,21 +65,31 @@ const VerifyEmail = () => {
   return (
     <>
       {isLoading ? (
-        <div>"verifying...."</div>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
+          <CircularProgress size={80} />
+          <Typography variant="h6" mt={2}>
+            Verifying...
+          </Typography>
+        </Box>
       ) : (
-        <div>
+        <>
           {user?.isVerified ? (
-            <div>Susccesfully verified, redireting...</div>
+            <Alert severity="success">Successfully verified, redirecting...</Alert>
           ) : (
-            <div>ERROR!!! {error.error ? error.message : 'unknown'}</div>
+            <Alert severity="error">
+              ERROR!!! {error.error ? error.message : 'unknown'}
+            </Alert>
           )}
-        </div>
+        </>
       )}
-      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
-        <Alert onClose={() => setOpen(false)} severity="success" sx={{ width: '100%' }}>
-          Successfully verified!
-        </Alert>
-      </Snackbar>
     </>
   );
 };
