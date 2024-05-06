@@ -1,10 +1,10 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 
-const UsernameField = ({ value, error, onChange }) => {
+const UsernameField = ({ value, error, onChange, required=true }) => {
   return (
     <TextField
-      required
+      required={required}
       fullWidth
       id="username"
       label="Username"

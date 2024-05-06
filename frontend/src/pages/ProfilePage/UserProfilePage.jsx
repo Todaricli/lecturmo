@@ -8,12 +8,12 @@ import {
   IconButton,
   Paper,
   InputBase,
+  Link,
 } from '@mui/material';
 import React, { useContext } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EmailIcon from '@mui/icons-material/Email';
-import { Link } from 'react-router-dom';
 import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import Loading from '../../components/Loading';
@@ -42,7 +42,7 @@ const UserProfilePage = () => {
         sx={{ marginTop: 3, marginLeft: 3 }}
         color="initial"
         component={Link}
-        to="/"
+        href="/"
       >
         <ArrowBackIcon />
       </IconButton>
@@ -160,7 +160,7 @@ const UserProfilePage = () => {
           color="secondary"
           sx={{ marginTop: 5, borderRadius: 4, marginBottom: 5}}
           component={Link}
-          to="/edit-profile"
+          href="/edit-profile"
         >
           Edit profile
         </Button>

@@ -1,13 +1,13 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 
-const ConfirmPasswordField = ({ value, error, onChange }) => {
+const ConfirmPasswordField = ({ value, error, onChange, label="Confirm Password", required=true }) => {
   return (
     <TextField
-      required
+      required={required}
       fullWidth
       name="confirmPassword"
-      label="Confirm Password"
+      label={label}
       type="password"
       value={value}
       onChange={onChange}

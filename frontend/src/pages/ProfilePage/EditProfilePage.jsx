@@ -11,19 +11,18 @@ import {
   FormControl,
   Select,
   MenuItem,
-  Link as RouterLink,
+  Link,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import UsernameField from '../../components/Register/UsernameField';
 import PasswordField from '../../components/Register/PasswordField';
 import ConfirmPasswordField from '../../components/Register/ConfirmPasswordField';
 import EmailField from '../../components/Register/EmailField';
-import VerifyEmailCheckbox from '../../components/Register/VerifyEmailCheckbox';
 import GenderSelect from '../../components/Register/GenderSelect';
 import {
   checkIfUserExists,
@@ -35,9 +34,12 @@ import dayjs from 'dayjs';
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import Loading from '../../components/Loading';
+import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
+import { updateUser } from '../../services/profile/userProfileAPIFetch';
 
 const EditProfilePage = () => {
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+
 
   if (user === null) {
     return <Loading />;
@@ -46,6 +48,7 @@ const EditProfilePage = () => {
 
   const [updateError, setUpdateError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: user.username,
     password: '',
@@ -58,14 +61,18 @@ const EditProfilePage = () => {
     dateOfBirth: dayjs(user.dob),
     avatarURL: user.avatarPicture,
     description: user.profileDescription,
+    currentPassword: '',
   });
   const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [currentPasswordError, setCurrentPasswordError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  
+
   const timeoutRef = useRef(null);
   const navigate = useNavigate();
+
+  useRedirectToLoginIfNotLoggedIn();
 
   useEffect(() => {
     return () => {
@@ -90,7 +97,7 @@ const EditProfilePage = () => {
     timeoutRef.current = setTimeout(async () => {
       if (name === 'username') {
         const res = await checkIfUserExists({ username: value });
-        setUsernameError(res && res.error ? res.message : '');
+        setUsernameError(res && res.error && formData.username != user.username && value.length > 0 ? res.message : '');
       } else if (name === 'email') {
         const res = await checkEmailInput({
           email: value,
@@ -125,22 +132,30 @@ const EditProfilePage = () => {
           email: formData.email,
           verifyEmail: checked,
         });
-        setEmailError(res && res.error && formData.email.length > 0 ? res.message : '');
+        setEmailError(res && res.error && formData.email.length > 0 && formData.email != user.email ? res.message : '');
+        console.log("user.email:", user.email)
+      } else if (name === 'currentPassowrd') {
+
       }
     }, 500);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // const res = await updateUserProfile(user._id, formData);
-    // setUpdateError(res && res.error ? res.message : '');
-    // if (!res.error) {
-    //   navigate('/profile');
-    // }
+    console.log("formData:", formData)
+    const res = await updateUser(formData);
+    setUpdateError(res && res.error ? res.message : '');
+    if (!res.error) {
+      navigate('/profile');
+    }
   };
 
   const handleClickShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const handleClickShowCurrentPassword = () => {
+    setShowCurrentPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const handleMouseDownPassword = (event) => {
@@ -185,10 +200,11 @@ const EditProfilePage = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          marginBottom  : '50px',
         }}
       >
         <Box>
-          <IconButton color="initial" component={RouterLink} to="/profile">
+          <IconButton color="initial" component={Link} href="/profile" sx={{marginTop:3}}>
             <ArrowBackIcon />
           </IconButton>
         </Box>
@@ -200,13 +216,13 @@ const EditProfilePage = () => {
           }}
         >
           <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-          }}>
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+            }}>
             <Avatar
               alt="avatar"
               src={formData.avatarURL}
@@ -233,7 +249,19 @@ const EditProfilePage = () => {
           onSubmit={handleSubmit}
           sx={{ mt: 3 }}
         >
+
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <PasswordField
+                showPassword={showCurrentPassword}
+                formData={formData}
+                handleChange={handleChange}
+                passwordError={currentPasswordError}
+                handleClickShowPassword={handleClickShowCurrentPassword}
+                label='Confirm Current Password'
+                name='currentPassword'
+              />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -289,6 +317,7 @@ const EditProfilePage = () => {
                 value={formData.username}
                 error={usernameError}
                 onChange={handleChange}
+                required={false}
               />
             </Grid>
             <Grid item xs={12}>
@@ -299,6 +328,8 @@ const EditProfilePage = () => {
                 passwordError={passwordError}
                 handleClickShowPassword={handleClickShowPassword}
                 handleMouseDownPassword={handleMouseDownPassword}
+                label='New Password'
+                required={false}
               />
             </Grid>
             <Grid item xs={12}>
@@ -306,6 +337,8 @@ const EditProfilePage = () => {
                 value={formData.confirmPassword}
                 error={confirmPasswordError}
                 onChange={handleChange}
+                label='Confirm New Password'
+                required={false}
               />
             </Grid>
             <Grid item xs={12}>
@@ -313,12 +346,7 @@ const EditProfilePage = () => {
                 value={formData.email}
                 error={emailError}
                 onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <VerifyEmailCheckbox
-                checked={formData.verifyEmail}
-                onChange={handleChange}
+                required={false}
               />
             </Grid>
           </Grid>

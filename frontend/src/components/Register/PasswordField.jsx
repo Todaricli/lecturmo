@@ -7,7 +7,7 @@ import {
   FormControl,
   FormHelperText,
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Password, Visibility, VisibilityOff } from '@mui/icons-material';
 
 const PasswordField = ({
   showPassword,
@@ -16,17 +16,21 @@ const PasswordField = ({
   passwordError,
   handleClickShowPassword,
   handleMouseDownPassword,
+  label = 'Password',
+  name = 'password',
+  required=true,
 }) => {
   return (
-    <FormControl fullWidth required variant="outlined">
-      <InputLabel htmlFor="password">Password</InputLabel>
+    <FormControl fullWidth required={required} variant="outlined">
+      <InputLabel htmlFor="password">{label}</InputLabel>
       <OutlinedInput
         id="password"
-        name="password"
+        name={name}
         type={showPassword ? 'text' : 'password'}
-        value={formData.password}
+        value={formData[name]}
         onChange={handleChange}
         error={Boolean(passwordError)}
+        label={label}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -39,7 +43,6 @@ const PasswordField = ({
             </IconButton>
           </InputAdornment>
         }
-        label="Password"
       />
       <FormHelperText style={{ color: '#d74343' }}>
         {passwordError}
