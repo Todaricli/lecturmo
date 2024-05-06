@@ -51,3 +51,11 @@ export const checkPasswordsMatch = async (body) => {
   
   return res;
 };
+
+export const registerUser = async (formData) => {
+  const res = await postRequest(
+    'http://localhost:3000/api/auth/register',
+    formData
+  );
+  return res;
+};

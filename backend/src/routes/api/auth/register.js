@@ -49,23 +49,16 @@ router.post('/register/check-email', async (req, res) => {
  */
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
+  console.log("req.body:", req.body)
 
   if (!username || !email || !password) {
-    return res.status(403).json('All key credentials fields are required.');
+    return res.status(403).json({message: 'All key credentials fields are required.'});
   }
 
   if (!validator.isEmail(email))
-    return res.status(403).json('Please provide valid email.');
+    return res.status(403).json({message: 'Please provide valid email.'});
 
-  // if (!validator.isStrongPassword(password))
-  // return res.status(400).json("Password must be a strong password..");
 
-  // console.log(req.body)
-  // console.log(username);
-  // console.log(password);
-  // console.log(email)
-  // const hashedPassword = await hashPassword(password);
-  // console.log(hashedPassword)
 
   try {
     const user = new User({

@@ -1,53 +1,54 @@
 import React, { useState, useRef, useEffect } from 'react';
+import UsernameField from '../../components/Register/UsernameField';
+import PasswordField from '../../components/Register/PasswordField';
+import ConfirmPasswordField from '../../components/Register/ConfirmPasswordField';
+import EmailField from '../../components/Register/EmailField';
+import VerifyEmailCheckbox from '../../components/Register/VerifyEmailCheckbox';
+import GenderSelect from '../../components/Register/GenderSelect';
 import {
   Avatar,
   Button,
-  CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Box,
   Typography,
   Container,
-  InputAdornment,
   IconButton,
-  OutlinedInput,
   InputLabel,
   FormControl,
   MenuItem,
   Select,
-  FormHelperText,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
-  Visibility,
-  VisibilityOff,
   ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material';
 import Calendar from '../../components/Calendar';
-import AvatarSelector from '../../components/AvatarSelect';
-import { checkIfUserExists, checkEmailInput, checkPasswordInput, checkPasswordsMatch } from '../../services/auth/registerAPIFetch';
+import AvatarSelector from '../../components/Register/AvatarSelect';
+import { checkIfUserExists, checkEmailInput, checkPasswordInput, checkPasswordsMatch, registerUser } from '../../services/auth/registerAPIFetch';
 
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
     username: '',
     password: '',
     confirmPassword: '',
-    allowExtraEmails: false,
+    email: '',
+    verifyEmail: false,
+    firstName: '',
+    lastName: '',
     gender: '',
+    dateOfBirth: '',
+    avatarURL: '',
   });
   const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+  // persists across re-renders, prevents unnecessary API calls
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function RegisterPage() {
     };
   }, []);
 
-  let timeout = null;
+  // register dynamic validations and update form data
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
     setFormData((prevData) => ({
@@ -67,6 +68,7 @@ export default function RegisterPage() {
       [name]: type === 'checkbox' ? checked : value,
     }));
 
+    //restart timeout if change detected again
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -87,14 +89,16 @@ export default function RegisterPage() {
           confirmPassword: value,
         });
         setConfirmPasswordError(res && res.error && value.length > 0 ? res.message : '');
+      } else if (name === 'verifyEmail') {
+        setFormData((prevData) => ({ ...prevData, verifyEmail: checked }));
       }
     }, 500);
   };
 
-  const handleSubmit = (event) => {
+  const handleRegisterSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
-    // Add your logic to proceed with form submission
+    await registerUser(formData);
   };
 
   const handleClickShowPassword = () => {
@@ -140,75 +144,43 @@ export default function RegisterPage() {
         <Typography component="h1" variant="h5">
           Create your Account
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" noValidate onSubmit={handleRegisterSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
+              <UsernameField
                 value={formData.username}
+                error={usernameError}
                 onChange={handleChange}
-                error={Boolean(usernameError)}
-                helperText={usernameError}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl fullWidth required variant="outlined">
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <OutlinedInput
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
-                  onChange={handleChange}
-                  error={Boolean(passwordError)}
-                  helperText={passwordError}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                />
-                <FormHelperText style={{ color: '#d74343' }}>{passwordError}</FormHelperText>
-              </FormControl>
+              <PasswordField
+                showPassword={showPassword}
+                formData={formData}
+                handleChange={handleChange}
+                passwordError={passwordError}
+                handleClickShowPassword={handleClickShowPassword}
+                handleMouseDownPassword={handleMouseDownPassword}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
+              <ConfirmPasswordField
                 value={formData.confirmPassword}
+                error={confirmPasswordError}
                 onChange={handleChange}
-                error={Boolean(confirmPasswordError)}
-                helperText={confirmPasswordError}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+              <EmailField
                 value={formData.email}
+                error={emailError}
                 onChange={handleChange}
-                error={Boolean(emailError)}
-                helperText={emailError}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <VerifyEmailCheckbox
+                checked={formData.verifyEmail}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -232,33 +204,9 @@ export default function RegisterPage() {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="gender-label">Gender</InputLabel>
-                <Select
-                  labelId="gender-label"
-                  id="gender"
-                  value={formData.gender}
-                  onChange={handleGenderChange}
-                  label="Gender"
-                >
-                  <MenuItem value="">Select Gender</MenuItem>
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="allowExtraEmails"
-                    color="primary"
-                    checked={formData.allowExtraEmails}
-                    onChange={handleChange}
-                  />
-                }
-                label="I want to receive notifications, updates via email."
+              <GenderSelect
+                value={formData.gender}
+                onChange={handleGenderChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -294,7 +242,6 @@ export default function RegisterPage() {
   );
 }
 
-
 function Copyright(props) {
   return (
     <Typography
@@ -321,9 +268,3 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-const genderOptions = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' },
-];

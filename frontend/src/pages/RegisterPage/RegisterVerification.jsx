@@ -22,7 +22,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Calendar from '../../components/Calendar';
-import AvatarSelector from '../../components/AvatarSelect';
+import AvatarSelector from '../../components/Register/AvatarSelect';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
