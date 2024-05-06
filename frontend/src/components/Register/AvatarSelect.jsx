@@ -17,14 +17,14 @@ export default function AvatarSelect({ value, onChange }) {
             key={index}
             sx={{
               cursor: 'pointer',
-              ...(value === item && { backgroundColor: 'lightgray' }),
+              ...(value === item.img && { backgroundColor: 'lightgray' }),
             }}
           >
             <RadioGroup
               aria-labelledby="avatar-group"
               name="avatar-group"
               value={value}
-              onClick={() => onChange(item)}
+              onClick={() => onChange(item.img)}
               sx={{ '&:hover': { backgroundColor: 'lightgrey' } }}
             >
               <FormControlLabel

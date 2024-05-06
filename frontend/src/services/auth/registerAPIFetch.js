@@ -1,4 +1,3 @@
-import { getRequest } from '../getRequest';
 import { postRequest } from '../postRequest';
 
 export const checkIfUserExists = async (body) => {

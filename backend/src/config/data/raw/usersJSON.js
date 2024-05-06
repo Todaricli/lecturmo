@@ -8,7 +8,7 @@ export const usersJSON = [
     dob: new Date('1970-01-01'),
     username: 'lec1',
     password: '$2b$12$VT3V27DMmYKQK33e0jVUr.MIA/.3f5zwVpyouQoEzk6lZSoKh35FG',
-    email: 'john.smith@example.com',
+    email: 'test@gmail.com',
     rank: 'gold',
     profileDescription:
       'Senior Lecturer in Computer Science with a focus on AI and machine learning.',
