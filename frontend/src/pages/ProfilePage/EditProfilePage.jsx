@@ -8,9 +8,6 @@ import {
   Avatar,
   IconButton,
   TextField,
-  FormControl,
-  Select,
-  MenuItem,
   Link,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -36,51 +33,80 @@ import { AuthContext } from '../../contexts/AuthContextProvider';
 import Loading from '../../components/Loading';
 import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 import { updateUser } from '../../services/profile/userProfileAPIFetch';
+import { Snackbar, Alert } from '@mui/material';
 
 const EditProfilePage = () => {
-  const { user } = useContext(AuthContext);
+  const { user, updateUserDetails } = useContext(AuthContext);
+  useRedirectToLoginIfNotLoggedIn();
 
+  const [updateError, setUpdateError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [isCurrentPasswordConfirmed, setIsCurrentPasswordConfirmed] = useState(false);
+  const [currentPasswordError, setCurrentPasswordError] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
+    email: '',
+    verifyEmail: false,
+    firstName: '',
+    lastName: '',
+    gender: '',
+    dateOfBirth: dayjs(),
+    avatarURL: '',
+    description: '',
+    currentPassword: '',
+  });
+
+  const timeoutRef = useRef(null);
+  const navigate = useNavigate();
+
+  // useEffect to initialize formData when user data is available
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username,
+        password: '',
+        confirmPassword: '',
+        email: user.email,
+        verifyEmail: user.isVerified,
+        firstName: user.fname,
+        lastName: user.lname,
+        gender: user.gender,
+        dateOfBirth: dayjs(user.dob),
+        avatarURL: user.avatarPicture,
+        description: user.profileDescription,
+        currentPassword: '',
+      });
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [user]);
+
+  // forcefully update user state success message is opened
+  useEffect(() => {
+    if (open === true) {
+      updateUserDetails()
+    }
+  }, [open])
 
   if (user === null) {
     return <Loading />;
   }
 
 
-  const [updateError, setUpdateError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    username: user.username,
-    password: '',
-    confirmPassword: '',
-    email: user.email,
-    verifyEmail: user.isVerified,
-    firstName: user.fname,
-    lastName: user.lname,
-    gender: user.gender,
-    dateOfBirth: dayjs(user.dob),
-    avatarURL: user.avatarPicture,
-    description: user.profileDescription,
-    currentPassword: '',
-  });
-  const [usernameError, setUsernameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [currentPasswordError, setCurrentPasswordError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-  const timeoutRef = useRef(null);
-  const navigate = useNavigate();
-
-  useRedirectToLoginIfNotLoggedIn();
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
@@ -146,7 +172,8 @@ const EditProfilePage = () => {
     const res = await updateUser(formData);
     setUpdateError(res && res.error ? res.message : '');
     if (!res.error) {
-      navigate('/profile');
+      // navigate('/profile');
+      setOpen(true);
     }
   };
 
@@ -200,11 +227,11 @@ const EditProfilePage = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          marginBottom  : '50px',
+          marginBottom: '50px',
         }}
       >
         <Box>
-          <IconButton color="initial" component={Link} href="/profile" sx={{marginTop:3}}>
+          <IconButton color="initial" component={Link} href="/profile" sx={{ marginTop: 3 }}>
             <ArrowBackIcon />
           </IconButton>
         </Box>
@@ -381,6 +408,19 @@ const EditProfilePage = () => {
             </Typography>
           )}
         </Box>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={() => setOpen(false)}
+        >
+          <Alert
+            onClose={() => setOpen(false)}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Successfully Updated Profile!
+          </Alert>
+        </Snackbar>
       </Container>
     </Box>
   );

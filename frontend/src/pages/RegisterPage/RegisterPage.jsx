@@ -118,7 +118,7 @@ export default function RegisterPage() {
         });
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       }
-    }, 500);
+    }, 0);
   };
 
   const handleRegisterSubmit = async (event) => {

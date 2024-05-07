@@ -2,10 +2,10 @@ import express from 'express';
 import {
   checkUsername,
   checkEmail,
-  checkPasswordInput,
   checkPasswordsMatch,
 } from '../../controllers/registerController.js';
-import { comparePassword } from '../../utils/useBcrypt.js';
+import { comparePassword, hashPassword } from '../../utils/useBcrypt.js';
+import { updateUser } from '../../controllers/userProfileController.js';
 
 const router = express.Router();
 
@@ -21,11 +21,13 @@ router.post('/update-user', async (req, res) => {
     avatarURL,
     verifyEmail,
     emailToken,
+    description,
     currentPassword,
   } = req.body;
 
   // Validate current password
-  const isCurrentPasswordValid = comparePassword(currentPassword, req.user.password);
+  const isCurrentPasswordValid = await comparePassword(currentPassword, req.user.password);
+  console.log("isCurrentPasswordValid:", isCurrentPasswordValid)
   if (!isCurrentPasswordValid) {
     return res.status(403).json({ message: 'Current password is invalid.' });
   }
@@ -35,20 +37,19 @@ router.post('/update-user', async (req, res) => {
   if (username && (username === req.user.username || await checkUsername(username))) updateData.username = username;
   if (email && (email === req.user.email || await checkEmail(email))) updateData.email = email;
   if (password && checkPasswordsMatch(password, confirmPassword)) {
-    updateData.password = password;
+    console.log("password:", password)
+    updateData.password = await hashPassword(password);
   }
-  if (firstName) updateData.firstName = firstName;
-  if (lastName) updateData.lastName = lastName;
+  if (firstName) updateData.fname = firstName;
+  if (lastName) updateData.lname = lastName;
+  if (description) updateData.profileDescription = description;
   if (gender) updateData.gender = gender;
-  if (avatarURL) updateData.avatarURL = avatarURL;
-  if (verifyEmail) updateData.verifyEmail = verifyEmail;
-  if (emailToken) updateData.emailToken = emailToken;
+  if (avatarURL) updateData.avatarPicture = avatarURL;
+
 
   try {
-    console.log("updateData:", updateData)
-    const user = await updateUser(updateData);
-    
-    res.status(200).json(user);
+    const user = await updateUser(req.user._id, updateData);
+    res.status(200).json({message: 'Profile successfully updated', user: user});
   } catch (e) {
     console.log(e.message);
     res.status(400).json({message: e.message});
