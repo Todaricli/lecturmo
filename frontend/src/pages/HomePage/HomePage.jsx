@@ -10,6 +10,7 @@ import { Box, IconButton } from '@mui/material';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
+import zIndex from '@mui/material/styles/zIndex';
 
 const HomePage = () => {
   const theme = useTheme();

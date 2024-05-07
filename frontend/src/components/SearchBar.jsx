@@ -103,6 +103,10 @@ const SearchBar = () => {
                       borderRadius: 3,
                     },
                   }}
+                  onClick = {()=>{
+                    navigate(`/courses?courseId=${result._id}`)
+                    console.log(result._id)
+                  }}
                 >
                   {result.courseName}
                 </Grid>
