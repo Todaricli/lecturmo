@@ -1,8 +1,0 @@
-    const inserted = Course.insertMany([{
-        courseName: "compsci 751",
-        lecturer: user._id,
-        description: "killlllmeeeeeeeeeee",
-        category: "pain",
-        level: "hard",
-        price: 123123123
-    }])
