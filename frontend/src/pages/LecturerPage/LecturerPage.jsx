@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import {
   Container,
   Box,
-  Card,
-  CardMedia,
-  CardContent,
+  Modal,
   Typography,
   Button,
   Table,
@@ -14,6 +12,7 @@ import {
   TableRow,
   TableBody,
   TextField,
+  IconButton,
 } from '@mui/material';
 import QrCode from '../QrCode/QrCode.jsx';
 import AddNewLecture from '../../components/AddNewLecture.jsx';
@@ -21,9 +20,24 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useNavigate } from 'react-router-dom';
+import {AuthContext} from '../../contexts/AuthContextProvider.jsx'
+import Loading from '../../components/Loading.jsx';
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const LecturerPage = () => {
+  const { user } = useContext(AuthContext);
+  if (user === null) {
+    return <Loading />;
+  }
+  
+  useEffect(()=>{
+    console.log("user:", user)
+  }, [user])
+
   const navigate = useNavigate();
+
   const [coursesList, setCoursesList] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [activeQr, setActiveQr] = useState(false);
@@ -38,6 +52,8 @@ const LecturerPage = () => {
   const [lectures, setLectures] = useState();
   const [newLectureTitle, setNewLectureTitle] = useState();
   const [lectureDate, setLectureDate] = useState();
+  const [openModal, setOpenModal] = useState(false)
+  const [createLectureCourse, setCreateLectureCourse] = useState()
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -77,6 +93,17 @@ const LecturerPage = () => {
       .then(() => {});
   };
 
+  const handleSubmitLecture = async (courseId) => {
+    try {
+      await createLecture(courseId);
+      toast.success('Lecture added successfully!');
+      setOpenModal(false);
+    } catch (error) {
+      console.error('Failed to add lecture:', error);
+      toast.error('Failed to add lecture. Please try again.');
+    }
+  }
+
   console.log(courses);
 
   useEffect(() => {
@@ -103,7 +130,7 @@ const LecturerPage = () => {
             mt: 10,
           }}
         >
-          <Card
+          <Box
             sx={{
               bgcolor: 'primary.main',
               height: '250px',
@@ -113,51 +140,47 @@ const LecturerPage = () => {
               alignItems: 'center',
             }}
           >
-            <CardMedia
-              title="lecturer img"
-              image="/assets/dog.jpg"
+            <Box
               component="img"
+              src={user.avatarPicture}
               sx={{ width: 180, height: '200px', borderRadius: 4 }}
             />
-            <CardContent>
+            <Box ml="10px">
               <Typography variant="h6" color="initial">
-                Hi {'test'}
+                Hi, {user.fname} {user.lname}
               </Typography>
               <Typography variant="body1" color="initial">
-                You are teaching {courseNo} classes this semester.
+                You are teaching{' '}
+                <span style={{ fontWeight: 'bold' }}>
+                  {courseNo} {courseNo <= 1 ? 'class' : 'classes'} {''}
+                </span>
+                at the moment.
               </Typography>
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
           <Box
             sx={{
               bgcolor: 'secondary.main',
-              height: '100vh',
+              height: '100%',
               width: '100vw',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <Typography
-              variant="h4"
-              color="background.default"
-              sx={{ fontWeight: 'bold', mt: 5, mb: 3 }}
-            >
-              Classes Taking
-            </Typography>
             <Box
               sx={{
                 bgcolor: 'light.main',
-                width: '300px',
-                height: '350px',
+                maxWidth: '100%',
+                height: '200px',
                 borderRadius: 5,
                 display: 'flex',
                 justifyContent: 'center',
-
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '10px',
-                mb: 3,
+                m: 2,
+                p: 2,
               }}
             >
               <Typography
@@ -194,7 +217,7 @@ const LecturerPage = () => {
                   },
                 }}
               >
-                create QR code
+                Create QR code
               </Button>
             </Box>
 
@@ -204,7 +227,7 @@ const LecturerPage = () => {
                   sx={{
                     bgcolor: 'primary.main',
                     width: '100%',
-                    height: '400px',
+                    height: '100%',
                     p: '20px',
                   }}
                 >
@@ -226,6 +249,10 @@ const LecturerPage = () => {
                     <Button
                       variant="contained"
                       sx={{ bgcolor: 'secondary.main', borderRadius: 5 }}
+                      onClick={() => {
+                        setOpenModal(true);
+                        setCreateLectureCourse(course._id);
+                      }}
                     >
                       Add Lecture
                     </Button>
@@ -239,6 +266,9 @@ const LecturerPage = () => {
                         <TableCell sx={{ color: 'light.main' }}>Date</TableCell>
                         <TableCell sx={{ color: 'light.main' }}>
                           Student Attendance
+                        </TableCell>
+                        <TableCell sx={{ color: 'light.main' }}>
+                          Delete
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -261,41 +291,85 @@ const LecturerPage = () => {
                               {lecture.date ? formatDate(lecture.date) : null}
                             </TableCell>
                             <TableCell>{lecture.attendence} students</TableCell>
+                            <TableCell>
+                              <IconButton>
+                                <ClearIcon />
+                              </IconButton>
+                            </TableCell>
                           </TableRow>
                         ))
                       ) : (
-                        <h3>there are no lectures currently</h3>
+                        <Typography variant="h6">there are no lectures currently</Typography>
                       )}
                     </TableBody>
                   </Table>
 
-                  <Box>
-                    <TextField
-                      onChange={(e) => {
-                        setNewLectureTitle(e.target.value);
+                  <Modal
+                    open={openModal}
+                    onClose={() => setOpenModal(false)}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '100vh',
+                    }}
+                    slotProps={{
+                      backdrop: {
+                        style: { backgroundColor: 'rgba(128, 128, 128, 0.3)' },
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        bgcolor: 'secondary.main',
+                        p: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        borderRadius: 5,
                       }}
-                    ></TextField>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        format="DD-MM-YYYY"
-                        onChange={(e) => {
-                          setLectureDate(e.$d);
-                          console.log(e.$d);
-                        }}
-                        label="Choose lecture date"
-                      />
-                    </LocalizationProvider>
-                    <Button
-                      onClick={() => createLecture(course._id)}
-                      style={{ background: 'white' }}
                     >
-                      submit
-                    </Button>
-                  </Box>
+                      <TextField
+                        onChange={(e) => {
+                          setNewLectureTitle(e.target.value);
+                        }}
+                        sx={{ bgcolor: 'light.main' }}
+                      ></TextField>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          format="DD-MM-YYYY"
+                          onChange={(e) => {
+                            setLectureDate(e.$d);
+                            console.log(e.$d);
+                          }}
+                          label="Choose lecture date"
+                          sx={{ bgcolor: 'light.main' }}
+                        />
+                      </LocalizationProvider>
+                      <Button
+                        onClick={() => {
+                          handleSubmitLecture(createLectureCourse);
+                        }}
+                        sx={{
+                          bgcolor: 'background.default',
+                          ml: '10px',
+                          borderRadius: 5,
+                          '&:hover': {
+                            backgroundColor: 'lightBlue.main',
+                          },
+                        }}
+                        disabled={
+                          newLectureTitle === undefined ||
+                          lectureDate === undefined
+                        }
+                      >
+                        Submit
+                      </Button>
+                    </Box>
+                  </Modal>
                 </Box>
               ))
             ) : (
-              <Typography style={{ color: 'white' }}>
+              <Typography variant='h6'>
                 YOU ARE NOT CURRENTLY IN CHARGE OF ANY CLASSES
               </Typography>
             )}
@@ -306,22 +380,5 @@ const LecturerPage = () => {
   );
 };
 
-// <div>
-// <h1>this is lecturer page</h1>
-// {coursesList && null}
-// <AddNewLecture lectureId = {getLectureId} courseList={courses}/>
-// <button
-//   style={{ background: "white" }}
-//   onClick={()=>{
-//     setActiveQr(!activeQr)
-//   }}
-// >
-//   create QR code
-// </button>
-// {activeQr
-// ?<QrCode lecture={lectureId} course={courseId}/>
-// : null}
-
-// </div>
 
 export default LecturerPage;

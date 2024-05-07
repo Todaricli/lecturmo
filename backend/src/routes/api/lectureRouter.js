@@ -47,11 +47,11 @@ LectureRouter.post('/add-lecture', async (req, res) => {
 LectureRouter.get('/lecture-list', async (req, res) => {
   try {
     const user = req.user;
-    console.log('hi');
+    // console.log('hi');
     console.log(user._id);
 
     const course = await Course.find({ lecturerId: user._id }).exec();
-    console.log('skeet');
+    // console.log('skeet');
     console.log(course);
 
     res.json(course);
