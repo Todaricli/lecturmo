@@ -21,7 +21,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { postRequest } from '../../services/postRequest';
-import { green, red } from '@mui/material/colors';
 
 
 const API_URL = import.meta.env.VITE_EXPRESS_APP_ENDPOINT_API_URL ?? "";
@@ -199,7 +198,7 @@ const SinglePostPage = () => {
       }}
     >
       <Button sx={{bgcolor: 'black'}} onClick={() => generateCourseReviewSummary(courseId)}>Generate Summary</Button>
-      {aiInProgress ? (<Typography sx={{color: red}}>Generating Summary... :)</Typography>) : (aiError ? (<Typography sx={{color: red}}>AI generation error, try again in 5 minutes</Typography>): (<Typography sx={{color: green}}>{summary}</Typography>))}
+      {aiInProgress ? (<Typography sx={{color: 'red'}}>Generating Summary... :)</Typography>) : (aiError ? (<Typography sx={{color: 'red'}}>AI generation error, try again in 5 minutes</Typography>): (<Typography sx={{color: 'green'}}>{summary}</Typography>))}
       <Box
         sx={{
           bgcolor: 'light.main',
