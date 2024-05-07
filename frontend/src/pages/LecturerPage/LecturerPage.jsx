@@ -20,9 +20,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useNavigate } from 'react-router-dom';
-import {AuthContext} from '../../contexts/AuthContextProvider.jsx'
+import { AuthContext } from '../../contexts/AuthContextProvider.jsx'
 import Loading from '../../components/Loading.jsx';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -31,8 +31,8 @@ const LecturerPage = () => {
   if (user === null) {
     return <Loading />;
   }
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     console.log("user:", user)
   }, [user])
 
@@ -66,6 +66,34 @@ const LecturerPage = () => {
     return formattedDate;
   };
 
+  const deleteLecture = async (lectureIdToDelete, courseIdToDelete) => {
+    const response = await axios
+      .post(
+        `http://localhost:3000/api/delete-lecture`,
+        {
+          courseId: courseIdToDelete,
+          lectureId: lectureIdToDelete,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Lecture successfully deleted")
+          setCourseId(null)
+          setSelectedLectureName(null)
+          setSelectedLectureId(null)
+          setSelectedCourseName("nothing selected")
+        } else {
+          toast.error("Error deleting lecture")
+        }
+        setIsLoading(!isLoading)
+      });
+  }
+
   const getClasses = async () => {
     await axios.get(`http://localhost:3000/api/lecture-list`).then((res) => {
       console.log(res);
@@ -90,7 +118,9 @@ const LecturerPage = () => {
           },
         }
       )
-      .then(() => {});
+      .then((res) => {
+        setIsLoading(!isLoading)
+      });
   };
 
   const handleSubmitLecture = async (courseId) => {
@@ -107,9 +137,8 @@ const LecturerPage = () => {
   console.log(courses);
 
   useEffect(() => {
-    setIsLoading(true);
     getClasses();
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     if (coursesList != undefined) {
@@ -292,7 +321,12 @@ const LecturerPage = () => {
                             </TableCell>
                             <TableCell>{lecture.attendence} students</TableCell>
                             <TableCell>
-                              <IconButton>
+                              <IconButton
+                                onClick={() => {
+                                  deleteLecture(lecture._id, course._id)
+
+                                }}
+                              >
                                 <ClearIcon />
                               </IconButton>
                             </TableCell>

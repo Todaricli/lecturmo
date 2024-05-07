@@ -201,7 +201,7 @@ const UserProfilePage = () => {
                 color="initial"
                 sx={{ fontWeight: 'bold' }}
               >
-                {course.courseName}
+                {course.courseCode}
 
               </Typography>
               <Typography variant="body2" color="#78858F">
