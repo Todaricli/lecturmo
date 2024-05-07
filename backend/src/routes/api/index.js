@@ -5,6 +5,8 @@ import QrRouters from './QrCode-routes.js';
 import LectureRouter from './lectureRouter.js';
 import SearchRouter from './searchRouters.js';
 import landingPosts from './landingPosts.js';
+import SinglePageRouters from './singlePostRoute.js';
+import statsUserRouter from './statsUserRouter.js';
 import userProfileRoutes from './userProfilePage.js';
 import lecturAi from './openAi.js';
 
@@ -17,5 +19,7 @@ router.use('/', LectureRouter);
 router.use('/', SearchRouter);
 router.use('/', userProfileRoutes);
 router.use('/lecturai', lecturAi);
+router.use('/', SinglePageRouters);
+router.use('/', statsUserRouter);;
 
 export default router;

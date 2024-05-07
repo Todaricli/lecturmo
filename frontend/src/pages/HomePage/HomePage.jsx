@@ -28,6 +28,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log('hello');
       try {
         const response = await axios.get(
           'http://localhost:3000/api/landing-posts'

@@ -42,6 +42,7 @@ const SearchBar = () => {
   }, [searchTerm]);
 
   const theme = useTheme();
+
   return (
     <Box
       sx={{
