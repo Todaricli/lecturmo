@@ -26,6 +26,9 @@ import {
   VisibilityOff,
 } from '@mui/icons-material';
 import { AuthContext } from '../../contexts/AuthContextProvider';
+import axios from 'axios';
+
+
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -80,6 +83,16 @@ export default function LoginPage() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+   
+  const handleEmail = (e) => {
+    setUsername(e)
+    console.log(username)
+  }
+
+  const handlePassword = (e) => {
+    setPassword(e)
+    console.log(password)
+  }
 
   return (
     <Container

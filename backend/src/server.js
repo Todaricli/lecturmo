@@ -49,9 +49,9 @@ export async function startExpress() {
         mongoUrl: process.env.MONGODB_CONNECTION_STRING,
         collection: 'sessions',
       }), //session is now stored in db
-      cookie: {
-        maxAge: 60 * 60 * 1000, //one hour expiry
-      },
+      // cookie: {
+      //   maxAge: 60 * 60 * 1000, //one hour expiry
+      // },
     }),
   );
 
