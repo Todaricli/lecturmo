@@ -11,14 +11,19 @@ function convertToDateObject(date) {
   const [time, rubbish] = date.split('.');
   const timez = time + 'z';
   const timezOb = new Date(timez);
-
   return timezOb;
 }
 
 QrRouters.post('/qr-code', async (req, res) => {
   const date = req.body.date;
   const courseId = req.body.courseId;
-  const userId = req.body.userId;
+  const lectureId = req.body.lecture;
+  // const qrDuration; 
+  const username = req.user
+  
+  const usernameIdObject = new mongoose.Types.ObjectId(username._id)
+  const courseIdObject = new mongoose.Types.ObjectId(courseId)
+  const lectureIdObject = new mongoose.Types.ObjectId(lectureId)
 
   const dateNowSkeet = await fetch(
     `http://worldtimeapi.org/api/timezone/Pacific/Auckland`,
@@ -28,55 +33,79 @@ QrRouters.post('/qr-code', async (req, res) => {
 
   const dateObject = convertToDateObject(date);
   const dateNowObject = convertToDateObject(dateNow);
-
-  const user = await User.find({ username: 'user4' });
-
-  console.log(dateObject);
-  console.log(dateNowObject);
-  console.log(userId);
-  console.log(user[0].courses);
-
   const difference = (dateNowObject - dateObject) / 1000;
-  const usernameIdObject = new mongoose.Types.ObjectId(username._id);
 
   if (date == undefined || courseId == undefined) {
-    res.send('yagotproblems');
-    return;
+    return res.json('Date or courseId or lectureId undefined');
   }
 
-  try {
-    console.log('skeet');
-    const sket = await User.updateOne(
-      {
-        _id: usernameIdObject,
-        courses: { $elemMatch: { 'course.id': courseId } },
-      },
-      { $push: { 'courses.$.lectures': 576 } },
-    ).exec();
-    console.log(sket);
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  //   console.log('skeet');
+  //   const sket = await User.updateOne(
+  //     {
+  //       _id: usernameIdObject,
+  //       courses: { $elemMatch: { 'course.id': courseId } },
+  //     },
+  //     { $push: { 'courses.$.lectures': 576 } },
+  //   ).exec();
+  //   console.log(sket);
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
   //---------------------------set expiry time here skeet ------------------------------------
   if (difference < 30) {
-    res.json({
-      date: dateObject,
-      dateNow: dateNowObject,
-      difference: difference,
+
+    // try {
+    //   const skeet = await User.updateOne({_id: usernameIdObject},
+    //     {
+    //       $addToSet: {"courses": {courseId: courseId}}
+    //     }
+    //   ).exec()
+
+    try{
+    const skeet = await User.updateOne(
+      { _id: usernameIdObject, "courses": { $not: { $elemMatch: { courseId: courseId } } } },
+      {
+        $addToSet: { "courses": { courseId: courseId } }
+      }
+    ).exec();
+
+      const existingCourse = await User.findOne(
+        { _id: usernameIdObject, 'courses': { $elemMatch: { courseId: courseId } } },
+        { 'courses.$': 1 } 
+      );
+      if (existingCourse && existingCourse.courses.length > 0) {
+        const course = existingCourse.courses[0];
+        const lectureExists = course.lectures.some(lecture => lecture.lectureId === lectureId);
+        if(!lectureExists){
+          const addLecture = await User.updateOne({_id: usernameIdObject, courses:{$elemMatch:{courseId: courseId}}},
+            {$addToSet:{"courses.$.lectures": {lectureId: lectureId}}}).exec()
+            const result = await Course.updateOne(
+              { _id: courseId, "lectures._id": lectureId},
+              { $inc: { 'lectures.$.attendence': 1 } }
+            ).exec();
+        }else{
+          return res.json({validity: false})
+        }
+      }
+    } catch (error) {
+      return res.json({
+        errorMessage: error,
+        validity: false
+      })
+    }
+
+    return res.status(200).json({
       validity: true,
-      skeets: 'in joy',
     });
-    return;
+    
   } else {
-    res.json({
-      date: dateObject,
-      dateNow: dateNowObject,
-      difference: difference,
+    return res.json({
+      message: "Qr code not valid",
       validity: false,
-      skeets: 'in anger',
     });
-    return;
+
   }
 });
 

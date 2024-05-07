@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <App />
-              <ReactQueryDevtools initialIsOpen={true} />
+              {/* <ReactQueryDevtools /> */}
             </ThemeProvider>
           </QueryClientProvider>
         </BrowserRouter>

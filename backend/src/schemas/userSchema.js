@@ -28,7 +28,9 @@ const userSchema = new Schema(
       {
         courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
         dummyId: { String },
-        lecturesAttended: [{ lecture: { type: String, index: true } }],
+        lectures: [{ 
+
+         }],
       },
     ],
     isVerified: { type: Boolean, default: false, required: true },
