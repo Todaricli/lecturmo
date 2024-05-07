@@ -52,9 +52,9 @@ LectureRouter.get('/lecture-list', async (req, res) => {
         console.log("skeet")
         console.log(course)
 
-        res.json(course)
-    } catch (error) {
-        res.send(error)
+            res.json(course)
+        } catch (error) {
+            res.send(error)
     }
 
 })
