@@ -226,7 +226,7 @@ const SinglePostPage = () => {
             width={{ xs: '100%', md: 'calc(80% - 10px)' }}
             mr={{ xs: '10px', md: '20px' }}
           >
-            <Typography variant="body2" color="initial" align="justify">
+            <Typography variant="body1" color="initial" align="justify">
               {course.description}
             </Typography>
           </Box>
@@ -235,7 +235,7 @@ const SinglePostPage = () => {
             <Grid container direction={{ xs: 'column', sm: 'row', md: 'row' }}>
               <Grid item alignItems="center">
                 <Typography
-                  variant="body2"
+                  variant="body1"
                   color="initial"
                   sx={{
                     fontWeight: 'bold',
@@ -256,7 +256,7 @@ const SinglePostPage = () => {
             </Grid>
             <Grid container direction={{ xs: 'column', sm: 'row', md: 'row' }}>
               <Grid item alignItems="center">
-                <Typography variant="body2" color="initial" mr="5px">
+                <Typography variant="body1" color="initial" mr="5px">
                   Difficulty:
                 </Typography>
               </Grid>
@@ -271,7 +271,7 @@ const SinglePostPage = () => {
             </Grid>
             <Grid container direction={{ xs: 'column', sm: 'row', md: 'row' }}>
               <Grid item alignItems="center">
-                <Typography variant="body2" color="initial" mr="5px">
+                <Typography variant="body1" color="initial" mr="5px">
                   Content:
                 </Typography>
               </Grid>
@@ -286,7 +286,7 @@ const SinglePostPage = () => {
             </Grid>
             <Grid container direction={{ xs: 'column', sm: 'row', md: 'row' }}>
               <Grid item alignItems="center">
-                <Typography variant="body2" color="initial" mr="5px">
+                <Typography variant="body1" color="initial" mr="5px">
                   Quality:
                 </Typography>
               </Grid>
@@ -354,7 +354,7 @@ const SinglePostPage = () => {
                   bgcolor: 'background.default',
                   borderRadius: 5,
                   '& .MuiCircularProgress-svg': {
-                    color: 'light.main', 
+                    color: 'light.main',
                   },
                 }}
               >
@@ -376,13 +376,20 @@ const SinglePostPage = () => {
               </Button>
             )}
           </Box>
-          <Box mt="10px">
+          <Box mt="10px" sx={{display: "flex", justifyContent: "center"}}>
+            {!summary && (
+              <Typography variant="body1" color="initial" sx={{fontWeight: "bold"}}>
+                If you don't want to read reviews, please use AI to summarize reviews
+              </Typography>
+            )}
             {aiError ? (
               <Typography sx={{ color: 'red' }}>
                 AI generation error, try again in 5 minutes
               </Typography>
             ) : (
-              <Typography variant='body1' color="#000000">{summary}</Typography>
+              <Typography variant="body1" color="#000000">
+                {summary}
+              </Typography>
             )}
           </Box>
         </Box>
