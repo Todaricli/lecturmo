@@ -40,6 +40,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     logoutUser();
+    navigate('/login');
   };
 
   return (
@@ -64,18 +65,21 @@ const Navbar = () => {
           Lectermo
         </Typography>
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          <Button color="inherit" sx={styles.buttonStyle}>
-            Members
-          </Button>
-          <Button color="inherit" sx={styles.buttonStyle}>
-            Courses
-          </Button>
           {user ? (
-            <Button onClick={handleLogout} color="inherit" sx={styles.register}>
-              Logout
-            </Button>
+            <div>
+              {user.roles === "lecturer" && (
+                <Button onClick={() => navigate('/testlecture')} color="inherit" sx={styles.buttonStyle}>
+                  Create QR
+                </Button>)}
+              <Button onClick={() => navigate("/profile")} color="inherit" sx={styles.buttonStyle}>
+                Profile
+              </Button>
+              <Button onClick={handleLogout} color="inherit" sx={styles.register}>
+                Logout
+              </Button>
+            </div>
           ) : (
-            <>
+            <div>
               <Button
                 onClick={() => navigate('/login')}
                 color="inherit"
@@ -90,7 +94,7 @@ const Navbar = () => {
               >
                 Register
               </Button>
-            </>
+            </div>
           )}
         </Box>
 
