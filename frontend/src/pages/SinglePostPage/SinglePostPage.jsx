@@ -26,7 +26,7 @@ const SinglePostPage = () => {
   const [course, setCourse] = useState([]);
   const [courseId, setCourseId] = useState();
   const [sortBy, setSortBy] = useState(20);
-  const [reviews, setReview] = useState()
+  const [reviews, setReview] = useState();
 
   const calculateOverallRating = (course) => {
     if (!course || !course.reviews || course.reviews.length === 0) {
@@ -101,11 +101,18 @@ const SinglePostPage = () => {
   };
 
   const calculateSingleRating = (review) => {
-    if (!review.difficultyRating && !review.qualityRating && !review.contentRating) return 0;
+    if (
+      !review.difficultyRating &&
+      !review.qualityRating &&
+      !review.contentRating
+    )
+      return 0;
 
-    let totalRating = (review.difficultyRating + review.contentRating + review.qualityRating) / 3
+    let totalRating =
+      (review.difficultyRating + review.contentRating + review.qualityRating) /
+      3;
     return totalRating;
-  }
+  };
 
   const sortReviews = (reviews) => {
     switch (sortBy) {
@@ -122,15 +129,13 @@ const SinglePostPage = () => {
           .slice()
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
-  }
+  };
 
-  useEffect(()=>{
-    if(reviews != undefined){
+  useEffect(() => {
+    if (reviews != undefined) {
       setReview(sortReviews(reviews));
     }
-    
-  },[reviews])
-
+  }, [reviews]);
 
   useEffect(() => {
     setCourseId(searchParams.get('courseId'));
@@ -146,7 +151,7 @@ const SinglePostPage = () => {
             .then((res) => {
               console.log('single course: ', res.data.reviews);
               setCourse(res.data);
-              setReview(res.data.reviews)
+              setReview(res.data.reviews);
             });
         } catch (error) {
           console.log('Error fetching single post data: ', error);
@@ -471,7 +476,6 @@ const SinglePostPage = () => {
               },
             }}
           >
-
             Please help us write a review!
           </Button>
         </Box>

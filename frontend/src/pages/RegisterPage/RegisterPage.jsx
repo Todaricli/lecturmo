@@ -1,74 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UsernameField from '../../components/Register/UsernameField';
+import PasswordField from '../../components/Register/PasswordField';
+import ConfirmPasswordField from '../../components/Register/ConfirmPasswordField';
+import EmailField from '../../components/Register/EmailField';
+import VerifyEmailCheckbox from '../../components/Register/VerifyEmailCheckbox';
+import GenderSelect from '../../components/Register/GenderSelect';
 import {
   Avatar,
   Button,
-  CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Box,
   Typography,
   Container,
-  InputAdornment,
   IconButton,
-  OutlinedInput,
-  InputLabel,
-  FormControl,
-  MenuItem,
-  Select,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
-  Visibility,
-  VisibilityOff,
   ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Calendar from '../../components/Calendar';
-import AvatarSelector from '../../components/AvatarSelect';
-import { checkIfUserExists } from '../../services/auth/registerAPIFetch';
+import AvatarSelector from '../../components/Register/AvatarSelect';
+import {
+  checkIfUserExists,
+  checkEmailInput,
+  checkPasswordInput,
+  checkPasswordsMatch,
+  registerUser,
+} from '../../services/auth/registerAPIFetch';
 
-const defaultTheme = createTheme();
 
 export default function RegisterPage() {
+  const [registerError, setRegisterError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
     username: '',
     password: '',
     confirmPassword: '',
-    allowExtraEmails: false,
+    email: '',
+    verifyEmail: false,
+    firstName: '',
+    lastName: '',
     gender: '',
+    dateOfBirth: '',
+    avatarURL: '',
   });
   const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+  // persists across re-renders, prevents unnecessary API calls
+  const timeoutRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  // register dynamic validations and update form data
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
+    setRegisterError('');
     setFormData((prevData) => ({
       ...prevData,
       // if checkbox, use the checked, else use the value property
       [name]: type === 'checkbox' ? checked : value,
     }));
-    if (name === 'username') {
-      const res = await checkIfUserExists({
-        username: value,
-      });
-      if (res && res.error) {
-        setUsernameError(res.message);
-      } else {
-        setUsernameError('');
-      }
+
+    //restart timeout if change detected again
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
+
+    timeoutRef.current = setTimeout(async () => {
+      if (name === 'username') {
+        const res = await checkIfUserExists({ username: value });
+        setUsernameError(res && res.error ? res.message : '');
+      } else if (name === 'email') {
+        const res = await checkEmailInput({
+          email: value,
+          verifyEmail: formData.verifyEmail,
+        });
+        setEmailError(res && res.error && value.length > 0 ? res.message : '');
+      } else if (name === 'password') {
+        const res1 = await checkPasswordInput({ password: value });
+        setPasswordError(
+          res1 && res1.error && value.length > 0 ? res1.message : ''
+        );
+        const res2 = await checkPasswordsMatch({
+          password: value,
+          confirmPassword: formData.confirmPassword,
+        });
+        console.log("res2:", res2)
+        setConfirmPasswordError(
+          res2 && res2.error && formData.confirmPassword.length > 0 ? res2.message : ''
+        );
+      } else if (name === 'confirmPassword') {
+        const res = await checkPasswordsMatch({
+          password: formData.password,
+          confirmPassword: value,
+        });
+        setConfirmPasswordError(
+          res && res.error && value.length > 0 ? res.message : ''
+        );
+      } else if (name === 'verifyEmail') {
+        setFormData((prevData) => ({ ...prevData, verifyEmail: checked }));
+        const res = await checkEmailInput({
+          email: formData.email,
+          verifyEmail: checked,
+        });
+        setEmailError(res && res.error && value.length > 0 ? res.message : '');
+      }
+    }, 0);
   };
 
-  const handleSubmit = (event) => {
+  const handleRegisterSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
-    // Add your logic to proceed with form submission
+    const res = await registerUser(formData);
+    setRegisterError(res && res.error ? res.message : '');
+    if (!res.error) {
+      navigate('/login');
+    }
   };
 
   const handleClickShowPassword = () => {
@@ -83,6 +143,14 @@ export default function RegisterPage() {
     setFormData({ ...formData, gender: event.target.value });
   };
 
+  const handleDateOfBirthChange = (date) => {
+    setFormData({ ...formData, dateOfBirth: date });
+  };
+
+  const handleAvatarChange = (avatarURL) => {
+    setFormData({ ...formData, avatarURL: avatarURL });
+  };
+
   return (
     <Container
       component="main"
@@ -95,9 +163,15 @@ export default function RegisterPage() {
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         paddingBottom: 5,
+        marginBottom: "50px",
       }}
     >
-      <IconButton sx={{ marginTop: 1 }} color="initial" component={Link} href="/">
+      <IconButton
+        sx={{ marginTop: 1 }}
+        color="initial"
+        component={Link}
+        href="/"
+      >
         <ArrowBackIcon />
       </IconButton>
       <Box
@@ -114,11 +188,52 @@ export default function RegisterPage() {
         <Typography component="h1" variant="h5">
           Create your Account
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleRegisterSubmit}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <UsernameField
+                value={formData.username}
+                error={usernameError}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <PasswordField
+                showPassword={showPassword}
+                formData={formData}
+                handleChange={handleChange}
+                passwordError={passwordError}
+                handleClickShowPassword={handleClickShowPassword}
+                handleMouseDownPassword={handleMouseDownPassword}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ConfirmPasswordField
+                value={formData.confirmPassword}
+                error={confirmPasswordError}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <EmailField
+                value={formData.email}
+                error={emailError}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <VerifyEmailCheckbox
+                checked={formData.verifyEmail}
+                onChange={handleChange}
+              />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                required
                 fullWidth
                 label="First Name"
                 name="firstName"
@@ -129,7 +244,6 @@ export default function RegisterPage() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                required
                 fullWidth
                 label="Last Name"
                 name="lastName"
@@ -139,108 +253,34 @@ export default function RegisterPage() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-                value={formData.username}
-                onChange={handleChange}
-                error={Boolean(usernameError)}
-                helperText={usernameError}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth required variant="outlined">
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <OutlinedInput
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
-                  onChange={handleChange}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth required variant="outlined">
-                <InputLabel id="gender-label">Gender</InputLabel>
-                <Select
-                  labelId="gender-label"
-                  id="gender"
-                  value={formData.gender}
-                  onChange={handleGenderChange}
-                  label="Gender"
-                >
-                  <MenuItem value="">Select Gender</MenuItem>
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="allowExtraEmails"
-                    color="primary"
-                    checked={formData.allowExtraEmails}
-                    onChange={handleChange}
-                  />
-                }
-                label="I want to receive notifications, updates via email."
+              <GenderSelect
+                value={formData.gender}
+                onChange={handleGenderChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Calendar />
+              <Calendar
+                value={formData.dateOfBirth}
+                onChange={handleDateOfBirthChange}
+              />
             </Grid>
             <Grid item xs={12}>
-              <AvatarSelector />
+              <AvatarSelector
+                value={formData.avatarURL}
+                onChange={handleAvatarChange}
+              />
             </Grid>
           </Grid>
           <Button
             type="submit"
             fullWidth
             variant="contained"
+            disabled={
+              usernameError !== '' ||
+              emailError !== '' ||
+              passwordError !== '' ||
+              confirmPasswordError !== ''
+            }
             sx={{
               mt: 3,
               mb: 2,
@@ -255,13 +295,17 @@ export default function RegisterPage() {
           >
             Register
           </Button>
+          {registerError && (
+            <Typography color="error" align="center">
+              {registerError}
+            </Typography>
+          )}
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
-    </Container >
+    </Container>
   );
 }
-
 
 function Copyright(props) {
   return (
@@ -289,9 +333,3 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-const genderOptions = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' },
-];

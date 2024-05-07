@@ -15,7 +15,9 @@ import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 import StatsPage from './pages/ProfilePage/StatsPage';
 import LecturerPage from './pages/LecturerPage/LecturerPage';
 import SinglePostPage from './pages/SinglePostPage/SinglePostPage';
+import SinglePostPage from './pages/SinglePostPage/SinglePostPage';
 import RegisterVerification from './pages/RegisterPage/RegisterVerification';
+import AddNewLecture from './components/AddNewLecture';
 
 function App() {
   return (
@@ -38,8 +40,10 @@ function App() {
         <Route path="fetchExample" element={<FetchExamplePage />} />
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="stats" element={<StatsPage />} />
-        <Route path="lecturer" element={<LecturerPage />} />
+        {/* <Route path="lecturer" element={<LecturerPage />} /> */}
         <Route path="courses" element={<SinglePostPage />} />
+
+        <Route path="testlecture" element={<LecturerPage />} />
       </Route>
     </Routes>
   );

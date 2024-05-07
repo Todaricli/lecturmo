@@ -7,24 +7,24 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Footer from '../../components/Footer';
 import { useTheme } from '@emotion/react';
 import { Box, IconButton } from '@mui/material';
-import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { Snackbar, Alert } from '@mui/material';
 
 const HomePage = () => {
-  // useRedirectToLoginIfNotLoggedIn();
-
   const theme = useTheme();
-
-  const { user, fetchUserDetails, isFetchUserLoading, fetchUserError } =
-    useContext(AuthContext);
-  useEffect(() => {
-    fetchUserDetails();
-  }, [fetchUserDetails]);
-
-  if (isFetchUserLoading) return <div>Loading...</div>;
-  if (fetchUserError) return <div>Error: {JSON.stringify(fetchUserError)}</div>;
+  const location = useLocation();
+  const message = location.state?.message;
 
   const [posts, setPosts] = useState([]);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    console.log('message:', message);
+    if (message === 'Successfully verified!') {
+      setOpen(true);
+    }
+  }, [message]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +67,20 @@ const HomePage = () => {
         }}
       >
         <ArrowDownwardIcon sx={{ fontSize: 50 }} />
-      </IconButton> */}
+      </IconButton>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Successfully verified!
+        </Alert>
+      </Snackbar>
 
       <Footer/>
     </Box>
