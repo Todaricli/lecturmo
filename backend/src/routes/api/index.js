@@ -6,6 +6,7 @@ import LectureRouter from './lectureRouter.js';
 import SearchRouter from './searchRouters.js';
 import landingPosts from './landingPosts.js';
 import userProfileRoutes from './userProfilePage.js';
+import lecturAi from './openAi.js'
 
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.use('/', landingPosts);
 router.use('/', LectureRouter)
 router.use('/', SearchRouter)
 router.use('/', userProfileRoutes);
+router.use('/lecturai', lecturAi)
 
 export default router;
