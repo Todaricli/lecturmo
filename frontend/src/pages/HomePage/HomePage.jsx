@@ -50,7 +50,7 @@ const HomePage = () => {
       <Typography variant="h1">Hello Lectermo</Typography>
       <SearchBar />
       <LandingPosts posts={posts} />
-      {/* <IconButton
+       <IconButton
         sx={{
           bgcolor: 'secondary.main',
           width: '60px',

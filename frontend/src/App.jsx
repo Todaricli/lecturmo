@@ -15,7 +15,6 @@ import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 import StatsPage from './pages/ProfilePage/StatsPage';
 import LecturerPage from './pages/LecturerPage/LecturerPage';
 import SinglePostPage from './pages/SinglePostPage/SinglePostPage';
-import SinglePostPage from './pages/SinglePostPage/SinglePostPage';
 import RegisterVerification from './pages/RegisterPage/RegisterVerification';
 import AddNewLecture from './components/AddNewLecture';
 
