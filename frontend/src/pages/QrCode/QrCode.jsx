@@ -4,12 +4,12 @@ import QRCode from 'react-qr-code';
 import { useSearchParams } from 'react-router-dom';
 
 const QrCode = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
   const [qrCode, setQrCode] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
-  const courseId = searchParams.get("course")
-  const lecture = searchParams.get("lecture")
+  const courseId = searchParams.get('course');
+  const lecture = searchParams.get('lecture');
 
   const getServerTime = async () => {
     const time = await fetch(
@@ -26,7 +26,6 @@ const QrCode = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-
   useEffect(() => {
     setQrCode(
       `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}&lecture=${lecture}`
@@ -38,7 +37,15 @@ const QrCode = () => {
   }, [qrCode]);
 
   return (
-    <Box sx={{display: "flex", flexDirection:"row-reverse", width: "100%", justifyContent:'center', mt: 10}}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        width: '100%',
+        justifyContent: 'center',
+        mt: 10,
+      }}
+    >
       <Box>
         <QRCode value={qrCode} />
         <Typography variant="body1" color="primary">

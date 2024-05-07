@@ -28,7 +28,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("hello")
+      console.log('hello');
       try {
         const response = await axios.get(
           'http://localhost:3000/api/landing-posts'
@@ -50,7 +50,7 @@ const HomePage = () => {
       <Typography variant="h1">Hello Lectermo</Typography>
       <SearchBar />
       <LandingPosts posts={posts} />
-       <IconButton
+      <IconButton
         sx={{
           bgcolor: 'secondary.main',
           width: '60px',
@@ -82,7 +82,7 @@ const HomePage = () => {
         </Alert>
       </Snackbar>
 
-      <Footer/>
+      <Footer />
     </Box>
   );
 };

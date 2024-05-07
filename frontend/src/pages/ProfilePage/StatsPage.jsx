@@ -2,27 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { Container, Box, Typography, LinearProgress } from '@mui/material';
 import axios from 'axios';
 
-
 const StatsPage = () => {
   const [user, setUser] = useState([]);
-  const [courses, setCourses] = useState()
+  const [courses, setCourses] = useState();
 
   useEffect(() => {
     const fetchUser = async () => {
-      
       try {
-        const response = await axios.get(`http://localhost:3000/api/stats`).then((res) => {
-          console.log("user: ", res.data);
-          setUser(res.data)
-          setCourses(res.data.courses)
-        })
+        const response = await axios
+          .get(`http://localhost:3000/api/stats`)
+          .then((res) => {
+            console.log('user: ', res.data);
+            setUser(res.data);
+            setCourses(res.data.courses);
+          });
       } catch (error) {
-        console.log("Error fetching user: ", error);
+        console.log('Error fetching user: ', error);
       }
-    }
-    fetchUser()
-  }, [])
-
+    };
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -96,36 +95,35 @@ const StatsPage = () => {
               borderRadius: 4,
             }}
           >
-
-            {courses && courses.length > 0 
-            ?<>
-            <Box
-              sx={{
-                p: '30px',
-                pb: 2,
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}
-            >
-              <Typography
-                variant="h5"
-                color="initial"
-                sx={{ fontWeight: 'bold' }}
-              >
-                Compsci 732
-              </Typography>
-              <Typography variant="body2" color="#78858F">
-                20/50 Classes
-              </Typography>
-            </Box>
-            <Box sx={{ width: '100%', p: '0 30px' }}>
-              <LinearProgress variant="determinate" value={10} />
-            </Box>
-            </>
-          :<h1>YOU HAVE NOT ATTENDED ANY LECTURES YET</h1>
-          }
-            
+            {courses && courses.length > 0 ? (
+              <>
+                <Box
+                  sx={{
+                    p: '30px',
+                    pb: 2,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    color="initial"
+                    sx={{ fontWeight: 'bold' }}
+                  >
+                    Compsci 732
+                  </Typography>
+                  <Typography variant="body2" color="#78858F">
+                    20/50 Classes
+                  </Typography>
+                </Box>
+                <Box sx={{ width: '100%', p: '0 30px' }}>
+                  <LinearProgress variant="determinate" value={10} />
+                </Box>
+              </>
+            ) : (
+              <h1>YOU HAVE NOT ATTENDED ANY LECTURES YET</h1>
+            )}
 
             <Typography
               variant="h6"

@@ -173,7 +173,7 @@ export const coursesJSON = [
   },
   {
     course_dummy_id: 'COMPSCI_719',
-    courseCode: "COMPSCI 719",
+    courseCode: 'COMPSCI 719',
     courseName: 'Programming with Web Technologies',
     dummyLecId: 'lec4',
     description:

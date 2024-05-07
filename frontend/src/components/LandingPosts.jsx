@@ -9,11 +9,11 @@ import {
   Rating,
   CardContent,
   Stack,
-} from "@mui/material";
-import React, { useEffect } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { useTheme } from "@emotion/react";
+} from '@mui/material';
+import React, { useEffect } from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { useTheme } from '@emotion/react';
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
@@ -35,15 +35,14 @@ const LandingPosts = ({ posts }) => {
       totalRating += averageRating;
     });
     const overallRating = totalRating / totalReviews;
-    console.log("course: ", post.courseCode)
+    console.log('course: ', post.courseCode);
     console.log(overallRating);
     return overallRating;
-  }
-
+  };
 
   useEffect(() => {
-    console.log("posts:", posts);
-  }, [posts])
+    console.log('posts:', posts);
+  }, [posts]);
 
   return (
     <Grid
@@ -85,7 +84,10 @@ const LandingPosts = ({ posts }) => {
                   >
                     <CardHeader
                       title={post.courseCode}
-                      titleTypographyProps={{ variant: 'h5', fontWeight: "bold" }}
+                      titleTypographyProps={{
+                        variant: 'h5',
+                        fontWeight: 'bold',
+                      }}
                     />
                   </Box>
                   <Box
