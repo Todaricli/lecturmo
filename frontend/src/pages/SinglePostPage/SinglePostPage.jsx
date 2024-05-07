@@ -20,6 +20,10 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
+import { postRequest } from '../../services/postRequest';
+
+
+const API_URL = import.meta.env.VITE_EXPRESS_APP_ENDPOINT_API_URL ?? "";
 
 const SinglePostPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,6 +31,29 @@ const SinglePostPage = () => {
   const [courseId, setCourseId] = useState();
   const [sortBy, setSortBy] = useState(20);
   const [reviews, setReview] = useState();
+
+  //AI
+  const [summary, setSummary] = useState(null);
+  const [aiInProgress, setAiInProgress] = useState(false);
+  const [aiError, setAiError] = useState(false);
+
+  const generateCourseReviewSummary = async (course_Id) => {
+
+    setAiInProgress(true);
+    const courseIdObjt = {
+      courseId: course_Id
+    }
+
+    const response = await postRequest(`${API_URL}/lecturai/summarizeReview`, courseIdObjt);
+
+    if(!response.message.content) {
+      setAiError(true);
+      setAiInProgress(false)
+    }
+
+    setSummary(response.message.content)
+    setAiInProgress(false)
+  }
 
   const calculateOverallRating = (course) => {
     if (!course || !course.reviews || course.reviews.length === 0) {
@@ -46,7 +73,7 @@ const SinglePostPage = () => {
     });
 
     const overallRating = totalRating / totalReviews;
-    console.log(overallRating);
+
     return overallRating;
   };
 
@@ -170,6 +197,8 @@ const SinglePostPage = () => {
         flexDirection: 'column',
       }}
     >
+      <Button sx={{bgcolor: 'black'}} onClick={() => generateCourseReviewSummary(courseId)}>Generate Summary</Button>
+      {aiInProgress ? (<Typography sx={{color: 'red'}}>Generating Summary... :)</Typography>) : (aiError ? (<Typography sx={{color: 'red'}}>AI generation error, try again in 5 minutes</Typography>): (<Typography sx={{color: 'green'}}>{summary}</Typography>))}
       <Box
         sx={{
           bgcolor: 'light.main',
