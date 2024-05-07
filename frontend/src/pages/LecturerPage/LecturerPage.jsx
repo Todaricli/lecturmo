@@ -86,7 +86,6 @@ const LecturerPage = () => {
 
   useEffect(() => {
     if (coursesList != undefined) {
-      console.log('fuck');
       console.log(courseList);
     }
   }, [coursesList]);
@@ -181,7 +180,7 @@ const LecturerPage = () => {
                 color="primary"
                 onClick={() => {
                   window.open(
-                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}`,
+                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseName=${encodeURI(selectedCourseName)}`,
                     '_blank'
                   );
                 }}
