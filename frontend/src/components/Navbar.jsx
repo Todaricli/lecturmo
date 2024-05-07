@@ -133,19 +133,34 @@ const Navbar = () => {
             }}
           >
             <MenuList>
-              <MenuItem sx={styles.menuItemStyles}>Members</MenuItem>
-              <MenuItem sx={styles.menuItemStyles}>Courses</MenuItem>
               {user ? (
-                <MenuItem
-                  onClick={() => handleLogout()}
-                  sx={styles.menuItemStyles}
-                >
-                  Logout
-                </MenuItem>
+                <div>
+                  {user.roles === "lecturer" && (
+                    <MenuItem onClick={() => {
+                      navigate('/testlecture')
+                      setopenNav(false)
+                    }} sx={styles.menuItemStyles}>Create QR</MenuItem>)}
+                  <MenuItem onClick={() => {
+                    navigate('/profile')
+                    setopenNav(false)
+                  }} sx={styles.menuItemStyles}>Profile</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleLogout()
+                      setopenNav(false)
+                    }}
+                    sx={styles.menuItemStyles}
+                  >
+                    Logout
+                  </MenuItem>
+                </div>
               ) : (
                 <div>
                   <MenuItem
-                    onClick={() => navigate('/login')}
+                    onClick={() => {
+                      navigate('/login')
+                      setopenNav(false)
+                    }}
                     sx={styles.menuItemStyles}
                   >
                     Log In
