@@ -9,11 +9,12 @@ import {
   Paper,
   InputBase,
   Link,
-  LinearProgress
+  LinearProgress,
+  Stack,
 } from '@mui/material';
 import React, { useContext } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import EmailIcon from '@mui/icons-material/Email';
 import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 import { AuthContext } from '../../contexts/AuthContextProvider';
@@ -27,7 +28,7 @@ const UserProfilePage = () => {
     return <Loading />;
   }
 
-  console.log(user)
+  console.log(user);
 
   return (
     <Box
@@ -74,35 +75,24 @@ const UserProfilePage = () => {
               sx={{ width: 250, height: 250, borderRadius: 4 }}
             />
             <CardContent>
-              <Typography
-                variant="h3"
-                color="initial"
-                sx={{
-                  paddingBottom: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
+              <Stack
+                flexDirection="row"
+                justifyContent="center"
+                alignItems="center"
               >
-                {user.fname} {user.lname}
-              </Typography>
-              {user.isVerified && (
-                <Box
+                <Typography
+                  variant="h5"
+                  color="initial"
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    marginLeft: '10px',
                   }}
+                  mr="10px"
                 >
-                  <CheckCircleIcon style={{ color: 'green' }} />
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ marginLeft: '5px' }}
-                  >
-                    Verified
-                  </Typography>
-                </Box>
-              )}
+                  {user.fname} {user.lname}
+                </Typography>
+                {user.isVerified && <VerifiedIcon color="verifiedIcon" />}
+              </Stack>
               <Typography variant="body2" color="#78858F" marginTop={5}>
                 Email
               </Typography>
@@ -170,106 +160,104 @@ const UserProfilePage = () => {
           </Card>
         )}
 
-
-        {user.courses.length > 0
-          ?
-          (user.courses.map((course) => (<Box
-            sx={{
-              mt: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              //   justifyContent: "center",
-              alignItems: 'center',
-              width: 600,
-              height: '150px',
-              bgcolor: 'light.main',
-              borderRadius: 4,
-
-            }}
-          >
-            <Box
-              sx={{
-                p: '30px',
-                pb: 2,
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}
-            >
-              <Typography
-                variant="h5"
-                color="initial"
-                sx={{ fontWeight: 'bold' }}
+        {user.courses.length > 0 ? (
+          user.courses.map((course) => (
+            <Card sx={{ m: '20px 0', borderRadius: 3 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  //   justifyContent: "center",
+                  alignItems: 'center',
+                  width: 600,
+                  height: '150px',
+                  bgcolor: 'light.main',
+                  borderRadius: 4,
+                }}
               >
-                {course.courseName}
-
-              </Typography>
-              <Typography variant="body2" color="#78858F">
-                {course.lectures.length} Classes attended!
-              </Typography>
-            </Box>
-            <Box sx={{ width: '100%', p: '0 30px' }}>
-              <LinearProgress variant="determinate"
-                value={course.lectures.length < 3
-                  ? (course.lectures.length / 3) * 100
-                  : (course.lectures.length < 8
-                    ? ((course.lectures.length) / 8) * 100
-                    : (course.lectures.length < 15
-                      ? ((course.lectures.length) / 15) * 100
-                      : null
-                    ))}
-              />
-            </Box>
-            <Typography>
-              {course.lectures.length < 3
-                ? <Box
-                  component="img"
+                <Box
                   sx={{
-                    height: 20,
-                    width: 20,
+                    p: '20px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
                   }}
-                  alt="Bronze medal"
-                  src="https://static.vecteezy.com/system/resources/previews/008/088/089/original/champion-art-bronze-medal-with-red-ribbon-icon-sign-first-place-isolated-on-transparent-background-illustration-free-vector.jpg"
-                />
-                : (course.lectures.length < 8
-                  ? <Box
-                    component="img"
-                    sx={{
-                      height: 20,
-                      width: 20,
-                    }}
-                    alt="Silver medal"
-                    src="https://png.pngtree.com/element_our/20200702/ourmid/pngtree-silver-cartoon-medal-illustration-image_2286645.jpg"
+                >
+                  <Typography
+                    variant="h5"
+                    color="initial"
+                    sx={{ fontWeight: 'bold' }}
+                  >
+                    {course.courseName}
+                  </Typography>
+                  <Typography variant="body2" color="#78858F">
+                    {course.lectures.length} Classes attended!
+                  </Typography>
+                </Box>
+                <Box sx={{ width: '100%', p: '0 30px' }}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={
+                      course.lectures.length < 3
+                        ? (course.lectures.length / 3) * 100
+                        : course.lectures.length < 8
+                          ? (course.lectures.length / 8) * 100
+                          : course.lectures.length < 15
+                            ? (course.lectures.length / 15) * 100
+                            : null
+                    }
                   />
-                  : (course.lectures.length < 15
-                    ? <Box
-                      component="img"
-                      sx={{
-                        height: 20,
-                        width: 20,
-                      }}
-                      alt="gold medal"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8szUihTTG9Xt756UbzaXgdEVu9So3MkRMeFfdLsNIQA&s"
-                    />
-                    : null
-                  ))}
-            </Typography>
-            <Typography>
-              {course.lectures.length < 3
-                ? `Attend ${3 - course.lectures.length} more lectures to rank up!`
-                : (course.lectures.length < 8
-                  ? `Attend ${8 - course.lectures.length} more lectures to rank up!`
-                  : (course.lectures.length < 15
-                    ? "You're a superstar!"
-                    : null
-                  ))}
-            </Typography>
-          </Box>)))
-          : <p>oh naurr</p>}
-
-
-
-
+                </Box>
+                <Stack flexDirection="row" mt="20px" >
+                  <Box>
+                    {course.lectures.length < 3 ? (
+                      <Box
+                        component="img"
+                        sx={{
+                          height: 20,
+                          width: 20,
+                        }}
+                        alt="Bronze medal"
+                        src="https://static.vecteezy.com/system/resources/previews/008/088/089/original/champion-art-bronze-medal-with-red-ribbon-icon-sign-first-place-isolated-on-transparent-background-illustration-free-vector.jpg"
+                      />
+                    ) : course.lectures.length < 8 ? (
+                      <Box
+                        component="img"
+                        sx={{
+                          height: 20,
+                          width: 20,
+                        }}
+                        alt="Silver medal"
+                        src="https://png.pngtree.com/element_our/20200702/ourmid/pngtree-silver-cartoon-medal-illustration-image_2286645.jpg"
+                      />
+                    ) : course.lectures.length < 15 ? (
+                      <Box
+                        component="img"
+                        sx={{
+                          height: 20,
+                          width: 20,
+                        }}
+                        alt="gold medal"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8szUihTTG9Xt756UbzaXgdEVu9So3MkRMeFfdLsNIQA&s"
+                      />
+                    ) : null}
+                  </Box>
+                  <Typography>
+                    {course.lectures.length < 3
+                      ? `Attend ${3 - course.lectures.length} more lectures to rank up!`
+                      : course.lectures.length < 8
+                        ? `Attend ${8 - course.lectures.length} more lectures to rank up!`
+                        : course.lectures.length < 15
+                          ? "You're a superstar!"
+                          : null}
+                  </Typography>
+                </Stack>
+              </Box>
+            </Card>
+          ))
+        ) : (
+          <p>oh naurr</p>
+        )}
 
         <Button
           variant="contained"
