@@ -3,12 +3,12 @@ import QRCode from 'react-qr-code';
 import { useSearchParams } from 'react-router-dom';
 
 const QrCode = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
   const [qrCode, setQrCode] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
-  const courseId = searchParams.get("course")
-  const lecture = searchParams.get("lecture")
+  const courseId = searchParams.get('course');
+  const lecture = searchParams.get('lecture');
 
   const getServerTime = async () => {
     const time = await fetch(
@@ -24,7 +24,6 @@ const QrCode = () => {
     }, 1000);
     return () => clearInterval(intervalId);
   }, []);
-
 
   useEffect(() => {
     setQrCode(

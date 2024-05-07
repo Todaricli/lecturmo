@@ -8,24 +8,24 @@ const QrLandingPage = () => {
   const [params, setParams] = useSearchParams();
   const [date, setDate] = useState(undefined);
   const [course, setCourse] = useState(undefined);
-  const [lecture, setLecture] = useState(undefined)
+  const [lecture, setLecture] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(undefined);
   const [validity, setValidity] = useState();
-  const [login, setLogin] = useState(true)
-  const [user, setUser] = useState()
+  const [login, setLogin] = useState(true);
+  const [user, setUser] = useState();
 
   const submit = async () => {
-    console.log("hi")
+    console.log('hi');
     if (date && course) {
-      console.log("asdfsadf")
+      console.log('asdfsadf');
       const response = await axios
         .post(
           `http://localhost:3000/api/qr-code`,
           {
             date: date,
             courseId: course,
-            lecture: lecture
+            lecture: lecture,
           },
           {
             headers: {
@@ -60,12 +60,12 @@ const QrLandingPage = () => {
 
   async function getStatus() {
     const response = await axios
-      .get("http://localhost:3000/api/status")
+      .get('http://localhost:3000/api/status')
       .then((res) => {
         if (res.status == 200) {
-          setUser(res)
+          setUser(res);
         }
-      })
+      });
   }
 
   // useEffect(() => {
@@ -83,17 +83,17 @@ const QrLandingPage = () => {
   useEffect(() => {
     setDate(params.get('date'));
     setCourse(params.get('course'));
-    setLecture(params.get('lecture'))
+    setLecture(params.get('lecture'));
   }, []);
 
   useEffect(() => {
-    console.log("asd")
+    console.log('asd');
     submit();
   }, [date, course]);
 
   useEffect(() => {
-    console.log("here")
-    console.log(response)
+    console.log('here');
+    console.log(response);
     if (response != undefined) {
       setValidity(response.data.validity);
       console.log(response.data.validity);

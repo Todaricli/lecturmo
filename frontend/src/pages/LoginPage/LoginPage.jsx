@@ -28,8 +28,6 @@ import {
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import axios from 'axios';
 
-
-
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -83,16 +81,16 @@ export default function LoginPage() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-   
+
   const handleEmail = (e) => {
-    setUsername(e)
-    console.log(username)
-  }
+    setUsername(e);
+    console.log(username);
+  };
 
   const handlePassword = (e) => {
-    setPassword(e)
-    console.log(password)
-  }
+    setPassword(e);
+    console.log(password);
+  };
 
   return (
     <Container

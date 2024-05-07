@@ -74,19 +74,32 @@ const UserProfilePage = () => {
               <Typography
                 variant="h3"
                 color="initial"
-                sx={{ paddingBottom: '10px', display: 'flex', alignItems: 'center' }}
+                sx={{
+                  paddingBottom: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
               >
                 {user.fname} {user.lname}
-               
               </Typography>
-              {user.isVerified &&
-                  <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
-                    <CheckCircleIcon style={{ color: 'green' }} />
-                    <Typography variant="body2" color="text.secondary" sx={{ marginLeft: '5px' }}>
-                      Verified
-                    </Typography>
-                  </Box>
-                }
+              {user.isVerified && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginLeft: '10px',
+                  }}
+                >
+                  <CheckCircleIcon style={{ color: 'green' }} />
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ marginLeft: '5px' }}
+                  >
+                    Verified
+                  </Typography>
+                </Box>
+              )}
               <Typography variant="body2" color="#78858F" marginTop={5}>
                 Email
               </Typography>
@@ -126,7 +139,6 @@ const UserProfilePage = () => {
           </CardContent>
         </Card>
 
-
         {!user.isVerified && (
           <Card sx={{ width: 600, marginTop: 5, borderRadius: 4 }}>
             <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -158,7 +170,7 @@ const UserProfilePage = () => {
         <Button
           variant="contained"
           color="secondary"
-          sx={{ marginTop: 5, borderRadius: 4, marginBottom: 5}}
+          sx={{ marginTop: 5, borderRadius: 4, marginBottom: 5 }}
           component={Link}
           href="/edit-profile"
         >

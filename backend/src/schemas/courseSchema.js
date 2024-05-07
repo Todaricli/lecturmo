@@ -30,15 +30,17 @@ const courseSchema = new Schema(
         createdAt: { type: Date, default: Date.now },
       },
     ],
-   
-    lectures: [{
-      // lectureId: {type: String, unique:true, },
-      lectureName: {type:String},
-      attendence: {type: Number, default: 0},
-      date: {type:String},
-      qrDuration: {type:Number, default: 15},
-      qrCreationTime: String
-    }]
+
+    lectures: [
+      {
+        // lectureId: {type: String, unique:true, },
+        lectureName: { type: String },
+        attendence: { type: Number, default: 0 },
+        date: { type: String },
+        qrDuration: { type: Number, default: 15 },
+        qrCreationTime: String,
+      },
+    ],
   },
   { timestamps: true },
 );
