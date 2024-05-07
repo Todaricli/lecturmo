@@ -12,13 +12,13 @@ const QrLandingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(undefined);
   const [validity, setValidity] = useState();
+  const [courseName, setCourseName] = useState();
   const [login, setLogin] = useState(true);
   const [user, setUser] = useState();
 
   const submit = async () => {
-    console.log('hi');
+    console.log(courseName);
     if (date && course) {
-      console.log('asdfsadf');
       const response = await axios
         .post(
           `http://localhost:3000/api/qr-code`,
@@ -26,6 +26,7 @@ const QrLandingPage = () => {
             date: date,
             courseId: course,
             lecture: lecture,
+            courseName: courseName
           },
           {
             headers: {
@@ -84,6 +85,7 @@ const QrLandingPage = () => {
     setDate(params.get('date'));
     setCourse(params.get('course'));
     setLecture(params.get('lecture'));
+    setCourseName(params.get('courseName'))
   }, []);
 
   useEffect(() => {
