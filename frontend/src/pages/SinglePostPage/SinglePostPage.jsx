@@ -12,8 +12,9 @@ import {
   FormControl,
   Card,
   CardContent,
-  Avatar,
+  Avatar
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useEffect, useState } from 'react';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -197,8 +198,6 @@ const SinglePostPage = () => {
         flexDirection: 'column',
       }}
     >
-      <Button sx={{bgcolor: 'black'}} onClick={() => generateCourseReviewSummary(courseId)}>Generate Summary</Button>
-      {aiInProgress ? (<Typography sx={{color: 'red'}}>Generating Summary... :)</Typography>) : (aiError ? (<Typography sx={{color: 'red'}}>AI generation error, try again in 5 minutes</Typography>): (<Typography sx={{color: 'green'}}>{summary}</Typography>))}
       <Box
         sx={{
           bgcolor: 'light.main',
@@ -332,6 +331,59 @@ const SinglePostPage = () => {
             <Typography variant="body2" color="initial">
               University of Auckland
             </Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          bgcolor: 'secondary.main',
+          height: '100%',
+          width: '100%',
+          p: '20px',
+          borderRadius: 5,
+          mt: 5,
+        }}
+      >
+        <Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            {aiInProgress ? (
+              <LoadingButton
+                loading
+                sx={{
+                  bgcolor: 'background.default',
+                  borderRadius: 5,
+                  '& .MuiCircularProgress-svg': {
+                    color: 'light.main', 
+                  },
+                }}
+              >
+                Generating summary...
+              </LoadingButton>
+            ) : (
+              <Button
+                sx={{
+                  bgcolor: 'background.default',
+                  color: 'primary.main',
+                  borderRadius: 5,
+                  '&:hover': {
+                    bgcolor: 'lightBlue.main',
+                  },
+                }}
+                onClick={() => generateCourseReviewSummary(courseId)}
+              >
+                Generate Summary
+              </Button>
+            )}
+          </Box>
+          <Box mt="10px">
+            {aiError ? (
+              <Typography sx={{ color: 'red' }}>
+                AI generation error, try again in 5 minutes
+              </Typography>
+            ) : (
+              <Typography variant='body1' color="#000000">{summary}</Typography>
+            )}
           </Box>
         </Box>
       </Box>
