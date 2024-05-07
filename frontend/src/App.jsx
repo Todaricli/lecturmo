@@ -40,7 +40,7 @@ function App() {
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="stats" element={<StatsPage />} />
         {/* <Route path="lecturer" element={<LecturerPage />} /> */}
-        <Route path="post" element={<SinglePostPage />} />
+        <Route path="courses" element={<SinglePostPage />} />
 
         <Route path="testlecture" element={<LecturerPage />} />
       </Route>

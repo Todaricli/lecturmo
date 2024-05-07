@@ -31,7 +31,6 @@ import {
   registerUser,
 } from '../../services/auth/registerAPIFetch';
 
-
 export default function RegisterPage() {
   const [registerError, setRegisterError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -98,9 +97,11 @@ export default function RegisterPage() {
           password: value,
           confirmPassword: formData.confirmPassword,
         });
-        console.log("res2:", res2)
+        console.log('res2:', res2);
         setConfirmPasswordError(
-          res2 && res2.error && formData.confirmPassword.length > 0 ? res2.message : ''
+          res2 && res2.error && formData.confirmPassword.length > 0
+            ? res2.message
+            : ''
         );
       } else if (name === 'confirmPassword') {
         const res = await checkPasswordsMatch({
@@ -163,7 +164,7 @@ export default function RegisterPage() {
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         paddingBottom: 5,
-        marginBottom: "50px",
+        marginBottom: '50px',
       }}
     >
       <IconButton

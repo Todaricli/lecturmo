@@ -2,6 +2,7 @@ export const coursesJSON = [
   {
     course_dummy_id: 'COMPSCI_732',
     courseName: 'Software Tools and Techniques',
+    courseCode: 'COMPSCI 732',
     dummyLecId: 'lec5',
     description:
       'An advanced course examining research issues related to tools and techniques for software design and development. Topics include techniques for data mapping and data integration, software architectures for developing software tools, issues in advanced database systems. This course includes a lecture component and a group project component, focusing on state-of-the-art software development tools and techniques.',
@@ -109,12 +110,32 @@ export const coursesJSON = [
   {
     course_dummy_id: 'COMPSCI_718',
     courseName: 'Programming for Industry',
+    courseCode: 'COMPSCI 718',
     dummyLecId: 'lec3',
     description:
       'An examination of object-oriented programming and design. Key principles of object-oriented programming: typing, encapsulation, inheritance, polymorphism, and composition. Fundamental object-oriented modeling and design techniques. Students will develop application software of reasonable complexity that draws on object-oriented language features, and contemporary APIs, frameworks, and tools.',
     category: 'Science',
     level: 'Postgraduate',
-    reviews: [],
+    reviews: [
+      {
+        dummyId: 'lec2',
+        content:
+          'Challenging yet rewarding experience with ample learning opportunities.',
+        dummyLikes: ['lec4', 'lec5'],
+        difficultyRating: 3,
+        contentRating: 4,
+        qualityRating: 4,
+        createdAt: '2024-02-02T09:00:00Z',
+        dummyId: 'lec2',
+        content:
+          'Challenging yet rewarding experience with ample learning opportunities.',
+        dummyLikes: ['lec4', 'lec5'],
+        difficultyRating: 3,
+        contentRating: 4,
+        qualityRating: 4,
+        createdAt: '2024-02-02T09:00:00Z',
+      },
+    ],
     lectures: [
       {
         lectureName: 'Introduction to Object-Oriented Programming',
@@ -152,6 +173,7 @@ export const coursesJSON = [
   },
   {
     course_dummy_id: 'COMPSCI_719',
+    courseCode: 'COMPSCI 719',
     courseName: 'Programming with Web Technologies',
     dummyLecId: 'lec4',
     description:
@@ -197,12 +219,34 @@ export const coursesJSON = [
   {
     course_dummy_id: 'COMPSCI_751',
     courseName: 'Advanced Topics in Database Systems',
+    courseCode: 'COMPSCI 751',
     dummyLecId: 'lec1',
     description:
       'Database principles. Relational model, relational algebra, relational calculus, SQL, SQL and programming languages, entity-relationship model, normalisation, query processing and query optimisation, ACID transactions, transaction isolation levels, database recovery, database security, databases and XML. Research frontiers in database systems. Advanced coverage of database systems design and implementation including distributed database systems and modern query languages.',
     category: 'Science',
     level: 'Postgraduate',
-    reviews: [],
+    reviews: [
+      {
+        dummyId: 'lec1',
+        content:
+          'The course provided a comprehensive overview of object-oriented programming concepts. I particularly enjoyed the practical examples.',
+        dummyLikes: ['lec1', 'lec2', 'lec3'],
+        difficultyRating: 4,
+        contentRating: 5,
+        qualityRating: 1,
+        createdAt: '2024-03-01T09:00:00Z',
+      },
+      {
+        dummyId: 'lec2',
+        content:
+          'The lectures on encapsulation and inheritance were insightful. However, I wish there were more hands-on exercises to reinforce the concepts.',
+        dummyLikes: ['lec4', 'lec5'],
+        difficultyRating: 3,
+        contentRating: 4,
+        qualityRating: 4,
+        createdAt: '2024-03-08T09:00:00Z',
+      },
+    ],
     lectures: [
       {
         lectureName: 'Introduction to Advanced Database Concepts',
@@ -261,12 +305,44 @@ export const coursesJSON = [
   {
     course_dummy_id: 'INFOSYS_727',
     courseName: 'Advanced Information Security',
+    courseCode: 'INFOSYS 727',
     dummyLecId: 'lec1',
     description:
       "Focuses on technical security issues of the systems used in today's information technology applications. Explores the practical issues of identification and authentication, security of operating systems, cryptography, disaster recovery and contingency planning, and discusses the relevant theoretical models. Managerial aspects of information security issues as well as legal and ethical issues arising from protecting computer files both from a New Zealand and global perspective will be addressed. The course follows the content of CISSP certification.",
     category: 'Business and Economics',
     level: 'Postgraduate',
-    reviews: [],
+    reviews: [
+      {
+        dummyId: 'lec1',
+        content:
+          'The course content was thorough, covering a wide range of database topics. However, I felt that some concepts were presented too quickly, making them difficult to grasp.',
+        dummyLikes: ['lec1', 'lec3'],
+        difficultyRating: 3,
+        contentRating: 4,
+        qualityRating: 3,
+        createdAt: '2024-03-15T09:00:00Z',
+      },
+      {
+        dummyId: 'lec2',
+        content:
+          'The lectures on query optimization were particularly enlightening, providing valuable insights into improving database performance. However, I would have appreciated more real-world examples to better understand the concepts.',
+        dummyLikes: ['lec2', 'lec4'],
+        difficultyRating: 4,
+        contentRating: 5,
+        qualityRating: 4,
+        createdAt: '2024-03-22T09:00:00Z',
+      },
+      {
+        dummyId: 'lec3',
+        content:
+          "Overall, the course was challenging but rewarding. The practical exercises helped reinforce theoretical knowledge, and the lecturer's expertise was evident throughout.",
+        dummyLikes: ['lec5'],
+        difficultyRating: 4,
+        contentRating: 4,
+        qualityRating: 5,
+        createdAt: '2024-03-29T09:00:00Z',
+      },
+    ],
     lectures: [
       {
         lectureName: 'Introduction to Advanced Information Security',
@@ -324,6 +400,7 @@ export const coursesJSON = [
   },
   {
     course_dummy_id: 'INFOSYS_704',
+    courseCode: 'INFOSYS 704',
     courseName: 'IT Consultancy',
     dummyLecId: 'lec1',
     description:

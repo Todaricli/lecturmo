@@ -46,7 +46,8 @@ const EditProfilePage = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [isCurrentPasswordConfirmed, setIsCurrentPasswordConfirmed] = useState(false);
+  const [isCurrentPasswordConfirmed, setIsCurrentPasswordConfirmed] =
+    useState(false);
   const [currentPasswordError, setCurrentPasswordError] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -97,16 +98,13 @@ const EditProfilePage = () => {
   // forcefully update user state success message is opened
   useEffect(() => {
     if (open === true) {
-      updateUserDetails()
+      updateUserDetails();
     }
-  }, [open])
+  }, [open]);
 
   if (user === null) {
     return <Loading />;
   }
-
-
-
 
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
@@ -123,7 +121,14 @@ const EditProfilePage = () => {
     timeoutRef.current = setTimeout(async () => {
       if (name === 'username') {
         const res = await checkIfUserExists({ username: value });
-        setUsernameError(res && res.error && formData.username != user.username && value.length > 0 ? res.message : '');
+        setUsernameError(
+          res &&
+            res.error &&
+            formData.username != user.username &&
+            value.length > 0
+            ? res.message
+            : ''
+        );
       } else if (name === 'email') {
         const res = await checkEmailInput({
           email: value,
@@ -158,17 +163,23 @@ const EditProfilePage = () => {
           email: formData.email,
           verifyEmail: checked,
         });
-        setEmailError(res && res.error && formData.email.length > 0 && formData.email != user.email ? res.message : '');
-        console.log("user.email:", user.email)
+        setEmailError(
+          res &&
+            res.error &&
+            formData.email.length > 0 &&
+            formData.email != user.email
+            ? res.message
+            : ''
+        );
+        console.log('user.email:', user.email);
       } else if (name === 'currentPassowrd') {
-
       }
     }, 500);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("formData:", formData)
+    console.log('formData:', formData);
     const res = await updateUser(formData);
     setUpdateError(res && res.error ? res.message : '');
     if (!res.error) {
@@ -199,7 +210,7 @@ const EditProfilePage = () => {
 
   const handleAvatarChange = () => {
     // Logic for changing the avatar URL, possibly with a file input dialog.
-    console.log("Avatar change clicked");
+    console.log('Avatar change clicked');
   };
 
   return (
@@ -231,7 +242,12 @@ const EditProfilePage = () => {
         }}
       >
         <Box>
-          <IconButton color="initial" component={Link} href="/profile" sx={{ marginTop: 3 }}>
+          <IconButton
+            color="initial"
+            component={Link}
+            href="/profile"
+            sx={{ marginTop: 3 }}
+          >
             <ArrowBackIcon />
           </IconButton>
         </Box>
@@ -249,7 +265,8 @@ const EditProfilePage = () => {
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-            }}>
+            }}
+          >
             <Avatar
               alt="avatar"
               src={formData.avatarURL}
@@ -270,13 +287,7 @@ const EditProfilePage = () => {
           </Box>
         </Box>
 
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          sx={{ mt: 3 }}
-        >
-
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <PasswordField
@@ -285,8 +296,8 @@ const EditProfilePage = () => {
                 handleChange={handleChange}
                 passwordError={currentPasswordError}
                 handleClickShowPassword={handleClickShowCurrentPassword}
-                label='Confirm Current Password'
-                name='currentPassword'
+                label="Confirm Current Password"
+                name="currentPassword"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -355,7 +366,7 @@ const EditProfilePage = () => {
                 passwordError={passwordError}
                 handleClickShowPassword={handleClickShowPassword}
                 handleMouseDownPassword={handleMouseDownPassword}
-                label='New Password'
+                label="New Password"
                 required={false}
               />
             </Grid>
@@ -364,7 +375,7 @@ const EditProfilePage = () => {
                 value={formData.confirmPassword}
                 error={confirmPasswordError}
                 onChange={handleChange}
-                label='Confirm New Password'
+                label="Confirm New Password"
                 required={false}
               />
             </Grid>

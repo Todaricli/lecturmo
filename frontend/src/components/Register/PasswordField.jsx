@@ -18,7 +18,7 @@ const PasswordField = ({
   handleMouseDownPassword,
   label = 'Password',
   name = 'password',
-  required=true,
+  required = true,
 }) => {
   return (
     <FormControl fullWidth required={required} variant="outlined">

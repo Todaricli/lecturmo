@@ -8,21 +8,41 @@ import {
   Typography,
   Rating,
   CardContent,
+  Stack,
 } from '@mui/material';
 import React, { useEffect } from 'react';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { useTheme } from '@emotion/react';
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
 
-  // useEffect(() => {
-  //   if (posts.length > 0) {
-  //     console.log('posts[0]:', posts[0]);
-  //     console.log('posts[0].reviews:', posts[0].reviews);
-  //   }
-  // }, [posts]);
+  const calculateOverallRating = (post) => {
+    if (!post || !post.reviews || post.reviews.length === 0) {
+      return 0;
+    }
+
+    let totalRating = 0;
+    let totalReviews = post.reviews.length;
+
+    post.reviews.forEach((review) => {
+      const averageRating =
+        (review.difficultyRating +
+          review.contentRating +
+          review.qualityRating) /
+        3;
+      totalRating += averageRating;
+    });
+    const overallRating = totalRating / totalReviews;
+    console.log('course: ', post.courseCode);
+    console.log(overallRating);
+    return overallRating;
+  };
+
+  useEffect(() => {
+    console.log('posts:', posts);
+  }, [posts]);
 
   return (
     <Grid
@@ -38,7 +58,7 @@ const LandingPosts = ({ posts }) => {
           {/* Each column */}
           {posts
             .filter((_, index) => columnIndex === index % 3)
-            .map((course, index) => (
+            .map((post, index) => (
               <Box
                 key={index}
                 sx={{
@@ -58,22 +78,17 @@ const LandingPosts = ({ posts }) => {
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       height: '100%',
                     }}
                   >
-                    <CardHeader title={course.course_dummy_id} />
-                    <CardActions>
-                      <IconButton
-                        aria-label="favourite"
-                        sx={{
-                          border: '3px solid #D74545',
-                          padding: '5px',
-                        }}
-                      >
-                        <FavoriteBorderIcon />
-                      </IconButton>
-                    </CardActions>
+                    <CardHeader
+                      title={post.courseCode}
+                      titleTypographyProps={{
+                        variant: 'h5',
+                        fontWeight: 'bold',
+                      }}
+                    />
                   </Box>
                   <Box
                     sx={{
@@ -99,50 +114,62 @@ const LandingPosts = ({ posts }) => {
                         University of Auckland
                       </Typography>
                     </Box>
-                    {course.reviews && course.reviews.length > 0 && (
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant="body2" color="initial">
-                          Ratings:
-                        </Typography>
-                        <Rating
-                          name="size-small"
-                          value={course.reviews[0].contentRating}
-                          readOnly
-                          size="small"
-                        />
-                      </Box>
-                    )}
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Typography variant="body2" color="initial">
+                        Ratings:
+                      </Typography>
+                      <Rating
+                        name="size-small"
+                        value={calculateOverallRating(post)}
+                        readOnly
+                        size="small"
+                      />
+                    </Box>
                   </Box>
-                  {course.reviews && course.reviews.length > 0 && (
-                    <Box>
-                      <CardContent>
+                  <Box>
+                    <CardContent>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
                         <Typography
-                          variant="subtitle2"
+                          variant="h6"
                           color="initial"
                           fontSize={15}
                           sx={{ lineHeight: 3 }}
                         >
                           Review:
                         </Typography>
-                        <Typography
-                          variant="body2"
-                          color="initial"
-                          fontSize={15}
-                          sx={{ lineHeight: 2 }}
-                        >
-                          {course.reviews[0].content}
-                        </Typography>
+                        <Stack direction="row">
+                          <FavoriteIcon color="heart" sx={{ width: '20px' }} />
+                          <Typography variant="body1" color="heart.main">
+                            {post?.reviews?.length}
+                          </Typography>
+                        </Stack>
+                      </Box>
+                      <Typography
+                        variant="body2"
+                        color="initial"
+                        fontSize={15}
+                        sx={{ lineHeight: 2 }}
+                      >
+                        {post?.reviews[0]?.content}
+                      </Typography>
 
-                        <Typography
-                          variant="caption"
-                          color="#78858F"
-                          sx={{ lineHeight: 3 }}
-                        >
-                          {new Date(course.createdAt).toLocaleDateString()}
-                        </Typography>
-                      </CardContent>
-                    </Box>
-                  )}
+                      <Typography
+                        variant="caption"
+                        color="#78858F"
+                        sx={{ lineHeight: 3 }}
+                      >
+                        {new Date(
+                          post?.reviews[0]?.createdAt
+                        ).toLocaleDateString()}
+                      </Typography>
+                    </CardContent>
+                  </Box>
                 </Card>
               </Box>
             ))}
