@@ -1,46 +1,80 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useState, useEffect, useContext } from 'react';
-import { AppContext } from '../../contexts/AppContextProvider';
-
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  Avatar,
+  Button,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+  Snackbar,
+  Alert,
+} from '@mui/material';
+import {
+  LockOutlined as LockOutlinedIcon,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material';
+import { AuthContext } from '../../contexts/AuthContextProvider';
+import axios from 'axios';
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const message = location.state?.message;
+  const { loginUser } = useContext(AuthContext);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { updateData, getData } = useContext(AppContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    console.log('1234:', 1234);
-    console.log("getData('user'):", getData('user'));
-  }, []);
+    if (message === 'Successfully verified!') {
+      setOpen(true);
+    }
+  }, [message]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Login Attempt with:', username, password);
+  const handleClose = (event) => {
+    setOpen(false);
+    location.state = {};
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const body = {
+      username: username,
+      password: password,
+    };
+    const res = await loginUser(JSON.stringify(body));
+    if (res && res.error) {
+      setError(res.message);
+    } else {
+      setError('');
+      navigate('/');
+    }
+  };
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+    setError('');
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    setError('');
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -48,108 +82,120 @@ export default function LoginPage() {
     event.preventDefault();
   };
 
+  const handleEmail = (e) => {
+    setUsername(e);
+    console.log(username);
+  };
+
+  const handlePassword = (e) => {
+    setPassword(e);
+    console.log(password);
+  };
+
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Hi, Welcome Back! 👋
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            {/* <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        marginTop: '50px',
+        bgcolor: 'primary.main',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        paddingBottom: 5,
+      }}
+    >
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Hi, Welcome Back! 👋
+        </Typography>
+        <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            value={username}
+            onChange={handleUsernameChange}
+            onFocus={() => setError('')}
+          />
+          <FormControl fullWidth required variant="outlined" margin="normal">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={handlePasswordChange}
+              onFocus={() => setError('')}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
               label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            /> */}
-            <FormControl fullWidth required variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
-            <Grid
-              container
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item></Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              href="/"
-            >
-              Login
-            </Button>
-            <Grid container>
-              <Link href="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Box>
+            />
+            {error && <FormHelperText error>{error}</FormHelperText>}
+          </FormControl>
+          <Grid
+            container
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Link href="#" variant="body2">
+              Forgot password?
+            </Link>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Login
+          </Button>
+          <Grid container>
+            <Link href="/register" variant="body2">
+              {"Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+      </Box>
+      <Copyright sx={{ mt: 8, mb: 4 }} />
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Successfully verified!
+        </Alert>
+      </Snackbar>
+    </Container>
   );
 }
 

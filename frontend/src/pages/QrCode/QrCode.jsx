@@ -1,10 +1,15 @@
+import { Container, Typography, Box, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
+import { useSearchParams } from 'react-router-dom';
 
 const QrCode = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [qrCode, setQrCode] = useState('');
-  const [courseId, setCourseId] = useState('comp_sci_751');
   const [currentTime, setCurrentTime] = useState('');
+
+  const courseId = searchParams.get('course');
+  const lecture = searchParams.get('lecture');
 
   const getServerTime = async () => {
     const time = await fetch(
@@ -23,7 +28,7 @@ const QrCode = () => {
 
   useEffect(() => {
     setQrCode(
-      `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}`
+      `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}&lecture=${lecture}`
     );
   }, [currentTime]);
 
@@ -32,11 +37,27 @@ const QrCode = () => {
   }, [qrCode]);
 
   return (
-    <div>
-      <h1>asdasdsad</h1>
-      <QRCode value={qrCode} />
-      <p>{currentTime}</p>
-    </div>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        width: '100%',
+        justifyContent: 'center',
+        mt: 10,
+      }}
+    >
+      <Box>
+        <QRCode value={qrCode} />
+        <Typography variant="body1" color="primary">
+          {currentTime}
+        </Typography>
+      </Box>
+      <Box
+        component="img"
+        src="../../../public/will_smith.png"
+        sx={{ width: '400px' }}
+      ></Box>
+    </Box>
   );
 };
 

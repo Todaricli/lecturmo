@@ -7,18 +7,41 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Footer from '../../components/Footer';
 import { useTheme } from '@emotion/react';
 import { Box, IconButton } from '@mui/material';
-
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { Snackbar, Alert } from '@mui/material';
 
 const HomePage = () => {
   const theme = useTheme();
+  const location = useLocation();
+  const message = location.state?.message;
 
-  const { user, fetchUserDetails, isFetchUserLoading, fetchUserError } = useContext(AuthContext);
+  const [posts, setPosts] = useState([]);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
-    fetchUserDetails();
-  }, [fetchUserDetails]);
+    console.log('message:', message);
+    if (message === 'Successfully verified!') {
+      setOpen(true);
+    }
+  }, [message]);
 
-  if (isFetchUserLoading) return <div>Loading...</div>;
-  if (fetchUserError) return <div>Error: {JSON.stringify(fetchUserError)}</div>;
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('hello');
+      try {
+        const response = await axios.get(
+          'http://localhost:3000/api/landing-posts'
+        );
+        console.log('data', response.data);
+
+        setPosts(response.data);
+      } catch (error) {
+        console.log('Error fetching data: ', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <Box
@@ -27,7 +50,7 @@ const HomePage = () => {
     >
       <Typography variant="h1">Hello Lectermo</Typography>
       <SearchBar />
-      <LandingPosts />
+      <LandingPosts posts={posts} />
       <IconButton
         sx={{
           bgcolor: 'secondary.main',
@@ -38,11 +61,27 @@ const HomePage = () => {
           marginTop: '70px',
           textAlign: 'center',
           boxShadow: theme.shadows[1],
+          '&:hover': {
+            backgroundColor: 'secondary.main',
+            color: '#000000',
+          },
         }}
-        disableRipple={true}
       >
         <ArrowDownwardIcon sx={{ fontSize: 50 }} />
       </IconButton>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Successfully verified!
+        </Alert>
+      </Snackbar>
 
       <Footer />
     </Box>

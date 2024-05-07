@@ -1,74 +1,88 @@
-import { useContext, useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import axios from "axios"
+import { useContext, useEffect, useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import axios from 'axios';
+import { AuthContext } from '../contexts/AuthContextProvider';
+import Loading from '../components/Loading';
 
-/**
- * This page just to show how frontend can be implemented to verify user's email
- * without authContext, it is bit tedious.
- */
 const VerifyEmail = () => {
-    const [user, setUser] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
+  const { user, fetchUserDetails } = useContext(AuthContext);
 
-    const emailToken = searchParams.get("emailToken");
+  const [hasFetchedUserDetails, setHasFetchedUserDetails] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-    useEffect(() => {
+  const emailToken = searchParams.get('emailToken');
 
-        const process = async () => {
+  useEffect(() => {
+    const process = async () => {
+      try {
+        setIsLoading(true);
 
-            try {
-                setIsLoading(true);
-
-                const userFromSession = await axios.get("http://localhost:3000/api/auth/status")
-                if (!userFromSession) return navigate("/login")
-
-                setUser(userFromSession)
-
-                if (user?.isVerified) {
-                    setTimeout(() => {
-                        return navigate("/");
-                    }, 3000);
-                } else {
-                    if (emailToken) {
-
-                        const justVerifiedUser = await axios.post(`http://localhost:3000/api/reg//verify-email-token`, emailToken)
-                            .then(() => {
-                                alert('redirect to login in')
-                                navigate("/login", { replace: true })
-                            })
-                            .catch((e) => alert(e))
-
-                        setUser(justVerifiedUser);
-                    }
-                }
-            }
-            catch {
-                setError(true)
-            }
+        if (emailToken) {
+          await axios
+            .post(`http://localhost:3000/api/auth/verify-email-token`, {
+              emailToken,
+            })
+            .then(async (response) => {
+              await fetchUserDetails();
+              setHasFetchedUserDetails(true);
+              return response.data;
+            })
+            .catch((e) => alert(e));
         }
+      } catch (err) {
+        console.log('err:', err);
+        setError(true);
+      }
+    };
 
-        process();
+    process();
+  }, [emailToken, navigate, user, fetchUserDetails]);
 
-        if (error) {
-            alert("Error, verification failed!")
-            return navigate("/login")
-        }
-    })
+  useEffect(() => {
+    if (hasFetchedUserDetails) {
+      if (user) {
+        navigate('/home', {
+          state: { message: 'Successfully verified!' },
+          replace: true,
+        });
+      } else {
+        navigate('/login', {
+          state: { message: 'Successfully verified!' },
+          replace: true,
+        });
+      }
+    }
+  }, [user, navigate, hasFetchedUserDetails]);
 
-    return (
+  if (error) {
+    console.log('error:', error);
+    alert('Error, verification failed!');
+    return navigate('/login');
+  }
+
+  return (
+    <>
+      {isLoading ? (
+        <Loading content="Verifying..." />
+      ) : (
         <>
-            {isLoading ?
-                (<div>"verifying...."</div>)
-                :
-                (<div>{user?.isVerified ?
-                    (<div>Susccesfully verified, redireting...</div>)
-                    :
-                    (<div>ERROR!!! {error.error ? (error.message) : ("unknown")}</div>)}</div>)}
+          {user?.isVerified ? (
+            <Alert severity="success">
+              Successfully verified, redirecting...
+            </Alert>
+          ) : (
+            <Alert severity="error">
+              ERROR!!! {error.error ? error.message : 'unknown'}
+            </Alert>
+          )}
         </>
-    )
-}
+      )}
+    </>
+  );
+};
 
 export default VerifyEmail;

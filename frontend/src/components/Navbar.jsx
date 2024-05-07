@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -15,11 +15,32 @@ import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { navbarStyles } from '../layouts/navbarStyles';
+import { AuthContext } from '../contexts/AuthContextProvider';
 
 const Navbar = () => {
+  const {
+    user,
+    logoutUser,
+    fetchUserDetails,
+    isFetchUserLoading,
+    fetchUserError,
+  } = useContext(AuthContext);
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, [fetchUserDetails]);
+
+  if (isFetchUserLoading) return <div>Loading...</div>;
+  if (fetchUserError) return <div>Error: {JSON.stringify(fetchUserError)}</div>;
+
+  const navigate = useNavigate();
   const [openNav, setopenNav] = useState(false);
   const anchorRef = useRef(null);
   const styles = navbarStyles();
+
+  const handleLogout = async () => {
+    logoutUser();
+  };
 
   return (
     <AppBar position="static">
@@ -49,12 +70,28 @@ const Navbar = () => {
           <Button color="inherit" sx={styles.buttonStyle}>
             Courses
           </Button>
-          <Button color="inherit" sx={styles.buttonStyle}>
-            Log In{' '}
-          </Button>
-          <Button color="inherit" sx={styles.register}>
-            Register
-          </Button>
+          {user ? (
+            <Button onClick={handleLogout} color="inherit" sx={styles.register}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={() => navigate('/login')}
+                color="inherit"
+                sx={styles.buttonStyle}
+              >
+                Log In
+              </Button>
+              <Button
+                onClick={() => navigate('/register')}
+                color="inherit"
+                sx={styles.register}
+              >
+                Register
+              </Button>
+            </>
+          )}
         </Box>
 
         <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 'auto' }}>
@@ -94,8 +131,29 @@ const Navbar = () => {
             <MenuList>
               <MenuItem sx={styles.menuItemStyles}>Members</MenuItem>
               <MenuItem sx={styles.menuItemStyles}>Courses</MenuItem>
-              <MenuItem sx={styles.menuItemStyles}>Log In</MenuItem>
-              <MenuItem sx={styles.menuItemStyles}>Register</MenuItem>
+              {user ? (
+                <MenuItem
+                  onClick={() => handleLogout()}
+                  sx={styles.menuItemStyles}
+                >
+                  Logout
+                </MenuItem>
+              ) : (
+                <div>
+                  <MenuItem
+                    onClick={() => navigate('/login')}
+                    sx={styles.menuItemStyles}
+                  >
+                    Log In
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => navigate('/register')}
+                    sx={styles.menuItemStyles}
+                  >
+                    Register
+                  </MenuItem>
+                </div>
+              )}
             </MenuList>
           </Menu>
         </Box>

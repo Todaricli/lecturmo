@@ -1,10 +1,11 @@
-import { useEffect } from "react";
-import { createContext, useCallback, useState } from "react";
-import { getRequest } from "../services/getRequest";
-import { postRequest } from "../services/postRequest";
+import { useEffect } from 'react';
+import { createContext, useCallback, useState } from 'react';
+import { getRequest } from '../services/getRequest';
+import { postRequest } from '../services/postRequest';
 
 export const AuthContext = createContext();
-const BASE_URL = "http://localhost:3000/api"
+const BASE_URL =
+  import.meta.env.EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -15,34 +16,14 @@ export const AuthContextProvider = ({ children }) => {
   const [logoutUserError, setLogoutUserError] = useState(null);
   const [isLogoutUserLoading, setIsLogoutUserLoading] = useState(false);
 
-  // Function to fetch user details if not already in memory
-  const loginUser = useCallback(async (body) => {
-    try {
-      setIsLoginUserLoading(true);
-      setLoginUserError(null);
-      const res = await postRequest(
-        `${BASE_URL}/auth/login`,
-        body,
-      )
-      await updateUserDetails();
-      setIsLoginUserLoading(false);
-      if (res.error) {
-        return setLoginUserError(res);
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
-      setIsLoginUserLoading(false);
-    }
-  }, []);
-
+  useEffect(() => {
+    console.log('Updated user:', user); // This will log updated user details
+  }, [user]);
   // Function to fetch user details if not already in memory
   const fetchUserDetails = useCallback(async () => {
-    if (user) return;  // If user exists, do nothing
-    await updateUserDetails()
-  }, [user]);
-
-  useEffect(() => {
-    console.log("Updated user:", user); // This will log updated user details
+    if (user) return null; // If user exists, do nothing
+    const res = await updateUserDetails();
+    return res;
   }, [user]);
 
   // Function to update user details from the backend
@@ -50,37 +31,56 @@ export const AuthContextProvider = ({ children }) => {
     try {
       setIsUpdateUserLoading(true);
       setUpdateUserError(null);
-      const res = await getRequest(
-        `${BASE_URL}/auth/status`,
-      )
+      const res = await getRequest(`${BASE_URL}/auth/status`);
       setIsUpdateUserLoading(false);
       if (res.error) {
         return setUpdateUserError(res);
       }
-      setUser(res);  // Set user in context
+      setUser(res); // Set user in context
+      return res;
     } catch (error) {
-      console.error("Updating user details failed:", error);
+      console.error('Updating user details failed:', error);
       setIsUpdateUserLoading(false);
     }
   }, []);
+
+  const loginUser = useCallback(
+    async (body) => {
+      try {
+        setIsLoginUserLoading(true);
+        setLoginUserError(null);
+        const res = await postRequest(`${BASE_URL}/auth/login`, body);
+        await updateUserDetails();
+
+        if (res.error) {
+          setLoginUserError(res);
+          return res;
+        }
+        setIsLoginUserLoading(false);
+        return res;
+      } catch (error) {
+        console.error('Login failed:', error);
+        setIsLoginUserLoading(false);
+      }
+    },
+    [updateUserDetails]
+  );
 
   const logoutUser = async () => {
     try {
       setIsLogoutUserLoading(true);
       setLogoutUserError(null);
-      const res = await getRequest(
-        `${BASE_URL}/auth/logout`,
-      )
+      const res = await getRequest(`${BASE_URL}/auth/logout`);
       setIsLogoutUserLoading(false);
       if (res.error) {
         return setLogoutUserError(res);
       }
-      setUser(null);  // delete user in memory
+      setUser(null); // delete user in memory
     } catch (error) {
-      console.error("Logout user failed:", error);
+      console.error('Logout user failed:', error);
       setIsLogoutUserLoading(false);
     }
-  }
+  };
 
   return (
     <AuthContext.Provider
@@ -92,6 +92,7 @@ export const AuthContextProvider = ({ children }) => {
         updateUserError,
         isLogoutUserLoading,
         logoutUserError,
+        setUser,
         loginUser,
         fetchUserDetails,
         updateUserDetails,
