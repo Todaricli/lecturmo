@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -18,7 +18,20 @@ import { navbarStyles } from '../layouts/navbarStyles';
 import { AuthContext } from '../contexts/AuthContextProvider';
 
 const Navbar = () => {
-  const { user, logoutUser } = useContext(AuthContext);
+  const {
+    user,
+    logoutUser,
+    fetchUserDetails,
+    isFetchUserLoading,
+    fetchUserError,
+  } = useContext(AuthContext);
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, [fetchUserDetails]);
+
+  if (isFetchUserLoading) return <div>Loading...</div>;
+  if (fetchUserError) return <div>Error: {JSON.stringify(fetchUserError)}</div>;
 
   const navigate = useNavigate();
   const [openNav, setopenNav] = useState(false);
@@ -57,16 +70,28 @@ const Navbar = () => {
           <Button color="inherit" sx={styles.buttonStyle}>
             Courses
           </Button>
-          <Button
-            onClick={() => navigate('/login')}
-            color="inherit"
-            sx={styles.buttonStyle}
-          >
-            Log In{' '}
-          </Button>
-          <Button color="inherit" sx={styles.register} href="/register">
-            Register
-          </Button>
+          {user ? (
+            <Button onClick={handleLogout} color="inherit" sx={styles.register}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={() => navigate('/login')}
+                color="inherit"
+                sx={styles.buttonStyle}
+              >
+                Log In
+              </Button>
+              <Button
+                onClick={() => navigate('/register')}
+                color="inherit"
+                sx={styles.register}
+              >
+                Register
+              </Button>
+            </>
+          )}
         </Box>
 
         <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 'auto' }}>

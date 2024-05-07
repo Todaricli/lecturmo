@@ -21,7 +21,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [user]);
   // Function to fetch user details if not already in memory
   const fetchUserDetails = useCallback(async () => {
-    if (user) return; // If user exists, do nothing
+    if (user) return null; // If user exists, do nothing
     const res = await updateUserDetails();
     return res;
   }, [user]);
