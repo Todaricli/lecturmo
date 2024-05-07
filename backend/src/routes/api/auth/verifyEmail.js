@@ -35,7 +35,7 @@ router.post('/verify-uni-email', authenticate, async (req, res) => {
  * as once user in the verifyEmail frontend route, it will called this route below
  * and compare the emailToken with the one in database
  */
-router.post('/verify-email-token', authenticate, async (req, res) => {
+router.post('/verify-email-token', async (req, res) => {
   try {
     const emailToken = req.body.emailToken;
 
@@ -44,7 +44,7 @@ router.post('/verify-email-token', authenticate, async (req, res) => {
     const user = await User.findOne({ emailToken });
 
     if (user) {
-      user.emailToken = null;
+      // user.emailToken = null;
       user.isVerified = true;
 
       await user.save();
@@ -56,7 +56,7 @@ router.post('/verify-email-token', authenticate, async (req, res) => {
         isVerified: user?.isVerified,
       });
     } else {
-      res.status(404).json('Email verification failed');
+      res.status(404).json({ message: 'Email verification failed' });
     }
   } catch (error) {
     console.log(error);

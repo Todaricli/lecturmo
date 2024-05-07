@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Avatar,
   Button,
-  CssBaseline,
   TextField,
   FormControlLabel,
   Checkbox,
@@ -18,25 +17,38 @@ import {
   InputLabel,
   FormControl,
   FormHelperText,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import {
   LockOutlined as LockOutlinedIcon,
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 
-const defaultTheme = createTheme();
-
 export default function LoginPage() {
-  const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const message = location.state?.message;
+  const { loginUser } = useContext(AuthContext);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (message === 'Successfully verified!') {
+      setOpen(true);
+    }
+  }, [message]);
+
+  const handleClose = (event) => {
+    setOpen(false);
+    location.state = {};
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -97,12 +109,7 @@ export default function LoginPage() {
         <Typography component="h1" variant="h5">
           Hi, Welcome Back! 👋
         </Typography>
-        <Box
-          component="form"
-          onSubmit={handleLogin}
-          noValidate
-          sx={{ mt: 1 }}
-        >
+        <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -110,8 +117,6 @@ export default function LoginPage() {
             id="username"
             label="Username"
             name="username"
-            autoComplete="username"
-            autoFocus
             value={username}
             onChange={handleUsernameChange}
             onFocus={() => setError('')}
@@ -174,6 +179,11 @@ export default function LoginPage() {
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Successfully verified!
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
