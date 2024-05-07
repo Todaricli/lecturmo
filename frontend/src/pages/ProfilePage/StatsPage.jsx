@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const StatsPage = () => {
   const [user, setUser] = useState([]);
+  const [courses, setCourses] = useState()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -13,6 +14,7 @@ const StatsPage = () => {
         const response = await axios.get(`http://localhost:3000/api/stats`).then((res) => {
           console.log("user: ", res.data);
           setUser(res.data)
+          setCourses(res.data.courses)
         })
       } catch (error) {
         console.log("Error fetching user: ", error);
@@ -94,6 +96,9 @@ const StatsPage = () => {
               borderRadius: 4,
             }}
           >
+
+            {courses && courses.length > 0 
+            ?<>
             <Box
               sx={{
                 p: '30px',
@@ -115,8 +120,12 @@ const StatsPage = () => {
               </Typography>
             </Box>
             <Box sx={{ width: '100%', p: '0 30px' }}>
-              <LinearProgress variant="determinate" value={50} />
+              <LinearProgress variant="determinate" value={10} />
             </Box>
+            </>
+          :<h1>YOU HAVE NOT ATTENDED ANY LECTURES YET</h1>
+          }
+            
 
             <Typography
               variant="h6"
