@@ -11,11 +11,14 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
   const [categorySearch, setCategorySearch] = useState([]);
   const [courseSearch, setCourseSearch] = useState([]);
   const [searchTerm, setSearchTerm] = useState();
+
+  const navigate = useNavigate()
 
   const submit = async () => {
     const response = await axios
@@ -99,6 +102,10 @@ const SearchBar = () => {
                       cursor: 'pointer',
                       borderRadius: 3,
                     },
+                  }}
+                  onClick = {()=>{
+                    navigate(`/courses?courseId=${result._id}`)
+                    console.log(result._id)
                   }}
                 >
                   {result.courseName}
