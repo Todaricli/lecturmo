@@ -10,6 +10,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 // NEED TO ADJUST CORS POLICY HERE TO ALLOW CREDENTIALS
 axios.defaults.withCredentials = true;
 
@@ -40,7 +42,7 @@ const ReactQueryExamplePage = () => {
   } = useQuery({
     queryKey: ['postLogin'],
     queryFn: async () => {
-      const res = await axios.post('http://localhost:3000/api/login', {
+      const res = await axios.post(`${BASE_URL}/auth/login`, {
         username: 'user2',
         password: '123',
       });
@@ -54,7 +56,7 @@ const ReactQueryExamplePage = () => {
   const { data: userInfo } = useQuery({
     queryKey: ['getLoginUser'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:3000/api/status');
+      const res = await axios.get(`${BASE_URL}/auth/status`);
       console.log('res:', res);
       return res.data;
     },

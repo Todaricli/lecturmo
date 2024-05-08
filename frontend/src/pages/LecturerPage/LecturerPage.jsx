@@ -26,6 +26,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClearIcon from '@mui/icons-material/Clear';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const LecturerPage = () => {
   const { user } = useContext(AuthContext);
   if (user === null) {
@@ -69,7 +71,7 @@ const LecturerPage = () => {
   const deleteLecture = async (lectureIdToDelete, courseIdToDelete) => {
     const response = await axios
       .post(
-        `http://localhost:3000/api/delete-lecture`,
+        `${BASE_URL}/delete-lecture`,
         {
           courseId: courseIdToDelete,
           lectureId: lectureIdToDelete,
@@ -95,7 +97,7 @@ const LecturerPage = () => {
   };
 
   const getClasses = async () => {
-    await axios.get(`http://localhost:3000/api/lecture-list`).then((res) => {
+    await axios.get(`${BASE_URL}/lecture-list`).then((res) => {
       console.log(res);
       setCourseNo(res.data.length);
       setCourses(res.data);
@@ -106,7 +108,7 @@ const LecturerPage = () => {
   const createLecture = async (courseId) => {
     await axios
       .post(
-        `http://localhost:3000/api/add-lecture`,
+        `${BASE_URL}/add-lecture`,
         {
           lectureName: newLectureTitle,
           courseId: courseId,
