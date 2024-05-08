@@ -14,12 +14,12 @@ const QrLandingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(undefined);
   const [validity, setValidity] = useState();
-  const [courseName, setCourseName] = useState();
+  const [courseCode, setCourseCode] = useState();
   const [login, setLogin] = useState(true);
   const [user, setUser] = useState();
 
   const submit = async () => {
-    console.log(courseName);
+    console.log(courseCode);
     if (date && course) {
       const response = await axios
         .post(
@@ -28,7 +28,7 @@ const QrLandingPage = () => {
             date: date,
             courseId: course,
             lecture: lecture,
-            courseName: courseName,
+            courseCode: courseCode
           },
           {
             headers: {
@@ -43,24 +43,6 @@ const QrLandingPage = () => {
     }
   };
 
-  // const checkUser = async () => {
-  //   const response = await axios
-  //     .post(
-  //       `http://localhost:3000/api/login`,
-  //       {
-  //         username: "user1",
-  //         password: "123",
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     ).then((res) => {
-  //       setLogin(true)
-  //     })
-  // }
-
   async function getStatus() {
     const response = await axios
       .get(`${BASE_URL}/status`)
@@ -71,23 +53,11 @@ const QrLandingPage = () => {
       });
   }
 
-  // useEffect(() => {
-  //   getStatus()
-  //   console.log(validity)
-
-  // }, [login])
-
-  // useEffect(() => {
-  //   if (user) {
-  //     console.log(user.data)
-  //   }
-  // }, [user])
-
   useEffect(() => {
     setDate(params.get('date'));
     setCourse(params.get('course'));
     setLecture(params.get('lecture'));
-    setCourseName(params.get('courseName'));
+    setCourseCode(params.get('courseCode'))
   }, []);
 
   useEffect(() => {
