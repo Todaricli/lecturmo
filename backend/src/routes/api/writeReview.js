@@ -1,5 +1,7 @@
 import express from 'express';
-import { addReview } from '../../controllers/reviewController';
+import { addReview } from '../../controllers/reviewController.js';
+
+const router = express.Router();
 
 router.post('/add-review', async (req, res) => {
     const courseId = req.query.courseId;

@@ -1,4 +1,4 @@
-import { Course } from "../schemas/courseSchema";
+import { Course } from "../schemas/courseSchema.js";
 
 export const addReview = async (courseId, reviewData) => {
     try {
