@@ -13,6 +13,7 @@ import {
   TableBody,
   TextField,
   IconButton,
+  TableFooter
 } from '@mui/material';
 import QrCode from '../QrCode/QrCode.jsx';
 import AddNewLecture from '../../components/AddNewLecture.jsx';
@@ -302,6 +303,7 @@ const LecturerPage = () => {
                         <Typography variant="h6">there are no lectures currently</Typography>
                       )}
                     </TableBody>
+                    <TableFooter></TableFooter>
                   </Table>
 
                   <Modal
