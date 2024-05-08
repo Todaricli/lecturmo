@@ -173,6 +173,7 @@ const LecturerPage = () => {
   };
 
   const createLecture = async (courseId) => {
+    console.log("lec", lectureDate)
     await axios
       .post(
         `http://localhost:3000/api/add-lecture`,
@@ -479,7 +480,7 @@ const LecturerPage = () => {
                           format="DD-MM-YYYY"
                           onChange={(e) => {
                             setLectureDate(e.$d);
-                            console.log(e.$d);
+                            
                           }}
                           label="Choose lecture date"
                           sx={{ bgcolor: 'light.main' }}

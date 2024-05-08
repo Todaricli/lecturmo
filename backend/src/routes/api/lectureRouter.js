@@ -18,6 +18,7 @@ function convertToDateObject(date) {
 LectureRouter.post('/add-lecture', async (req, res) => {
     const lectureName = req.body.lectureName;
     const courseId = req.body.courseId;
+    const lectureTime = req.body.date
 
     const courseIdObject = new mongoose.Types.ObjectId(courseId);
 
@@ -30,7 +31,7 @@ LectureRouter.post('/add-lecture', async (req, res) => {
     const lecture = {
         lectureName: lectureName,
         attendenace: 0,
-        date: dateNowSkeetJson.utc_datetime,
+        date: lectureTime,
         qrCreationTime: dateNowSkeetJson.utc_datetime,
     };
 
