@@ -16,7 +16,7 @@ export const usersJSON = [
     roles: 'lecturer',
     courses: [
       {
-        dummyId: 'COMPSCI_732',
+        courseCode: 'COMPSCI 732',
         lecturesAttended: [],
       },
     ],
@@ -55,7 +55,12 @@ export const usersJSON = [
       'Lecturer in Network Security, with a focus on cryptographic solutions.',
     avatarPicture: '/assets/Avatar/girl2.png',
     roles: 'lecturer',
-    courses: [],
+    courses: [
+      {
+        courseCode: 'COMPSCI 719',
+        lecturesAttended: [],
+      },
+    ],
     isVerified: true,
     emailToken: null,
   },

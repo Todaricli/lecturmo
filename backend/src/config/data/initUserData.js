@@ -20,9 +20,12 @@ export async function initUsers() {
 // find the actual generated _id based off dummy id
 async function fetchCourseIds(courses) {
   const courseMap = {};
-  courses.forEach((course) => {
-    courseMap[course.course_dummy_id] = course._id;
-  });
+    courses.forEach((course) => {
+      courseMap[course.courseCode] = {
+        _id: course._id,
+        courseCode: course.courseCode,
+      };
+    });
   return courseMap;
 }
 
@@ -32,8 +35,13 @@ export async function updateUserForeignKeys(users, courses) {
     const courseMap = await fetchCourseIds(courses);
     const updates = users.map(async (user) => {
       user.courses = user.courses.map((courseEntry) => {
-        if (courseMap[courseEntry.dummyId]) {
-          courseEntry.courseId = courseMap[courseEntry.dummyId];
+        const courseDetails = courseMap[courseEntry.courseCode];
+        console.log("courseMap:", courseMap)
+        console.log("courseDetails:", courseDetails)
+        console.log("courseEntry:", courseEntry)
+        if (courseDetails) {
+          courseEntry.courseId = courseDetails._id;
+          courseEntry.courseName = courseDetails.courseName;
         }
         return courseEntry;
       });
