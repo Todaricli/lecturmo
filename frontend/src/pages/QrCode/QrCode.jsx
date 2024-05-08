@@ -10,7 +10,7 @@ const QrCode = () => {
 
   const courseId = searchParams.get('course');
   const lecture = searchParams.get('lecture');
-  const courseName = searchParams.get('courseName')
+  const courseName = searchParams.get('courseName');
 
   const getServerTime = async () => {
     const time = await fetch(

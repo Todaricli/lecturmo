@@ -106,7 +106,7 @@ router.post('/register', async (req, res) => {
       verifyEmail,
       emailToken,
     });
-    
+
     res.status(200).json(user);
   } catch (e) {
     console.log(e.message);

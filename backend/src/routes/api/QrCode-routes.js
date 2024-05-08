@@ -21,7 +21,7 @@ QrRouters.post('/qr-code', async (req, res) => {
   const courseName = req.body.courseName;
   const username = req.user;
 
-  console.log(courseName)
+  console.log(courseName);
 
   const usernameIdObject = new mongoose.Types.ObjectId(username._id);
   const courseIdObject = new mongoose.Types.ObjectId(courseId);
@@ -71,7 +71,9 @@ QrRouters.post('/qr-code', async (req, res) => {
           courses: { $not: { $elemMatch: { courseId: courseId } } },
         },
         {
-          $addToSet: { courses: { courseId: courseId, courseName: courseName} },
+          $addToSet: {
+            courses: { courseId: courseId, courseName: courseName },
+          },
         },
       ).exec();
 
@@ -93,7 +95,7 @@ QrRouters.post('/qr-code', async (req, res) => {
               _id: usernameIdObject,
               courses: { $elemMatch: { courseId: courseId } },
             },
-            { $addToSet: { 'courses.$.lectures': { lectureId: lectureId} } },
+            { $addToSet: { 'courses.$.lectures': { lectureId: lectureId } } },
           ).exec();
           const result = await Course.updateOne(
             { _id: courseId, 'lectures._id': lectureId },

@@ -67,14 +67,27 @@ const Navbar = () => {
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           {user ? (
             <div>
-              {user.roles === "lecturer" && (
-                <Button onClick={() => navigate('/testlecture')} color="inherit" sx={styles.buttonStyle}>
+              {user.roles === 'lecturer' && (
+                <Button
+                  onClick={() => navigate('/testlecture')}
+                  color="inherit"
+                  sx={styles.buttonStyle}
+                >
                   Create QR
-                </Button>)}
-              <Button onClick={() => navigate("/profile")} color="inherit" sx={styles.buttonStyle}>
+                </Button>
+              )}
+              <Button
+                onClick={() => navigate('/profile')}
+                color="inherit"
+                sx={styles.buttonStyle}
+              >
                 Profile
               </Button>
-              <Button onClick={handleLogout} color="inherit" sx={styles.register}>
+              <Button
+                onClick={handleLogout}
+                color="inherit"
+                sx={styles.register}
+              >
                 Logout
               </Button>
             </div>
@@ -135,19 +148,30 @@ const Navbar = () => {
             <MenuList>
               {user ? (
                 <div>
-                  {user.roles === "lecturer" && (
-                    <MenuItem onClick={() => {
-                      navigate('/testlecture')
-                      setopenNav(false)
-                    }} sx={styles.menuItemStyles}>Create QR</MenuItem>)}
-                  <MenuItem onClick={() => {
-                    navigate('/profile')
-                    setopenNav(false)
-                  }} sx={styles.menuItemStyles}>Profile</MenuItem>
+                  {user.roles === 'lecturer' && (
+                    <MenuItem
+                      onClick={() => {
+                        navigate('/testlecture');
+                        setopenNav(false);
+                      }}
+                      sx={styles.menuItemStyles}
+                    >
+                      Create QR
+                    </MenuItem>
+                  )}
                   <MenuItem
                     onClick={() => {
-                      handleLogout()
-                      setopenNav(false)
+                      navigate('/profile');
+                      setopenNav(false);
+                    }}
+                    sx={styles.menuItemStyles}
+                  >
+                    Profile
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleLogout();
+                      setopenNav(false);
                     }}
                     sx={styles.menuItemStyles}
                   >
@@ -158,8 +182,8 @@ const Navbar = () => {
                 <div>
                   <MenuItem
                     onClick={() => {
-                      navigate('/login')
-                      setopenNav(false)
+                      navigate('/login');
+                      setopenNav(false);
                     }}
                     sx={styles.menuItemStyles}
                   >

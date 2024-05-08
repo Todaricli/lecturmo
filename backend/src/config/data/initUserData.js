@@ -20,12 +20,12 @@ export async function initUsers() {
 // find the actual generated _id based off dummy id
 async function fetchCourseIds(courses) {
   const courseMap = {};
-    courses.forEach((course) => {
-      courseMap[course.courseCode] = {
-        _id: course._id,
-        courseCode: course.courseCode,
-      };
-    });
+  courses.forEach((course) => {
+    courseMap[course.courseCode] = {
+      _id: course._id,
+      courseCode: course.courseCode,
+    };
+  });
   return courseMap;
 }
 

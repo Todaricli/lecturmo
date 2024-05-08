@@ -15,7 +15,9 @@ import {
   updateUserForeignKeys,
 } from './data/initUserData.js';
 
-const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING ?? 'mongodb://localhost:27017/lecturmon';
+const MONGODB_CONNECTION_STRING =
+  process.env.MONGODB_CONNECTION_STRING ??
+  'mongodb://localhost:27017/lecturmon';
 
 // This is a standalone program which will populate the database with initial data.
 async function run() {
