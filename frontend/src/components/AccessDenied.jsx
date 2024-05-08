@@ -13,15 +13,17 @@ const AccessDenied = () => {
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
-          bgcolor: "white"
+          bgcolor: "white",
+          marginTop: "100px",
         }}
       >
-
-        <Typography variant="h6" mt={2}>
+        <Typography style={{bgcolor:"white"}}variant="h6" mt={2}>
           You are not allowed to access this page, Please log in
         </Typography>
         <Button variant="contained" onClick={() => { navigate(`/login`) }}>Login</Button>
-        <img src={"https://dotesports.com/wp-content/uploads/2023/09/How-to-Use-Pepe-Emotes-on-Twitch.png"}></img>
+        <img
+          style={{width: "400px"}}
+         src={"https://dotesports.com/wp-content/uploads/2023/09/How-to-Use-Pepe-Emotes-on-Twitch.png"}></img>
       </Box>
       
     </>

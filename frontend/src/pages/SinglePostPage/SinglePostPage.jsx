@@ -51,6 +51,8 @@ const SinglePostPage = () => {
       courseIdObjt
     );
 
+
+
     if (!response.message.content) {
       setAiError(true);
       setAiInProgress(false);
@@ -59,6 +61,8 @@ const SinglePostPage = () => {
     setSummary(response.message.content);
     setAiInProgress(false);
   };
+
+  
 
   const calculateOverallRating = (course) => {
     if (!course || !course.reviews || course.reviews.length === 0) {
@@ -529,10 +533,27 @@ const SinglePostPage = () => {
                                 )}
                               </Typography>
                             </Box>
+
+                              {/* for siennna */}
+                            <Typography>{
+                              review.userId.courses.length < 3
+                                ? review.userId.courses.length 
+                                : review.userId.courses.length < 8
+                                  ? review.userId.courses.length 
+                                  : review.userId.courses.length < 15
+                                    ? review.userId.courses.length 
+                                    : null
+                            }</Typography>
+
+
                           </Box>
                           <Box>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <FavoriteBorderIcon sx={{ color: 'heart.main' }} />
+                              <FavoriteBorderIcon 
+                              onClick={()=>{
+                                console.log("fuck")
+                              }}
+                              sx={{ color: 'heart.main', cursor: "pointer" }} />
                               <Typography variant="body1" color="initial">
                                 {review.likes.length}
                               </Typography>
