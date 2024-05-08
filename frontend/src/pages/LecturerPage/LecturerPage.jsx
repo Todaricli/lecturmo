@@ -13,7 +13,6 @@ import {
   TableBody,
   TextField,
   IconButton,
-  TableFooter
 } from '@mui/material';
 import QrCode from '../QrCode/QrCode.jsx';
 import AddNewLecture from '../../components/AddNewLecture.jsx';
@@ -21,11 +20,12 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContextProvider.jsx'
+import { AuthContext } from '../../contexts/AuthContextProvider.jsx';
 import Loading from '../../components/Loading.jsx';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClearIcon from '@mui/icons-material/Clear';
+import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions.js';
 
 const LecturerPage = () => {
   const { user } = useContext(AuthContext);
@@ -34,8 +34,8 @@ const LecturerPage = () => {
   }
 
   useEffect(() => {
-    console.log("user:", user)
-  }, [user])
+    console.log('user:', user);
+  }, [user]);
 
   const navigate = useNavigate();
 
@@ -53,8 +53,11 @@ const LecturerPage = () => {
   const [lectures, setLectures] = useState();
   const [newLectureTitle, setNewLectureTitle] = useState();
   const [lectureDate, setLectureDate] = useState();
-  const [openModal, setOpenModal] = useState(false)
-  const [createLectureCourse, setCreateLectureCourse] = useState()
+  const [openModal, setOpenModal] = useState(false);
+  const [createLectureCourse, setCreateLectureCourse] = useState();
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+  const [paginationState, setPagination] = useState({})
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -83,17 +86,17 @@ const LecturerPage = () => {
       )
       .then((res) => {
         if (res.data.success) {
-          toast.success("Lecture successfully deleted")
-          setCourseId(null)
-          setSelectedLectureName(null)
-          setSelectedLectureId(null)
-          setSelectedCourseName("nothing selected")
+          toast.success('Lecture successfully deleted');
+          setCourseId(null);
+          setSelectedLectureName(null);
+          setSelectedLectureId(null);
+          setSelectedCourseName('nothing selected');
         } else {
-          toast.error("Error deleting lecture")
+          toast.error('Error deleting lecture');
         }
-        setIsLoading(!isLoading)
+        setIsLoading(!isLoading);
       });
-  }
+  };
 
   const getClasses = async () => {
     await axios.get(`http://localhost:3000/api/lecture-list`).then((res) => {
@@ -120,7 +123,7 @@ const LecturerPage = () => {
         }
       )
       .then((res) => {
-        setIsLoading(!isLoading)
+        setIsLoading(!isLoading);
       });
   };
 
@@ -133,7 +136,7 @@ const LecturerPage = () => {
       console.error('Failed to add lecture:', error);
       toast.error('Failed to add lecture. Please try again.');
     }
-  }
+  };
 
   console.log(courses);
 
@@ -304,40 +307,44 @@ const LecturerPage = () => {
                     </TableHead>
                     <TableBody>
                       {course.lectures ? (
-                        course.lectures.map((lecture) => (
-                          <TableRow
-                            onClick={() => {
-                              setSelectedLectureId(lecture._id);
-                              setSelectedLectureName(lecture.lectureName);
-                              setCourseId(course._id);
-                              setSelectedCourseName(course.courseName);
-                            }}
-                          >
-                            <TableCell>
-                              {' '}
-                              {lecture.lectureName && lecture.lectureName}
-                            </TableCell>
-                            <TableCell>
-                              {lecture.date ? formatDate(lecture.date) : null}
-                            </TableCell>
-                            <TableCell>{lecture.attendence} students</TableCell>
-                            <TableCell>
-                              <IconButton
-                                onClick={() => {
-                                  deleteLecture(lecture._id, course._id)
-
-                                }}
-                              >
-                                <ClearIcon />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
-                        ))
+                        course.lectures
+                          .map((lecture) => (
+                            <TableRow
+                              key={lecture._id}
+                              onClick={() => {
+                                setSelectedLectureId(lecture._id);
+                                setSelectedLectureName(lecture.lectureName);
+                                setCourseId(course._id);
+                                setSelectedCourseName(course.courseName);
+                              }}
+                            >
+                              <TableCell>
+                                {' '}
+                                {lecture.lectureName && lecture.lectureName}
+                              </TableCell>
+                              <TableCell>
+                                {lecture.date ? formatDate(lecture.date) : null}
+                              </TableCell>
+                              <TableCell>
+                                {lecture.attendence} students
+                              </TableCell>
+                              <TableCell>
+                                <IconButton
+                                  onClick={() => {
+                                    deleteLecture(lecture._id, course._id);
+                                  }}
+                                >
+                                  <ClearIcon />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          ))
                       ) : (
-                        <Typography variant="h6">there are no lectures currently</Typography>
+                        <Typography variant="h6">
+                          there are no lectures currently
+                        </Typography>
                       )}
                     </TableBody>
-                    <TableFooter></TableFooter>
                   </Table>
 
                   <Modal
@@ -405,7 +412,7 @@ const LecturerPage = () => {
                 </Box>
               ))
             ) : (
-              <Typography variant='h6'>
+              <Typography variant="h6">
                 YOU ARE NOT CURRENTLY IN CHARGE OF ANY CLASSES
               </Typography>
             )}
@@ -415,6 +422,5 @@ const LecturerPage = () => {
     </>
   );
 };
-
 
 export default LecturerPage;

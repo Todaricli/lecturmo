@@ -439,6 +439,7 @@ const SinglePostPage = () => {
                             size="small"
                             value={calculateSingleRating(review)}
                             precision={0.5}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -451,6 +452,7 @@ const SinglePostPage = () => {
                             size="small"
                             value={review.difficultyRating}
                             precision={0.5}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -463,6 +465,7 @@ const SinglePostPage = () => {
                             size="small"
                             value={review.contentRating}
                             precision={0.5}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -475,6 +478,7 @@ const SinglePostPage = () => {
                             size="small"
                             value={review.qualityRating}
                             precision={0.5}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
