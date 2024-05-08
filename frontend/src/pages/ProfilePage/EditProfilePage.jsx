@@ -179,7 +179,6 @@ const EditProfilePage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('formData:', formData);
     const res = await updateUser(formData);
     setUpdateError(res && res.error ? res.message : '');
     if (!res.error) {

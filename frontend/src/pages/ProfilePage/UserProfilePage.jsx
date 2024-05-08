@@ -23,11 +23,15 @@ const UserProfilePage = () => {
   const { user } = useContext(AuthContext);
   useRedirectToLoginIfNotLoggedIn();
 
+  const [emailError, setEmailError] = useState('');
+
   if (user === null) {
     return <Loading />;
   }
 
-  console.log(user);
+  const handleResendEmail = () => {
+
+  }
 
   return (
     <Box
@@ -162,7 +166,8 @@ const UserProfilePage = () => {
                   value={user.email}
                   sx={{ padding: 1 }}
                 />
-                <IconButton sx={{ p: '10px' }} aria-label="menu">
+                <IconButton sx={{ p: '10px' }} aria-label="menu"
+                onClick={handleResendEmail}>
                   <EmailIcon />
                 </IconButton>
               </Paper>

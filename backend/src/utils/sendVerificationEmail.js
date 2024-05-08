@@ -11,8 +11,10 @@ const FRONTEND_URL = process.env.CLIENT_URL ?? '';
  * @param {*} email
  */
 export const sendVerificationMail = (user, email) => {
+  console.log("user.emailToken:", user.emailToken)
+  console.log("user.username:", user.username)
+
   const transporter = createMailTransporter();
-  console.log('user:', user);
 
   const mailOptions = {
     from: '"Lecturmon" <lecturmon.officials@outlook.com>',
@@ -22,6 +24,7 @@ export const sendVerificationMail = (user, email) => {
       <h1>Welcome to Lecturmon, ${user.username}!</h1>
       <p>We're excited to have you on board. Before you can start using all our features, we need to verify your email address.</p>
       <p>Please click the link below to verify your email:</p>
+      <p>email token: ${user.emailToken}</p>
       <a href='${FRONTEND_URL}/verifyEmail?emailToken=${user.emailToken}'>Verify Your Email</a>
       <p>If you didn’t ask to verify this address, you can ignore this email.</p>
       <p>Thanks,</p>
