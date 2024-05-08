@@ -33,7 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <App />
-              <ToastContainer position="bottom-right" autoClose={2000}/>
+              <ToastContainer position="bottom-right" autoClose={2000} />
             </ThemeProvider>
           </QueryClientProvider>
         </BrowserRouter>

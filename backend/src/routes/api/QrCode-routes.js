@@ -18,10 +18,10 @@ QrRouters.post('/qr-code', async (req, res) => {
   const date = req.body.date;
   const courseId = req.body.courseId;
   const lectureId = req.body.lecture;
-  const courseName = req.body.courseName;
+  const courseCode = req.body.courseCode;
   const username = req.user;
 
-  console.log(courseName)
+  console.log(courseCode)
 
   const usernameIdObject = new mongoose.Types.ObjectId(username._id);
   const courseIdObject = new mongoose.Types.ObjectId(courseId);
@@ -41,28 +41,8 @@ QrRouters.post('/qr-code', async (req, res) => {
     return res.json('Date or courseId or lectureId undefined');
   }
 
-  // try {
-  //   console.log('skeet');
-  //   const sket = await User.updateOne(
-  //     {
-  //       _id: usernameIdObject,
-  //       courses: { $elemMatch: { 'course.id': courseId } },
-  //     },
-  //     { $push: { 'courses.$.lectures': 576 } },
-  //   ).exec();
-  //   console.log(sket);
-  // } catch (error) {
-  //   console.log(error);
-  // }
-
   //---------------------------set expiry time here skeet ------------------------------------
   if (difference < 30) {
-    // try {
-    //   const skeet = await User.updateOne({_id: usernameIdObject},
-    //     {
-    //       $addToSet: {"courses": {courseId: courseId}}
-    //     }
-    //   ).exec()
 
     try {
       const skeet = await User.updateOne(
@@ -71,7 +51,7 @@ QrRouters.post('/qr-code', async (req, res) => {
           courses: { $not: { $elemMatch: { courseId: courseId } } },
         },
         {
-          $addToSet: { courses: { courseId: courseId, courseName: courseName} },
+          $addToSet: { courses: { courseId: courseId, courseCode: courseCode} },
         },
       ).exec();
 
@@ -93,7 +73,7 @@ QrRouters.post('/qr-code', async (req, res) => {
               _id: usernameIdObject,
               courses: { $elemMatch: { courseId: courseId } },
             },
-            { $addToSet: { 'courses.$.lectures': { lectureId: lectureId} } },
+            { $addToSet: { 'courses.$.lectures': { lectureId: lectureId } } },
           ).exec();
           const result = await Course.updateOne(
             { _id: courseId, 'lectures._id': lectureId },

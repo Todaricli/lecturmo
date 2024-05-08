@@ -4,6 +4,8 @@ import axios from 'axios';
 import VerificationSuccess from '../ScanVerificationPage/VerificationSuccessPage.jsx';
 import VerificationError from '../ScanVerificationPage/VerificationErrorPage.jsx';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const QrLandingPage = () => {
   const [params, setParams] = useSearchParams();
   const [date, setDate] = useState(undefined);
@@ -12,21 +14,21 @@ const QrLandingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(undefined);
   const [validity, setValidity] = useState();
-  const [courseName, setCourseName] = useState();
+  const [courseCode, setCourseCode] = useState();
   const [login, setLogin] = useState(true);
   const [user, setUser] = useState();
 
   const submit = async () => {
-    console.log(courseName);
+    console.log(courseCode);
     if (date && course) {
       const response = await axios
         .post(
-          `http://localhost:3000/api/qr-code`,
+          `${BASE_URL}/qr-code`,
           {
             date: date,
             courseId: course,
             lecture: lecture,
-            courseName: courseName
+            courseCode: courseCode
           },
           {
             headers: {
@@ -41,27 +43,9 @@ const QrLandingPage = () => {
     }
   };
 
-  // const checkUser = async () => {
-  //   const response = await axios
-  //     .post(
-  //       `http://localhost:3000/api/login`,
-  //       {
-  //         username: "user1",
-  //         password: "123",
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     ).then((res) => {
-  //       setLogin(true)
-  //     })
-  // }
-
   async function getStatus() {
     const response = await axios
-      .get('http://localhost:3000/api/status')
+      .get(`${BASE_URL}/status`)
       .then((res) => {
         if (res.status == 200) {
           setUser(res);
@@ -69,23 +53,11 @@ const QrLandingPage = () => {
       });
   }
 
-  // useEffect(() => {
-  //   getStatus()
-  //   console.log(validity)
-
-  // }, [login])
-
-  // useEffect(() => {
-  //   if (user) {
-  //     console.log(user.data)
-  //   }
-  // }, [user])
-
   useEffect(() => {
     setDate(params.get('date'));
     setCourse(params.get('course'));
     setLecture(params.get('lecture'));
-    setCourseName(params.get('courseName'))
+    setCourseCode(params.get('courseCode'))
   }, []);
 
   useEffect(() => {
