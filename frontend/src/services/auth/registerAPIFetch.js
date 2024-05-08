@@ -39,8 +39,6 @@ export const checkPasswordInput = async (body) => {
 
 export const checkPasswordsMatch = async (body) => {
   const { password, confirmPassword } = body;
-  console.log('confirmPassword:', confirmPassword);
-  console.log('password:', password);
   const res = {};
   if (password === confirmPassword) {
     res.message = 'Passwords match.';
