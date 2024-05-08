@@ -1,6 +1,5 @@
 import { User } from '../schemas/userSchema.js';
 import { hashPassword } from '../utils/useBcrypt.js';
-import crypto from 'crypto';
 
 export const isValidUOAEmail = (email) => {
   const aucklandUniEmailRegex = /^[^\s@]+@aucklanduni\.ac\.nz$/;

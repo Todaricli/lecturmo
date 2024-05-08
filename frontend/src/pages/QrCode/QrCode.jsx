@@ -71,7 +71,7 @@ const QrCode = () => {
       </Box>
       <Box
         component="img"
-        src="../../../public/will_smith.png"
+        src="/will_smith.png"
         sx={{ width: '400px' }}
       ></Box>
     </Box>

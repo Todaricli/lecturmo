@@ -3,27 +3,30 @@ import {
   checkUsername,
   checkEmail,
   checkPasswordsMatch,
+  isValidUOAEmail,
 } from '../../controllers/registerController.js';
 import { comparePassword, hashPassword } from '../../utils/useBcrypt.js';
 import { updateUser } from '../../controllers/userProfileController.js';
-import { isValidUOAEmail } from '../../controllers/registerController.js';
+import crypto from 'crypto';
+import { sendVerifyUniEmail } from '../../controllers/sendVerifyEmailController.js';
 
 const router = express.Router();
 
 router.post('/update-user', async (req, res) => {
-  const {
-    username,
-    email,
-    password,
-    confirmPassword,
-    firstName,
-    lastName,
-    gender,
-    avatarURL,
-    description,
-    currentPassword,
-    dateOfBirth,
-  } = req.body;
+  try {
+    const {
+      username,
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      gender,
+      avatarURL,
+      description,
+      currentPassword,
+      dateOfBirth,
+    } = req.body;
 
     // Validate current password
     const isCurrentPasswordValid = await comparePassword(
@@ -35,25 +38,25 @@ router.post('/update-user', async (req, res) => {
       return res.status(403).json({ message: 'Current password is invalid.' });
     }
 
-  // Prepare update data
-  const updateData = {};
-  if (
-    username &&
-    (username !== req.user.username || (await checkUsername(username)))
-  )
-    updateData.username = username;
-  if (email && (email !== req.user.email || (await checkEmail(email))))
-    updateData.email = email;
-  if (password && checkPasswordsMatch(password, confirmPassword)) {
-    console.log('password:', password);
-    updateData.password = await hashPassword(password);
-  }
-  if (firstName) updateData.fname = firstName;
-  if (lastName) updateData.lname = lastName;
-  if (description) updateData.profileDescription = description;
-  if (gender) updateData.gender = gender;
-  if (avatarURL) updateData.avatarPicture = avatarURL;
-  if (dateOfBirth) updateData.dob = dateOfBirth;
+    // Prepare update data
+    const updateData = {};
+    if (
+      username &&
+      (username !== req.user.username || (await checkUsername(username)))
+    )
+      updateData.username = username;
+    if (email && (email !== req.user.email || (await checkEmail(email))))
+      updateData.email = email;
+    if (password && checkPasswordsMatch(password, confirmPassword)) {
+      console.log('password:', password);
+      updateData.password = await hashPassword(password);
+    }
+    if (firstName) updateData.fname = firstName;
+    if (lastName) updateData.lname = lastName;
+    if (description) updateData.profileDescription = description;
+    if (gender) updateData.gender = gender;
+    if (avatarURL) updateData.avatarPicture = avatarURL;
+    if (dateOfBirth) updateData.dob = dateOfBirth;
 
     try {
       const user = await updateUser(req.user._id, updateData);
@@ -71,12 +74,14 @@ router.post('/update-user', async (req, res) => {
 
 router.post('/resend-verification-email', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { username, email } = req.body;
+
     if (!isValidUOAEmail(email)) {
       return res.status(403).json({
         message: 'Please provide valid University of Auckland email.',
       });
     }
+    const emailToken = crypto.randomBytes(32).toString('hex');
     const response = await sendVerifyUniEmail(
       { username: username, emailToken: emailToken },
       email,
@@ -84,12 +89,11 @@ router.post('/resend-verification-email', async (req, res) => {
     if (response.status === 'error') {
       return res.status(403).json({ message: response.message });
     } else {
-      res.status(200).json(user);
+      res.sendStatus(200);
     }
   } catch (e) {
     console.log(e.message);
   }
-
 
 });
 export default router;

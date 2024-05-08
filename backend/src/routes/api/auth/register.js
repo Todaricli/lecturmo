@@ -9,6 +9,7 @@ import {
 import validator from 'validator';
 import { isValidUOAEmail } from '../../../controllers/registerController.js';
 import { sendVerifyUniEmail } from '../../../controllers/sendVerifyEmailController.js';
+import crypto from 'crypto';
 
 const router = express.Router();
 

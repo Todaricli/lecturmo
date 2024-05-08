@@ -10,27 +10,39 @@ import {
   InputBase,
   Link,
   LinearProgress,
+  Snackbar,
+  Alert,
 } from '@mui/material';
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import Loading from '../../components/Loading';
+import { resendVerificationEmail } from '../../services/profile/userProfileAPIFetch';
 
 const UserProfilePage = () => {
   const { user } = useContext(AuthContext);
   useRedirectToLoginIfNotLoggedIn();
 
   const [emailError, setEmailError] = useState('');
+  const [sentEmailSuccess, setSentEmailSuccess] = useState(false);
 
   if (user === null) {
     return <Loading />;
   }
 
-  const handleResendEmail = () => {
-
+  const handleResendEmail = async () => {
+    console.log("user:", user)
+    const res = await resendVerificationEmail({
+      username: user.username,
+      email: user.email,
+    });
+    setEmailError(res && res.error ? res.message : '');
+    if (!res.error) {
+      setSentEmailSuccess(true);
+    }
   }
 
   return (
@@ -159,6 +171,7 @@ const UserProfilePage = () => {
                   bgcolor: 'grey.main',
                   display: 'flex',
                   justifyContent: 'space-between',
+                  padding: '5px',
                 }}
               >
                 <InputBase
@@ -166,14 +179,35 @@ const UserProfilePage = () => {
                   value={user.email}
                   sx={{ padding: 1 }}
                 />
+
                 <IconButton sx={{ p: '10px' }} aria-label="menu"
-                onClick={handleResendEmail}>
+                  onClick={handleResendEmail}>
                   <EmailIcon />
                 </IconButton>
+
               </Paper>
+              {emailError && (
+                <Typography color="error" align="center">
+                  {emailError}
+                </Typography>
+              )}
             </CardContent>
           </Card>
         )}
+
+        <Snackbar
+          open={sentEmailSuccess}
+          autoHideDuration={6000}
+          onClose={() => setSentEmailSuccess(false)}
+        >
+          <Alert
+            onClose={() => setSentEmailSuccess(false)}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Successfully Sent Verficiation Email!
+          </Alert>
+        </Snackbar>
 
         {user.courses.length > 0 ? (
           user.courses.map((course) => (

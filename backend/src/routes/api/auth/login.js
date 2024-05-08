@@ -7,6 +7,8 @@ const router = express.Router();
 // expects username and password
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
+    // manually set cookie cuz passport doesn't do it -_-
+    res.cookie('connect.sid', 's:' + signature.sign(req.sessionID, 'MY_SECRET'));
     // err only happens for outside of auth issues
     if (err) {
       const status = err.status || 500;
