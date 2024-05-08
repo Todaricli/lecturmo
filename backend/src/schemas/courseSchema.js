@@ -21,6 +21,7 @@ const courseSchema = new Schema(
         likes: [
           {
             userId: { type: Schema.Types.ObjectId, ref: 'User' },
+            userId1: {type: String}
           },
         ],
         dummyLikes: [String],

@@ -23,6 +23,7 @@ import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { postRequest } from '../../services/postRequest';
 import Loading from '../../components/Loading';
+import WriteReview from '../../components/writeReview';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
@@ -34,6 +35,7 @@ const SinglePostPage = () => {
   const [courseId, setCourseId] = useState();
   const [sortBy, setSortBy] = useState(20);
   const [reviews, setReview] = useState();
+  const [triggerReload, setTriggerReload] = useState(false)
 
   //AI
   const [summary, setSummary] = useState(null);
@@ -63,12 +65,12 @@ const SinglePostPage = () => {
   };
 
   const toggleLike = async(reviewId,varCourseId) =>{
-    const response = await postRequest(`${API_URL}/toggle-like`,
+    const response = await postRequest(`http://localhost:3000/api/toggle-like`,
       {
         reviewId: reviewId,
         courseId: varCourseId
       }
-    )
+    ).then(setTriggerReload(!triggerReload))
   }
 
   const calculateOverallRating = (course) => {
@@ -196,6 +198,7 @@ const SinglePostPage = () => {
               setCourse(res.data);
               setReview(res.data.reviews);
               setInitialLoad(false)
+              
             });
         } catch (error) {
           console.log('Error fetching single post data: ', error);
@@ -203,7 +206,7 @@ const SinglePostPage = () => {
       };
       fetchData();
     }
-  }, [courseId]);
+  }, [courseId,triggerReload]);
 
   return (
     <>
@@ -320,38 +323,33 @@ const SinglePostPage = () => {
               </Grid>
             </Box>
 
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Button
-                sx={{ border: '2px solid grey', borderRadius: 4, color: '#000000' }}
-              >
-                Write a Review
-                <RateReviewIcon color="icon" sx={{ height: '20px' }} />
-              </Button>
-              <Box
-                sx={{
-                  display: 'flex',
-                  bgcolor: 'secondary.main',
-                  padding: '8px',
-                  width: 190,
-                  borderRadius: 3,
-                }}
-              >
-                <LocationOnOutlinedIcon
-                  fontSize="small"
-                  sx={{ marginRight: '5px' }}
-                />
-                <Typography variant="body2" color="initial">
-                  University of Auckland
-                </Typography>
-              </Box>
-            </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <WriteReview />
+          <Box
+            sx={{
+              display: 'flex',
+              bgcolor: 'secondary.main',
+              padding: '8px',
+              width: 190,
+              borderRadius: 3,
+            }}
+          >
+            <LocationOnOutlinedIcon
+              fontSize="small"
+              sx={{ marginRight: '5px' }}
+            />
+            <Typography variant="body2" color="initial">
+              University of Auckland
+            </Typography>
           </Box>
+        </Box>
+      </Box>
 
           <Box
             sx={{

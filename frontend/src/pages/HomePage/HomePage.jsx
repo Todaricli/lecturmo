@@ -11,6 +11,8 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
 import zIndex from '@mui/material/styles/zIndex';
+import LandingImage from '../../components/LandingImage';
+import LandingBackground from '../../components/LandingBackground';
 import Loading from '../../components/Loading';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
@@ -54,9 +56,14 @@ const HomePage = () => {
       <Box
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
-        <Typography variant="h1">Hello Lectermo</Typography>
-        <SearchBar />
-        <LandingPosts posts={posts} />
+        <LandingBackground />
+      <Box sx={{ height: '100vh' }}> {/* Set height of the body to 100vh */}
+        <Box sx={{ height: '100%' }}> {/* Set height of the Box component to 100% */}
+          <LandingImage />
+            <SearchBar />
+          </Box>
+      </Box>
+      <LandingPosts posts={posts} />
         <IconButton
           sx={{
             bgcolor: 'secondary.main',

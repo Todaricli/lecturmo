@@ -9,6 +9,7 @@ import SinglePageRouters from './singlePostRoute.js';
 import statsUserRouter from './statsUserRouter.js';
 import userProfileRoutes from './userProfilePage.js';
 import lecturAi from './openAi.js';
+import writeReviewRoutes from './writeReview.js';
 
 const router = express.Router();
 
@@ -21,5 +22,6 @@ router.use('/', userProfileRoutes);
 router.use('/lecturai', lecturAi);
 router.use('/', SinglePageRouters);
 router.use('/', statsUserRouter);
+router.use('/', writeReviewRoutes);
 
 export default router;

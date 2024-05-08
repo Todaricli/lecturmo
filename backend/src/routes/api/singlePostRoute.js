@@ -12,7 +12,12 @@ SinglePageRouters.post("/toggle-like", async (req,res) =>{
   const courseId = req.body.courseId
   const loggedInUserId = req.user
 
-  console.log("userskkeeeett", loggedInUserId)
+ 
+
+  const loggedInUserIdString = loggedInUserId._id.toString()
+  console.log(loggedInUserIdString)
+
+  const loggedInUserIdObj = new mongoose.Types.ObjectId(loggedInUserId)
 
 
 
@@ -29,25 +34,27 @@ SinglePageRouters.post("/toggle-like", async (req,res) =>{
       return res.status(404).json({ error: 'Review not found' });
     }
 
-    const userIndex = review.likes.indexOf(loggedInUserId);
+    const userExists = review.likes.some(like => like.userId1 === loggedInUserIdString);
 
-    if (userIndex === -1) {
+    if (!userExists) {
       // User doesn't exist in likes, so add the like
-      review.likes.push(loggedInUserId);
+      review.likes.push({ userId1: loggedInUserIdString });
     } else {
       // User exists in likes, so remove the like
-      review.likes.splice(userIndex, 1);
+      review.likes = review.likes.filter(like => like.userId1 !== loggedInUserIdString);
     }
-    await course.save();
+
+    // Update the likes in the database
+    await Course.findByIdAndUpdate(courseId, course);
+
     res.json(course);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
+});
 
 
-
-})
 
 SinglePageRouters.get('/courses/:courseId', async (req, res) => {
   const courseId = req.params.courseId;
