@@ -26,7 +26,7 @@ const userSchema = new Schema(
     },
     courses: [
       {
-        courseName: {type: String},
+        courseCode: {type: String},
         courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
         dummyId: { String },
         lectures: [{}],

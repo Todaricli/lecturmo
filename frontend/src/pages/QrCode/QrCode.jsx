@@ -10,7 +10,7 @@ const QrCode = () => {
 
   const courseId = searchParams.get('course');
   const lecture = searchParams.get('lecture');
-  const courseName = searchParams.get('courseName')
+  const courseCode = searchParams.get('courseCode')
 
   const getServerTime = async () => {
     const time = await fetch(
@@ -29,7 +29,7 @@ const QrCode = () => {
 
   useEffect(() => {
     setQrCode(
-      `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}&lecture=${lecture}&courseName=${encodeURI(courseName)}`
+      `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}&lecture=${lecture}&courseCode=${encodeURI(courseCode)}`
     );
   }, [currentTime]);
 

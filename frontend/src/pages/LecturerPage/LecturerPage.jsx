@@ -13,6 +13,10 @@ import {
   TableBody,
   TextField,
   IconButton,
+  Stack,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import QrCode from '../QrCode/QrCode.jsx';
 import AddNewLecture from '../../components/AddNewLecture.jsx';
@@ -40,13 +44,11 @@ const LecturerPage = () => {
 
   const [coursesList, setCoursesList] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeQr, setActiveQr] = useState(false);
 
   const [selectedLectureId, setSelectedLectureId] = useState(null);
   const [selectedLectureName, setSelectedLectureName] = useState(null);
   const [selectedCourseId, setCourseId] = useState(null);
-  const [selectedCourseName, setSelectedCourseName] =
-    useState('nothing selected');
+  const [selectedCourseCode, setSelectedCourseCode] = useState('nothing selected');
   const [courses, setCourses] = useState();
   const [courseNo, setCourseNo] = useState();
   const [lectures, setLectures] = useState();
@@ -54,6 +56,70 @@ const LecturerPage = () => {
   const [lectureDate, setLectureDate] = useState();
   const [openModal, setOpenModal] = useState(false)
   const [createLectureCourse, setCreateLectureCourse] = useState()
+
+  const [changeSort, setChangeSort] = useState("dateDesc")
+
+  const sortLecturesByNameDesc = () => {
+    console.log("here")
+    const sortedCourses = courses.map(course => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        const lectureNameA = a.lectureName.toLowerCase();
+        const lectureNameB = b.lectureName.toLowerCase();
+        return lectureNameA.localeCompare(lectureNameB);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    console.log("courses", sortedCourses)
+    setCourses(sortedCourses);
+  };
+
+  const sortLecturesByNameAsc = () => {
+    const sortedCourses = courses.map(course => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        const lectureNameA = a.lectureName.toLowerCase();
+        const lectureNameB = b.lectureName.toLowerCase();
+        return lectureNameB.localeCompare(lectureNameA);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    setCourses(sortedCourses);
+  };
+
+  const sortLecturesByDateAsc = () => {
+    const sortedCourses = courses.map(course => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    setCourses(sortedCourses);
+  };
+
+  const sortLecturesByDateDesc = () => {
+    const sortedCourses = courses.map(course => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    setCourses(sortedCourses);
+  };
+
+  const sortList = (sortStyle) => {
+    if (courses != undefined) {
+      if (sortStyle == "dateAsc") {
+        sortLecturesByDateAsc()
+      } else if (sortStyle == "dateDesc") {
+        sortLecturesByDateDesc()
+      } else if (sortStyle == "titleAsc") {
+        console.log("skeet")
+        sortLecturesByNameAsc()
+      } else if (sortStyle == "titleDesc") {
+        sortLecturesByNameDesc
+      }
+    }
+
+  }
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -86,7 +152,7 @@ const LecturerPage = () => {
           setCourseId(null)
           setSelectedLectureName(null)
           setSelectedLectureId(null)
-          setSelectedCourseName("nothing selected")
+          setSelectedCourseCode("nothing selected")
         } else {
           toast.error("Error deleting lecture")
         }
@@ -137,6 +203,10 @@ const LecturerPage = () => {
   console.log(courses);
 
   useEffect(() => {
+    sortList(changeSort)
+  }, [changeSort])
+
+  useEffect(() => {
     getClasses();
   }, [isLoading]);
 
@@ -148,6 +218,32 @@ const LecturerPage = () => {
 
   return (
     <>
+      <Box
+        mt={5}
+        sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}
+      >
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Typography variant="h6" color="light.main">
+            Sort:
+          </Typography>
+          <FormControl sx={{ width: 250 }}>
+            <Select
+              labelId="post-select"
+              id="post-select"
+              value={changeSort}
+              onChange={(e) => setChangeSort(e.target.value)}
+              sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
+            >
+              <MenuItem value={"dateDesc"}>Latest</MenuItem>
+              <MenuItem value={"dateAsc"}>Oldest</MenuItem>
+              <MenuItem value={"titleAsc"}>Title Ascending</MenuItem>
+              <MenuItem value={"titleDesc"}>Title Descending</MenuItem>
+            </Select>
+          </FormControl>
+        </Stack>
+      </Box>
+
+
       {courses ? (
         <Container
           maxWidth="lg"
@@ -217,7 +313,7 @@ const LecturerPage = () => {
                 color="initial"
                 sx={{ fontWeight: 'bold' }}
               >
-                {selectedCourseName}
+                {selectedCourseCode}
               </Typography>
 
               <Typography
@@ -232,7 +328,7 @@ const LecturerPage = () => {
                 color="primary"
                 onClick={() => {
                   window.open(
-                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseName=${encodeURI(selectedCourseName)}`,
+                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseCode=${encodeURI(selectedCourseCode)}`,
                     '_blank'
                   );
                 }}
@@ -273,7 +369,7 @@ const LecturerPage = () => {
                       color="initial"
                       sx={{ mb: '5px', mr: '10px' }}
                     >
-                      {course.courseName}
+                      {course.courseCode}-{course.courseName}
                     </Typography>
                     <Button
                       variant="contained"
@@ -305,11 +401,14 @@ const LecturerPage = () => {
                       {course.lectures ? (
                         course.lectures.map((lecture) => (
                           <TableRow
+                            sx={
+                              lecture._id == selectedLectureId ? { backgroundColor: "yellow", cursor: "pointer"} : {cursor:"pointer"}
+                            }
                             onClick={() => {
                               setSelectedLectureId(lecture._id);
                               setSelectedLectureName(lecture.lectureName);
                               setCourseId(course._id);
-                              setSelectedCourseName(course.courseName);
+                              setSelectedCourseCode(course.courseCode);
                             }}
                           >
                             <TableCell>
