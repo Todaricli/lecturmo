@@ -69,7 +69,7 @@ export async function startExpress() {
       cookie: {
         maxAge: 60 * 60 * 1000, // 1 hour
         httpOnly: false,
-        secure: false,
+        secure: true,
         sameSite: 'None'
       },
     })
