@@ -1,19 +1,11 @@
 import React, { useEffect } from 'react';
-import { Application } from '@splinetool/runtime';
+import Spline from '@splinetool/react-spline';
+import { Box, } from '@mui/material';
 
-const LandingImage = () => {
-  useEffect(() => {
-    const canvas = document.getElementById('canvas3d');
-    const app = new Application(canvas);
-    app.load('https://prod.spline.design/gPLjvSN98g764juA/scene.splinecode');
-
-    // Cleanup function
-    return () => {
-      app.destroy(); // Ensure cleanup to avoid memory leaks
-    };
-  }, []);
-
-  return <canvas id="canvas3d" />;
-};
-
-export default LandingImage;
+export default function LandingImage() {
+  return (
+    <Box sx={{ height: '300px', width: '100%', position: 'relative' }}> {/* Set height and width */}
+    <Spline scene="https://prod.spline.design/gPLjvSN98g764juA/scene.splinecode" /> {/* Render the Spline component */}
+  </Box>
+  );
+}
