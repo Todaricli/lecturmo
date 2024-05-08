@@ -9,6 +9,7 @@ import {
   IconButton,
   TextField,
   Link,
+  CircularProgress,
 } from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -48,7 +49,7 @@ const EditProfilePage = () => {
   const [currentPasswordError, setCurrentPasswordError] = useState('');
   const [open, setOpen] = useState(false);
   const [isAvatarSelectorVisible, setIsAvatarSelectorVisible] = useState(false);
-
+  const [avatarLoading, setAvatarLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -288,18 +289,20 @@ const EditProfilePage = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.9)', /* White background for the form with some transparency */
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 zIndex: 1000,
               }}>
-                <div style={{
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  zIndex: 999,
-                }}></div>
+                <div
+                  onClick={() => setIsAvatarSelectorVisible(false)}
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    zIndex: 999,
+                  }}></div>
 
                 <div style={{
                   zIndex: 1000,
