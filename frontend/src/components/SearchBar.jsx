@@ -13,17 +13,19 @@ import { useTheme } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const SearchBar = () => {
   const [categorySearch, setCategorySearch] = useState([]);
   const [courseSearch, setCourseSearch] = useState([]);
   const [searchTerm, setSearchTerm] = useState();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const submit = async () => {
     const response = await axios
       .post(
-        `http://localhost:3000/api/search`,
+        `${BASE_URL}/search`,
         {
           searchterm: searchTerm,
         },
@@ -103,9 +105,9 @@ const SearchBar = () => {
                       borderRadius: 3,
                     },
                   }}
-                  onClick = {()=>{
-                    navigate(`/courses?courseId=${result._id}`)
-                    console.log(result._id)
+                  onClick={() => {
+                    navigate(`/courses?courseId=${result._id}`);
+                    console.log(result._id);
                   }}
                 >
                   {result.courseName}

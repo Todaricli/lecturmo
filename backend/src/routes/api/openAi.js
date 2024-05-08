@@ -17,7 +17,6 @@ export const openai = new OpenAI({
 });
 
 router.post('/summarizeReview', async (req, res) => {
-
   const course_Id = req.body.courseId;
 
   if (!course_Id)
@@ -28,8 +27,7 @@ router.post('/summarizeReview', async (req, res) => {
   console.log(course_Id);
 
   try {
-
-    const course = await Course.findById(course_Id)
+    const course = await Course.findById(course_Id);
 
     if (!course)
       return res.status(500).json('Unable to retrieve course reviews data');
@@ -60,7 +58,7 @@ router.post('/summarizeReview', async (req, res) => {
     return res.status(200).json(completion.choices[0]);
   } catch (e) {
     console.log(e.messages);
-    console.log(e)
+    console.log(e);
     return res.status(500).json(e.messages);
   }
 });

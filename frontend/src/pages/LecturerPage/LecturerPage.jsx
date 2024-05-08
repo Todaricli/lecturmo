@@ -24,11 +24,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContextProvider.jsx'
+import { AuthContext } from '../../contexts/AuthContextProvider.jsx';
 import Loading from '../../components/Loading.jsx';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClearIcon from '@mui/icons-material/Clear';
+
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
 const LecturerPage = () => {
   const { user } = useContext(AuthContext);
@@ -38,10 +40,10 @@ const LecturerPage = () => {
 
   useEffect(() => {
     console.log(user)
-    if(user.roles != "lecturer"){
+    if (user.roles != "lecturer") {
       navigate('/')
     }
-  },[])
+  }, [])
 
   const navigate = useNavigate();
 
@@ -113,12 +115,15 @@ const LecturerPage = () => {
       if (sortStyle == "dateAsc") {
         sortLecturesByDateAsc()
       } else if (sortStyle == "dateDesc") {
+        console.log("datedesc")
         sortLecturesByDateDesc()
       } else if (sortStyle == "titleAsc") {
+        console.log("titleasc")
         console.log("skeet")
         sortLecturesByNameAsc()
       } else if (sortStyle == "titleDesc") {
-        sortLecturesByNameDesc
+        console.log("titledsc")
+        sortLecturesByNameDesc()
       }
     }
 
@@ -138,7 +143,7 @@ const LecturerPage = () => {
   const deleteLecture = async (lectureIdToDelete, courseIdToDelete) => {
     const response = await axios
       .post(
-        `http://localhost:3000/api/delete-lecture`,
+        `${BASE_URL}/delete-lecture`,
         {
           courseId: courseIdToDelete,
           lectureId: lectureIdToDelete,
@@ -157,14 +162,14 @@ const LecturerPage = () => {
           setSelectedLectureId(null)
           setSelectedCourseCode("nothing selected")
         } else {
-          toast.error("Error deleting lecture")
+          toast.error('Error deleting lecture');
         }
-        setIsLoading(!isLoading)
+        setIsLoading(!isLoading);
       });
-  }
+  };
 
   const getClasses = async () => {
-    await axios.get(`http://localhost:3000/api/lecture-list`).then((res) => {
+    await axios.get(`${BASE_URL}/lecture-list`).then((res) => {
       console.log(res);
       setCourseNo(res.data.length);
       setCourses(res.data);
@@ -176,7 +181,7 @@ const LecturerPage = () => {
     console.log("lec", lectureDate)
     await axios
       .post(
-        `http://localhost:3000/api/add-lecture`,
+        `${BASE_URL}/add-lecture`,
         {
           lectureName: newLectureTitle,
           courseId: courseId,
@@ -189,7 +194,7 @@ const LecturerPage = () => {
         }
       )
       .then((res) => {
-        setIsLoading(!isLoading)
+        setIsLoading(!isLoading);
       });
   };
 
@@ -202,7 +207,7 @@ const LecturerPage = () => {
       console.error('Failed to add lecture:', error);
       toast.error('Failed to add lecture. Please try again.');
     }
-  }
+  };
 
   console.log(courses);
 
@@ -222,30 +227,6 @@ const LecturerPage = () => {
 
   return (
     <>
-      <Box
-        mt={5}
-        sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}
-      >
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography variant="h6" color="light.main">
-            Sort:
-          </Typography>
-          <FormControl sx={{ width: 250 }}>
-            <Select
-              labelId="post-select"
-              id="post-select"
-              value={changeSort}
-              onChange={(e) => setChangeSort(e.target.value)}
-              sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
-            >
-              <MenuItem value={"dateDesc"}>Latest</MenuItem>
-              <MenuItem value={"dateAsc"}>Oldest</MenuItem>
-              <MenuItem value={"titleAsc"}>Title Ascending</MenuItem>
-              <MenuItem value={"titleDesc"}>Title Descending</MenuItem>
-            </Select>
-          </FormControl>
-        </Stack>
-      </Box>
 
 
       {courses ? (
@@ -347,13 +328,43 @@ const LecturerPage = () => {
                 }}
                 disabled={
                   selectedLectureId === null ||
-                  selectedCourseId === null ? true : false
+                    selectedCourseId === null ? true : false
                 }
               >
                 Create QR code
               </Button>
             </Box>
+            <Box sx={{bgcolor: "primary.main"}}>
+              <Box
+                mt={5}
+                sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%'}}
+              >
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="h6" color="light.main">
+                    Sort:
+                  </Typography>
+                  <FormControl sx={{ width: 250 }}>
+                    <Select
+                      labelId="post-select"
+                      id="post-select"
+                      value={changeSort}
+                      onChange={(e) => {
+                        setChangeSort(e.target.value)
+                        console.log(changeSort)
+                      }
+                      }
+                      sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
+                    >
+                      <MenuItem value={"dateDesc"}>Latest</MenuItem>
+                      <MenuItem value={"dateAsc"}>Oldest</MenuItem>
+                      <MenuItem value={"titleAsc"}>Title Ascending</MenuItem>
+                      <MenuItem value={"titleDesc"}>Title Descending</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Stack>
+              </Box>
 
+            </Box>
             {courses.length > 0 ? (
               courses.map((course) => (
                 <Box
@@ -410,7 +421,7 @@ const LecturerPage = () => {
                         course.lectures.map((lecture) => (
                           <TableRow
                             sx={
-                              lecture._id == selectedLectureId ? { backgroundColor: "yellow", cursor: "pointer"} : {cursor:"pointer"}
+                              lecture._id == selectedLectureId ? { backgroundColor: "yellow", cursor: "pointer" } : { cursor: "pointer" }
                             }
                             onClick={() => {
                               setSelectedLectureId(lecture._id);
@@ -430,8 +441,7 @@ const LecturerPage = () => {
                             <TableCell>
                               <IconButton
                                 onClick={() => {
-                                  deleteLecture(lecture._id, course._id)
-
+                                  deleteLecture(lecture._id, course._id);
                                 }}
                               >
                                 <ClearIcon />
@@ -440,7 +450,9 @@ const LecturerPage = () => {
                           </TableRow>
                         ))
                       ) : (
-                        <Typography variant="h6">there are no lectures currently</Typography>
+                        <Typography variant="h6">
+                          there are no lectures currently
+                        </Typography>
                       )}
                     </TableBody>
                   </Table>
@@ -480,7 +492,7 @@ const LecturerPage = () => {
                           format="DD-MM-YYYY"
                           onChange={(e) => {
                             setLectureDate(e.$d);
-                            
+
                           }}
                           label="Choose lecture date"
                           sx={{ bgcolor: 'light.main' }}
@@ -510,7 +522,7 @@ const LecturerPage = () => {
                 </Box>
               ))
             ) : (
-              <Typography variant='h6'>
+              <Typography variant="h6">
                 YOU ARE NOT CURRENTLY IN CHARGE OF ANY CLASSES
               </Typography>
             )}
@@ -520,6 +532,5 @@ const LecturerPage = () => {
     </>
   );
 };
-
 
 export default LecturerPage;

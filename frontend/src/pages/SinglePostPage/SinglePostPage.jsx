@@ -12,7 +12,7 @@ import {
   FormControl,
   Card,
   CardContent,
-  Avatar
+  Avatar,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useEffect, useState } from 'react';
@@ -23,8 +23,7 @@ import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { postRequest } from '../../services/postRequest';
 
-
-const API_URL = import.meta.env.VITE_EXPRESS_APP_ENDPOINT_API_URL ?? "";
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
 const SinglePostPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,22 +38,24 @@ const SinglePostPage = () => {
   const [aiError, setAiError] = useState(false);
 
   const generateCourseReviewSummary = async (course_Id) => {
-
     setAiInProgress(true);
     const courseIdObjt = {
-      courseId: course_Id
-    }
+      courseId: course_Id,
+    };
 
-    const response = await postRequest(`${API_URL}/lecturai/summarizeReview`, courseIdObjt);
+    const response = await postRequest(
+      `${API_URL}/lecturai/summarizeReview`,
+      courseIdObjt
+    );
 
-    if(!response.message.content) {
+    if (!response.message.content) {
       setAiError(true);
-      setAiInProgress(false)
+      setAiInProgress(false);
     }
 
-    setSummary(response.message.content)
-    setAiInProgress(false)
-  }
+    setSummary(response.message.content);
+    setAiInProgress(false);
+  };
 
   const calculateOverallRating = (course) => {
     if (!course || !course.reviews || course.reviews.length === 0) {
@@ -175,7 +176,7 @@ const SinglePostPage = () => {
       const fetchData = async () => {
         try {
           const response = await axios
-            .get(`http://localhost:3000/api/courses/${courseId}`)
+            .get(`${BASE_URL}/courses/${courseId}`)
             .then((res) => {
               console.log('single course: ', res.data.reviews);
               setCourse(res.data);
@@ -376,10 +377,15 @@ const SinglePostPage = () => {
               </Button>
             )}
           </Box>
-          <Box mt="10px" sx={{display: "flex", justifyContent: "center"}}>
+          <Box mt="10px" sx={{ display: 'flex', justifyContent: 'center' }}>
             {!summary && (
-              <Typography variant="body1" color="initial" sx={{fontWeight: "bold"}}>
-                If you don't want to read reviews, please use AI to summarize reviews
+              <Typography
+                variant="body1"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                If you don't want to read reviews, please use AI to summarize
+                reviews
               </Typography>
             )}
             {aiError ? (

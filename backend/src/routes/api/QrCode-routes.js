@@ -73,7 +73,7 @@ QrRouters.post('/qr-code', async (req, res) => {
               _id: usernameIdObject,
               courses: { $elemMatch: { courseId: courseId } },
             },
-            { $addToSet: { 'courses.$.lectures': { lectureId: lectureId} } },
+            { $addToSet: { 'courses.$.lectures': { lectureId: lectureId } } },
           ).exec();
           const result = await Course.updateOne(
             { _id: courseId, 'lectures._id': lectureId },

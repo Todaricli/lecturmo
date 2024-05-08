@@ -28,8 +28,8 @@ export const theme = createTheme({
       main: '#D74545',
     },
     lightBlue: {
-      main: "#0054A1"
-    }
+      main: '#0054A1',
+    },
   },
   shadows: {
     0: 'none',

@@ -12,7 +12,7 @@ const QrCode = () => {
 
   const courseId = searchParams.get('course');
   const lecture = searchParams.get('lecture');
-  const courseCode = searchParams.get('courseCode')
+  const courseCode = searchParams.get('courseCode');
 
   if (!courseId || !lecture) {
     return (<>

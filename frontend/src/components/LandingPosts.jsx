@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const calculateOverallRating = (post) => {
     if (!post || !post.reviews || post.reviews.length === 0) {
@@ -64,16 +64,15 @@ const LandingPosts = ({ posts }) => {
               <Box
                 key={index}
                 sx={{
-                  cursor: "pointer",
+                  cursor: 'pointer',
                   marginTop: '15px',
                   width: '400px',
                   boxShadow: theme.shadows[1],
                 }}
-                onClick = {()=>{
-                  navigate(`/courses?courseId=${post._id}`)
-                  console.log(post)
+                onClick={() => {
+                  navigate(`/courses?courseId=${post._id}`);
+                  console.log(post);
                 }}
-                
               >
                 <Card
                   variant="outlined"

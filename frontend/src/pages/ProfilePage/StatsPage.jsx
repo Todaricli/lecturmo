@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Box, Typography, LinearProgress } from '@mui/material';
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const StatsPage = () => {
   const [user, setUser] = useState([]);
   const [courses, setCourses] = useState();
@@ -10,7 +12,7 @@ const StatsPage = () => {
     const fetchUser = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:3000/api/stats`)
+          .get(`${BASE_URL}/stats`)
           .then((res) => {
             console.log('user: ', res.data);
             setUser(res.data);
