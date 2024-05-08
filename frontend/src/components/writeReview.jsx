@@ -258,8 +258,8 @@ export default function WriteReview() {
                                     ],
                                 },
                             }}>
-                                <IconButton sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={handleClose}>
-                                    <DeleteIcon />
+                                <IconButton sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <DeleteIcon onClick={handleClose}/>
                                 </IconButton>
                             </Tooltip>
                         </Grid>
