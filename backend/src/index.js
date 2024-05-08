@@ -1,7 +1,7 @@
 import { startExpress } from './server.js';
 import mongoose from 'mongoose';
 
-const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING ?? 'mongodb://localhost:27017/quokka';
+const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING ?? 'mongodb://localhost:27017/lecturmon';
 
 const VERSION = '1.0.0';
 // Start the server running, connect to db.

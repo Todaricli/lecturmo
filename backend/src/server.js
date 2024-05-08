@@ -15,6 +15,7 @@ import './config/strategies/local-strategy.js';
 // Set's our port to the PORT environment variable, or 3000 by default if the env is not configured.
 const PORT = process.env.PORT ?? 3000;
 const SECRET_KEY = process.env.SECRET_KEY ?? '39608663';
+const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING ?? 'mongodb://localhost:27017/lecturmon';
 
 // CORS options
 const corsOptions = {
@@ -46,7 +47,7 @@ export async function startExpress() {
       saveUninitialized: false,
       resave: false,
       store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_CONNECTION_STRING,
+        mongoUrl: MONGODB_CONNECTION_STRING,
         collection: 'sessions',
       }), //session is now stored in db
       // cookie: {

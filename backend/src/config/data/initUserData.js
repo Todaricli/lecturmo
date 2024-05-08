@@ -36,9 +36,6 @@ export async function updateUserForeignKeys(users, courses) {
     const updates = users.map(async (user) => {
       user.courses = user.courses.map((courseEntry) => {
         const courseDetails = courseMap[courseEntry.courseCode];
-        console.log("courseMap:", courseMap)
-        console.log("courseDetails:", courseDetails)
-        console.log("courseEntry:", courseEntry)
         if (courseDetails) {
           courseEntry.courseId = courseDetails._id;
           courseEntry.courseName = courseDetails.courseName;

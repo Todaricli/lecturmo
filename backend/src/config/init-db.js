@@ -15,11 +15,13 @@ import {
   updateUserForeignKeys,
 } from './data/initUserData.js';
 
+const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING ?? 'mongodb://localhost:27017/lecturmon';
+
 // This is a standalone program which will populate the database with initial data.
 async function run() {
   try {
     console.log('Connecting to database.');
-    await mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
+    await mongoose.connect(MONGODB_CONNECTION_STRING);
 
     await mongoose.connection.dropDatabase();
     console.log('Database cleared.');
