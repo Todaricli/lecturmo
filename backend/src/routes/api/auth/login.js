@@ -31,7 +31,7 @@ router.get('/status', authenticate, (req, res) => {
   return req.user ? res.send(req.user) : res.sendStatus(401);
 });
 
-router.get('/logout', authenticate, (req, res) => {
+router.get('/logout', (req, res) => {
   if (!req.user) return res.sendStatus(401);
   req.logout((err) => {
     if (err) return res.sendStatus(400);

@@ -26,7 +26,7 @@ const QrLandingPage = () => {
             date: date,
             courseId: course,
             lecture: lecture,
-            courseName: courseName
+            courseName: courseName,
           },
           {
             headers: {
@@ -85,7 +85,7 @@ const QrLandingPage = () => {
     setDate(params.get('date'));
     setCourse(params.get('course'));
     setLecture(params.get('lecture'));
-    setCourseName(params.get('courseName'))
+    setCourseName(params.get('courseName'));
   }, []);
 
   useEffect(() => {

@@ -30,8 +30,10 @@ import {
   checkPasswordsMatch,
   registerUser,
 } from '../../services/auth/registerAPIFetch';
+import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 
 export default function RegisterPage() {
+  useRedirectToLoginIfNotLoggedIn();
   const [registerError, setRegisterError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -119,7 +121,7 @@ export default function RegisterPage() {
         });
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       }
-    }, 0);
+    }, 500);
   };
 
   const handleRegisterSubmit = async (event) => {

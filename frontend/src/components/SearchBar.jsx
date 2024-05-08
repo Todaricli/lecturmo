@@ -18,7 +18,7 @@ const SearchBar = () => {
   const [courseSearch, setCourseSearch] = useState([]);
   const [searchTerm, setSearchTerm] = useState();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const submit = async () => {
     const response = await axios
@@ -103,9 +103,9 @@ const SearchBar = () => {
                       borderRadius: 3,
                     },
                   }}
-                  onClick = {()=>{
-                    navigate(`/courses?courseId=${result._id}`)
-                    console.log(result._id)
+                  onClick={() => {
+                    navigate(`/courses?courseId=${result._id}`);
+                    console.log(result._id);
                   }}
                 >
                   {result.courseName}
