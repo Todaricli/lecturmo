@@ -246,18 +246,7 @@ export default function WriteReview() {
                             >
                                 Done!
                             </Button>
-                            <Tooltip title="Delete" slotProps={{
-                                popper: {
-                                    modifiers: [
-                                        {
-                                            name: 'offset',
-                                            options: {
-                                                offset: [0, -14],
-                                            },
-                                        },
-                                    ],
-                                },
-                            }}>
+                            <Tooltip title="Delete">
                                 <IconButton sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <DeleteIcon onClick={handleClose}/>
                                 </IconButton>
