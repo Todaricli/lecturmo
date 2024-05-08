@@ -43,7 +43,7 @@ const corsOptions = {
     }
   },
   optionsSuccessStatus: 200,
-  credentials: true, 
+  credentials: true,
 };
 
 // Creates the express server
@@ -66,10 +66,13 @@ export async function startExpress() {
         mongoUrl: MONGODB_CONNECTION_STRING,
         collection: 'sessions',
       }), //session is now stored in db
-      // cookie: {
-      //   maxAge: 60 * 60 * 1000, //one hour expiry
-      // },
-    }),
+      cookie: {
+        maxAge: 60 * 60 * 1000, // 1 hour
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
+      },
+    })
   );
 
   app.use(passport.initialize());
