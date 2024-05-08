@@ -22,6 +22,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { postRequest } from '../../services/postRequest';
+import WriteReview from '../../components/WriteReview';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
@@ -310,12 +311,7 @@ const SinglePostPage = () => {
             alignItems: 'center',
           }}
         >
-          <Button
-            sx={{ border: '2px solid grey', borderRadius: 4, color: '#000000' }}
-          >
-            Write a Review
-            <RateReviewIcon color="icon" sx={{ height: '20px' }} />
-          </Button>
+          <WriteReview />
           <Box
             sx={{
               display: 'flex',
@@ -435,6 +431,7 @@ const SinglePostPage = () => {
                     <Typography variant="body1" color="initial">
                       {review.content}
                     </Typography>
+
                     <Grid container justifyContent="space-between" mt={2}>
                       <Grid item>
                         <Stack direction="row">
@@ -444,7 +441,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={calculateSingleRating(review)}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -456,7 +454,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={review.difficultyRating}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -468,7 +467,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={review.contentRating}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -480,7 +480,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={review.qualityRating}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
