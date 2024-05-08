@@ -12,6 +12,7 @@ import {
   LinearProgress,
   Stack,
   Grid,
+  Container,
 } from '@mui/material';
 import React, { useContext } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -32,9 +33,12 @@ const UserProfilePage = () => {
   console.log(user);
 
   return (
-    <Box
+    <Container
+      component="main"
+      maxWidth="md"
       sx={{
-        m: "50px 20px",
+        my: "50px",
+        width: "90%",
         bgcolor: 'primary.main',
         height: '100%',
         borderRadius: 5,
@@ -59,7 +63,7 @@ const UserProfilePage = () => {
         }}
       >
         <Grid container spacing={3}>
-          <Grid item xs={12} sx={{ width: '100vw', mx: '10px' }}>
+          <Grid item xs={12}>
             <Card
               sx={{
                 pl: '10px',
@@ -120,8 +124,8 @@ const UserProfilePage = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} sx={{ width: '100vw' }}>
-          <Card sx={{ mt: 5, borderRadius: 4, mx: '60px' }}>
+        <Grid item xs={12} sx={{ width: '100%' }}>
+          <Card sx={{ mt: 5, borderRadius: 4 }}>
             <CardContent>
               <Typography variant="h6" color="initial">
                 About
@@ -134,8 +138,8 @@ const UserProfilePage = () => {
         </Grid>
 
         {!user.isVerified && (
-          <Grid item xs={12} sx={{ width: '100vw' }}>
-            <Card sx={{ mt: 5, borderRadius: 4, mx: '60px' }}>
+          <Grid item xs={12} sx={{ width: '100%' }}>
+            <Card sx={{ mt: 5, borderRadius: 4 }}>
               <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="h6" color="initial">
                   Resend email verification
@@ -165,8 +169,8 @@ const UserProfilePage = () => {
 
         {user.courses.length > 0 ? (
           user.courses.map((course) => (
-            <Grid item xs={12} sx={{ width: '100vw' }}>
-              <Card sx={{ borderRadius: 3, mt: 5, mx: '60px' }}>
+            <Grid item xs={12} sx={{ width: '100%' }}>
+              <Card sx={{ borderRadius: 3, mt: 5 }}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -187,11 +191,11 @@ const UserProfilePage = () => {
                     }}
                   >
                     <Typography
-                      variant="h5"
+                      variant="h6"
                       color="initial"
                       sx={{ fontWeight: 'bold' }}
                     >
-                      {course.courseName}
+                      {course.courseCode}
                     </Typography>
                     <Typography variant="body2" color="#78858F">
                       {course.lectures.length} Classes attended!
@@ -269,7 +273,7 @@ const UserProfilePage = () => {
           Edit profile
         </Button>
       </Box>
-    </Box>
+    </Container>
   );
 };
 
