@@ -4,9 +4,12 @@ export const addReview = async (courseId, reviewData) => {
     try {
         const review = await Course.findByIdAndUpdate(
             courseId,
-            { $push: { reviews: reviewData } }, // Use $push to add the new review to the reviews array
-            { new: true } // Set { new: true } to return the updated course document after the update
+            { $push: { reviews: reviewData } },
+            { new: true }
         );
+        if (!review) {
+            throw new Error(`Course with ID ${courseId} not found`);
+        }
         return review;
     } catch (error) {
         console.error(error);
