@@ -62,7 +62,14 @@ const SinglePostPage = () => {
     setAiInProgress(false);
   };
 
-  
+  const toggleLike = async(reviewId,varCourseId) =>{
+    const response = await postRequest(`${API_URL}/toggle-like`,
+      {
+        reviewId: reviewId,
+        courseId: varCourseId
+      }
+    )
+  }
 
   const calculateOverallRating = (course) => {
     if (!course || !course.reviews || course.reviews.length === 0) {
@@ -552,6 +559,7 @@ const SinglePostPage = () => {
                               <FavoriteBorderIcon 
                               onClick={()=>{
                                 console.log("fuck")
+                                toggleLike(review._id, courseId)
                               }}
                               sx={{ color: 'heart.main', cursor: "pointer" }} />
                               <Typography variant="body1" color="initial">
