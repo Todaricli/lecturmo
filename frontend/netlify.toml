@@ -1,0 +1,6 @@
+[[redirects]]
+  from = "/src/*.jsx"
+  to = "/src/:splat"
+  status = 200
+  force = true
+  headers = {Content-Type = "application/javascript"}
