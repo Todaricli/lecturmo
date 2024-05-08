@@ -1,14 +1,15 @@
 import express from 'express';
 import passport from 'passport';
 import { authenticate } from '../../../middleware/authMW.js';
+import signature from 'cookie-signature';
 
 const router = express.Router();
-
+const SECRET_KEY = process.env.COOKIE_SECRET_KEY ?? '39608663';
 // expects username and password
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     // manually set cookie cuz passport doesn't do it -_-
-    res.cookie('connect.sid', 's:' + signature.sign(req.sessionID, 'MY_SECRET'));
+    res.cookie('connect.sid', 's:' + signature.sign(req.sessionID, SECRET_KEY));
     // err only happens for outside of auth issues
     if (err) {
       const status = err.status || 500;
