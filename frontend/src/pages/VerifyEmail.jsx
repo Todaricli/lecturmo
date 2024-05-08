@@ -5,6 +5,8 @@ import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContextProvider';
 import Loading from '../components/Loading';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const VerifyEmail = () => {
   const { user, fetchUserDetails } = useContext(AuthContext);
 
@@ -23,7 +25,7 @@ const VerifyEmail = () => {
 
         if (emailToken) {
           await axios
-            .post(`http://localhost:3000/api/auth/verify-email-token`, {
+            .post(`${BASE_URL}/auth/verify-email-token`, {
               emailToken,
             })
             .then(async (response) => {

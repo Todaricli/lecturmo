@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const AddNewLecture = ({ lectureId, courseList }) => {
   const [lectureName, setLectureName] = useState('');
   const [selectedLecture, setSelectedLecture] = useState('');
 
   const getClasses = async () => {
     console.log('asd');
-    await axios.get(`http://localhost:3000/api/lecture-list`).then((res) => {
+    await axios.get(`${BASE_URL}/lecture-list`).then((res) => {
       console.log(res);
     });
   };
