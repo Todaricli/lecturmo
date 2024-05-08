@@ -68,9 +68,9 @@ export async function startExpress() {
       }), //session is now stored in db
       cookie: {
         maxAge: 60 * 60 * 1000, // 1 hour
-        // httpOnly: true,
-        // secure: true,
-        sameSite: 'None'
+        httpOnly: false,
+        secure: false,
+        sameSite: 'Lax'
       },
     })
   );
