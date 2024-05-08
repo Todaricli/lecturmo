@@ -431,6 +431,7 @@ const SinglePostPage = () => {
                     <Typography variant="body1" color="initial">
                       {review.content}
                     </Typography>
+
                     <Grid container justifyContent="space-between" mt={2}>
                       <Grid item>
                         <Stack direction="row">
@@ -440,7 +441,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={calculateSingleRating(review)}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -452,7 +454,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={review.difficultyRating}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -464,7 +467,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={review.contentRating}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
@@ -476,7 +480,8 @@ const SinglePostPage = () => {
                           <Rating
                             size="small"
                             value={review.qualityRating}
-                            precision={0.5}
+                            precision={1}
+                            readOnly
                           />
                         </Stack>
                       </Grid>
