@@ -15,7 +15,7 @@ import {
     Typography,
     IconButton,
 } from '@mui/material';
-import { addReview } from '../../src/services/review/reviewAPIFetch.js'
+import { addReview } from '../services/review/reviewAPIFetch.js'
 
 export default function WriteReview() {
     const location = useLocation();
