@@ -23,8 +23,9 @@ const MONGODB_CONNECTION_STRING =
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
-      /^https?:\/\/localhost(:\d+)?$/, // Allows localhost with any port
+      /^https?:\/\/localhost(:\d+)?$/,
       /^https:\/\/lecturmon\.onrender\.com(\/.*)?$/,
+      /^https:\/\/lecturmo(?:n)?\.netlify\.app(\/.*)?$/,
     ];
 
     const originIsAllowed = allowedOrigins.some(allowedOrigin => {
