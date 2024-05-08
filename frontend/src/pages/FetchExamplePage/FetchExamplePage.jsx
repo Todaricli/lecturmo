@@ -116,39 +116,3 @@ const ReactQueryExamplePage = () => {
 };
 
 export default ReactQueryExamplePage;
-
-// // fetch example with outside api CANNOT USE BECAUSE CANNOT ADJUST THE CORS POLICY HERE, if you want to test, comment out the axios.defaults above
-// const { isPending: idPendingDog, isError: isErrDog, data: dogData, error: dogError } = useQuery({
-//   queryKey: ['dog'],
-//   queryFn: async () => {
-//     // const res = await axios.get("https://dog.ceo/api/breeds/image/random")
-//     // return res.data
-//     return 1
-//   }
-// })
-
-// tan query login example, with fetch status dependant on the current user
-
-// const { status: loginStatus, data: loginRes, refetch: postLogin } = useQuery({
-//   queryKey: ['postLogin'],
-//   queryFn: async () => {
-//     const res = await axios.post('http://localhost:3000/api/auth/login', {
-//       username: 'user2',
-//       password: '123'
-//     });
-//     return res.data
-//   },
-//   enabled: false, // Initially, the query is disabled
-// })
-
-// const loggedIn = loginRes?.message
-
-// const { data: userInfo } = useQuery({
-//   queryKey: ['getLoginUser'],
-//   queryFn: async () => {
-//     const res = await axios.get('http://localhost:3000/api/auth/status');
-//     console.log("res:", res)
-//     return res.data
-//   },
-//   enabled: !!loggedIn, // will only run if loggedIn exists
-// })

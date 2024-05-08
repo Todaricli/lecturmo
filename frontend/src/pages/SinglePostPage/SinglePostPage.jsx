@@ -23,7 +23,7 @@ import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { postRequest } from '../../services/postRequest';
 
-const API_URL = import.meta.env.VITE_EXPRESS_APP_ENDPOINT_API_URL ?? '';
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
 const SinglePostPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -176,7 +176,7 @@ const SinglePostPage = () => {
       const fetchData = async () => {
         try {
           const response = await axios
-            .get(`http://localhost:3000/api/courses/${courseId}`)
+            .get(`${BASE_URL}/courses/${courseId}`)
             .then((res) => {
               console.log('single course: ', res.data.reviews);
               setCourse(res.data);
