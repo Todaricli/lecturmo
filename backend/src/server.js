@@ -19,9 +19,6 @@ const MONGODB_CONNECTION_STRING =
   process.env.MONGODB_CONNECTION_STRING ??
   'mongodb://localhost:27017/lecturmon';
 
-// Determine if the environment is production
-const isProduction = process.env.NODE_ENV === 'production';
-
 // CORS options
 const corsOptions = {
   origin: function (origin, callback) {
@@ -71,10 +68,10 @@ export async function startExpress() {
       }), //session is now stored in db
       cookie: {
         maxAge: 60 * 60 * 1000, // 1 hour
-        httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? 'None' : 'Lax',
-      }
+        httpOnly: false,
+        secure: false,
+        sameSite: 'None'
+      },
     })
   );
 
