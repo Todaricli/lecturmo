@@ -22,14 +22,26 @@ const MONGODB_CONNECTION_STRING =
 // CORS options
 const corsOptions = {
   origin: function (origin, callback) {
-    // Check if the incoming origin is from localhost on any port
-    if (!origin || /^https?:\/\/localhost(:\d+)?$/.test(origin)) {
-      callback(null, true);
+    const allowedOrigins = [
+      /^https?:\/\/localhost(:\d+)?$/, // Allows localhost with any port
+      'https://lecturmon.onrender.com'
+    ];
+
+    const originIsAllowed = allowedOrigins.some(allowedOrigin => {
+      if (typeof allowedOrigin === 'string') {
+        return origin === allowedOrigin;
+      } else {
+        return allowedOrigin.test(origin);
+      }
+    });
+
+    if (!origin || originIsAllowed) {
+      callback(null, true); // Allow the request if no origin or if it's from an allowed origin
     } else {
       callback(new Error('Not allowed by CORS'), false);
     }
   },
-  credentials: true,
+  credentials: true, 
 };
 
 // Creates the express server
