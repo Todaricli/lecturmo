@@ -84,6 +84,17 @@ router.post('/register', async (req, res) => {
     return res.status(403).json({ message: 'Please provide valid email.' });
 
   try {
+    if (verifyEmail) {
+      // send email verification
+      const response = await sendVerifyUniEmail(
+        { username: username, emailToken: emailToken },
+        email,
+      );
+      if (response.status === 'error') {
+        return res.status(403).json({ message: response.message });
+      }
+    }
+
     const user = await registerUser({
       username,
       email,
@@ -95,13 +106,7 @@ router.post('/register', async (req, res) => {
       verifyEmail,
       emailToken,
     });
-    if (verifyEmail) {
-      // send email verification
-      sendVerifyUniEmail(
-        { username: username, emailToken: user.emailToken },
-        email,
-      );
-    }
+
     res.status(200).json(user);
   } catch (e) {
     console.log(e.message);

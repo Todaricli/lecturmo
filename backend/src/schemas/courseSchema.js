@@ -33,7 +33,6 @@ const courseSchema = new Schema(
 
     lectures: [
       {
-        // lectureId: {type: String, unique:true, },
         lectureName: { type: String },
         attendence: { type: Number, default: 0 },
         date: { type: String },

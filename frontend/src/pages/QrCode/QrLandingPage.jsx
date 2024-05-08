@@ -4,6 +4,8 @@ import axios from 'axios';
 import VerificationSuccess from '../ScanVerificationPage/VerificationSuccessPage.jsx';
 import VerificationError from '../ScanVerificationPage/VerificationErrorPage.jsx';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const QrLandingPage = () => {
   const [params, setParams] = useSearchParams();
   const [date, setDate] = useState(undefined);
@@ -21,12 +23,12 @@ const QrLandingPage = () => {
     if (date && course) {
       const response = await axios
         .post(
-          `http://localhost:3000/api/qr-code`,
+          `${BASE_URL}/qr-code`,
           {
             date: date,
             courseId: course,
             lecture: lecture,
-            courseName: courseName
+            courseName: courseName,
           },
           {
             headers: {
@@ -61,7 +63,7 @@ const QrLandingPage = () => {
 
   async function getStatus() {
     const response = await axios
-      .get('http://localhost:3000/api/status')
+      .get(`${BASE_URL}/status`)
       .then((res) => {
         if (res.status == 200) {
           setUser(res);
@@ -85,7 +87,7 @@ const QrLandingPage = () => {
     setDate(params.get('date'));
     setCourse(params.get('course'));
     setLecture(params.get('lecture'));
-    setCourseName(params.get('courseName'))
+    setCourseName(params.get('courseName'));
   }, []);
 
   useEffect(() => {

@@ -14,9 +14,11 @@ import React, { useEffect } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { useTheme } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPosts = ({ posts }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const calculateOverallRating = (post) => {
     if (!post || !post.reviews || post.reviews.length === 0) {
@@ -62,9 +64,14 @@ const LandingPosts = ({ posts }) => {
               <Box
                 key={index}
                 sx={{
+                  cursor: 'pointer',
                   marginTop: '15px',
                   width: '400px',
                   boxShadow: theme.shadows[1],
+                }}
+                onClick={() => {
+                  navigate(`/courses?courseId=${post._id}`);
+                  console.log(post);
                 }}
               >
                 <Card

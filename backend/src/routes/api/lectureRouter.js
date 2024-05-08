@@ -60,4 +60,20 @@ LectureRouter.get('/lecture-list', async (req, res) => {
   }
 });
 
+LectureRouter.post('/delete-lecture', async (req, res) => {
+  const courseId = req.body.courseId;
+  const lectureId = req.body.lectureId;
+
+  try {
+    const res = Course.updateOne(
+      { _id: courseId },
+      { $pull: { lectures: { _id: lectureId } } },
+    ).exec();
+  } catch (error) {
+    res.json({ errorMessage: error, success: false });
+  }
+
+  res.json({ success: true });
+});
+
 export default LectureRouter;

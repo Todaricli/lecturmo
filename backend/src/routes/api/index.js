@@ -20,6 +20,6 @@ router.use('/', SearchRouter);
 router.use('/', userProfileRoutes);
 router.use('/lecturai', lecturAi);
 router.use('/', SinglePageRouters);
-router.use('/', statsUserRouter);;
+router.use('/', statsUserRouter);
 
 export default router;

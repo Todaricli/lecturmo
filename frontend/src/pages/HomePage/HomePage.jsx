@@ -10,6 +10,9 @@ import { Box, IconButton } from '@mui/material';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
+import zIndex from '@mui/material/styles/zIndex';
+
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
 const HomePage = () => {
   const theme = useTheme();
@@ -31,7 +34,7 @@ const HomePage = () => {
       console.log('hello');
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/landing-posts'
+          `${BASE_URL}/landing-posts`
         );
         console.log('data', response.data);
 
