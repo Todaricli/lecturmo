@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import StarIcon from '@mui/icons-material/Star';
@@ -13,15 +13,9 @@ import {
     Grid,
     Box,
     Typography,
-    Container,
-    InputAdornment,
     IconButton,
-    OutlinedInput,
-    InputLabel,
-    FormControl,
-    MenuItem,
-    Select,
 } from '@mui/material';
+import { addReview } from '../../src/services/review/reviewAPIFetch.js'
 
 export default function WriteReview() {
     const location = useLocation();
@@ -54,8 +48,21 @@ export default function WriteReview() {
         review: '',
     });
 
+    const calculateOverall = (formData) => {
+        if (!formData.difficulty || !formData.content || !formData.quality) {
+            return 0;
+          }
+
+        formData.overall = Math.round((formData.difficulty + formData.content + formData.quality) / 3);
+    
+        return formData.overall;
+      };
+
     const handleClick = (event) => {
         setBackdropOpen(true);
+        setDifficulty(0);
+        setContent(0);
+        setQuality(0);
         setFormData({
             overall: '',
             difficulty: '',
@@ -258,7 +265,6 @@ export default function WriteReview() {
                         </Grid>
                     </Grid>
                 </Box>
-
             </Backdrop>
         </div >
     );
