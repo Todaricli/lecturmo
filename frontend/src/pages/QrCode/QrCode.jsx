@@ -1,9 +1,11 @@
 import { Container, Typography, Box, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const QrCode = () => {
+
+  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams();
   const [qrCode, setQrCode] = useState('');
   const [currentTime, setCurrentTime] = useState('');
@@ -11,6 +13,20 @@ const QrCode = () => {
   const courseId = searchParams.get('course');
   const lecture = searchParams.get('lecture');
   const courseCode = searchParams.get('courseCode')
+
+  if (!courseId || !lecture) {
+    return (<>
+      <div style={{backgroundColor: "white"}}>
+        <h1 style={{
+          color: "black",
+          scale: "500px"
+        }}>
+          Error generating QR code
+        </h1>
+        <button onClick={()=>{navigate(-1)}}>Go Back</button>
+      </div>
+    </>)
+  }
 
   const getServerTime = async () => {
     const time = await fetch(

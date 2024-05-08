@@ -37,8 +37,11 @@ const LecturerPage = () => {
   }
 
   useEffect(() => {
-    console.log("user:", user)
-  }, [user])
+    console.log(user)
+    if(user.roles != "lecturer"){
+      navigate('/')
+    }
+  },[])
 
   const navigate = useNavigate();
 
@@ -341,6 +344,10 @@ const LecturerPage = () => {
                     color: '#000000',
                   },
                 }}
+                disabled={
+                  selectedLectureId === null ||
+                  selectedCourseId === null ? true : false
+                }
               >
                 Create QR code
               </Button>
