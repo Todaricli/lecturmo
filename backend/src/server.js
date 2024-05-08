@@ -24,7 +24,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
       /^https?:\/\/localhost(:\d+)?$/, // Allows localhost with any port
-      /^https:\/\/lecturmon\.onrender\.com(\/.*)?$/
+      /^https:\/\/lecturmon\.onrender\.com(\/.*)?$/,
     ];
 
     const originIsAllowed = allowedOrigins.some(allowedOrigin => {
@@ -41,6 +41,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'), false);
     }
   },
+  optionsSuccessStatus: 200,
   credentials: true, 
 };
 
