@@ -19,10 +19,9 @@ router.post('/update-user', async (req, res) => {
     lastName,
     gender,
     avatarURL,
-    verifyEmail,
-    emailToken,
     description,
     currentPassword,
+    dateOfBirth,
   } = req.body;
 
   // Validate current password
@@ -39,10 +38,10 @@ router.post('/update-user', async (req, res) => {
   const updateData = {};
   if (
     username &&
-    (username === req.user.username || (await checkUsername(username)))
+    (username !== req.user.username || (await checkUsername(username)))
   )
     updateData.username = username;
-  if (email && (email === req.user.email || (await checkEmail(email))))
+  if (email && (email !== req.user.email || (await checkEmail(email))))
     updateData.email = email;
   if (password && checkPasswordsMatch(password, confirmPassword)) {
     console.log('password:', password);
@@ -53,6 +52,7 @@ router.post('/update-user', async (req, res) => {
   if (description) updateData.profileDescription = description;
   if (gender) updateData.gender = gender;
   if (avatarURL) updateData.avatarPicture = avatarURL;
+  if (dateOfBirth) updateData.dob = dateOfBirth;
 
   try {
     const user = await updateUser(req.user._id, updateData);

@@ -20,13 +20,12 @@ router.post('/register/check-username', async (req, res) => {
 });
 
 router.post('/register/check-email', async (req, res) => {
-  console.log('req.body:', req.body);
   const { email, verifyEmail } = req.body;
-  console.log('req.body:', req.body);
   if (await checkEmail(email))
     return res.status(403).json({ message: 'Email already exists' });
   else if (verifyEmail) {
-    if (!isValidUOAEmail(email)) {
+    if (!isValidUOAEmail(email) && verifyEmail) {
+      console.log("verifyEmail:", verifyEmail)
       return res.status(403).json({
         message: 'Please provide valid University of Auckland email.',
       });
