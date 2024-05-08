@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useLocation } from 'react-router-dom';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,6 +24,10 @@ import {
 } from '@mui/material';
 
 export default function WriteReview() {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const courseId = queryParams.get('courseId');
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [BackdropOpen, setBackdropOpen] = React.useState(false);
 
@@ -41,33 +46,48 @@ export default function WriteReview() {
     const [quality, setQuality] = React.useState(0);
     const [qualityHover, setQualityHover] = React.useState(-1);
 
+    const [formData, setFormData] = useState({
+        overall: '',
+        difficulty: '',
+        content: '',
+        quality: '',
+        review: '',
+    });
+
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
         setBackdropOpen(true);
+        setFormData({
+            overall: '',
+            difficulty: '',
+            content: '',
+            quality: '',
+            review: '',
+        });
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleClose = (event) => {
         setBackdropOpen(false);
-        setOverall(null);
-        setDifficulty(null);
-        setContent(null);
-        setQuality(null);
+        setDifficulty(0);
+        setContent(0);
+        setQuality(0);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const body = {
-            username: username,
-            password: password,
-        };
-        const res = await loginUser(JSON.stringify(body));
-        if (res && res.error) {
-            setError(res.message);
-        } else {
-            setError('');
-            navigate('/');
+        try {
+            const res = await addReview(courseId, formData);
+            console.log(res); // Log the response from the backend API
+        } catch (error) {
+            console.error('Error adding review:', error);
         }
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value, // Update the value for the corresponding field
+        }));
     };
 
     return (
@@ -82,185 +102,163 @@ export default function WriteReview() {
                 <RateReviewIcon color="icon" sx={{ height: '20px' }} />
             </Button>
             <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={BackdropOpen} // Changed BackdropOpen to open
+                onClose={handleClose}
             >
-                <Popover
-                    id={id}
-                    open={popoverOpen} // Changed popoverOpen to open
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left"
-                    }}
-                    PaperProps={{
-                        style: {
-                            backgroundColor: "transparent",
-                            boxShadow: "none",
-                            borderRadius: 0
-                        }
-                    }}
-                >
-                    {/* <Box
-                    sx={{
-                        position: "relative",
-                        mt: "10px",
-                        "&::before": {
-                            backgroundColor: "white",
-                            content: '""',
-                            display: "block",
-                            position: "absolute",
-                            width: 12,
-                            height: 12,
-                            top: -6,
-                            transform: "rotate(45deg)",
-                            left: "calc(50% - 6px)"
-                        }
-                    }}
-                /> */}
-                    <Box sx={{ p: 2, bgcolor: '#FFF3F3', mt: 1, width: '700px', borderRadius: 8 }} component="form"
-                        onSubmit={handleSubmit}
-                        noValidate>
-                        <Grid container spacing={2} sx={{ ml: 2,}}>
-                            <Grid item xs={10} sm={6}>
-                                <Box sx={{
-                                    width: 250,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}>
-                                    <Typography component="legend">Overall:</Typography>
-                                    <Rating
-                                        name="hover-feedback"
-                                        overall={overall}
-                                        precision={1}
-                                        getOverallLabelText={getOverallLabelText}
-                                        onChange={(event, newOverall) => {
-                                            setOverall(newOverall);
-                                        }}
-                                        onChangeActive={(event, newOverallHover) => {
-                                            setOverallHover(newOverallHover);
-                                        }}
-                                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                                    />
-                                    {overall !== null && (
-                                        <Box sx={{ ml: 2 }}>{overalllabels[overallHover !== -1 ? overallHover : overall]}</Box>
-                                    )}
-                                </Box>
-                            </Grid>
-                            <Grid item xs={10} sm={6}>
-                                <Box sx={{
-                                    width: 250,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}>
-                                    <Typography component="legend">Difficulty:</Typography>
-                                    <Rating
-                                        name="hover-feedback"
-                                        difficulty={difficulty}
-                                        precision={1}
-                                        getDifficultyLabelText={getDifficultyLabelText}
-                                        onChange={(event, newDifficulty) => {
-                                            setDifficulty(newDifficulty);
-                                        }}
-                                        onChangeActive={(event, newDifficultyHover) => {
-                                            setDifficultyHover(newDifficultyHover);
-                                        }}
-                                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                                    />
-                                    {difficulty !== null && (
-                                        <Box sx={{ ml: 2 }}>{difficultylabels[difficultyHover !== -1 ? difficultyHover : difficulty]}</Box>
-                                    )}
-                                </Box>
-                            </Grid>
-                            <Grid item xs={10} sm={6}>
-                                <Box sx={{
-                                    width: 250,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}>
-                                    <Typography component="legend">Content:</Typography>
-                                    <Rating
-                                        name="hover-feedback"
-                                        content={content}
-                                        precision={1}
-                                        getContentLabelText={getContentLabelText}
-                                        onChange={(event, newContent) => {
-                                            setContent(newContent);
-                                        }}
-                                        onChangeActive={(event, newContentHover) => {
-                                            setContentHover(newContentHover);
-                                        }}
-                                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                                    />
-                                    {content !== null && (
-                                        <Box sx={{ ml: 2 }}>{contentlabels[contentHover !== -1 ? contentHover : content]}</Box>
-                                    )}
-                                </Box>
-                            </Grid>
-                            <Grid item xs={10} sm={6}>
-                                <Box sx={{
-                                    width: 250,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}>
-                                    <Typography component="legend">Quality:</Typography>
-                                    <Rating
-                                        name="hover-feedback"
-                                        quality={quality}
-                                        precision={1}
-                                        getQualityLabelText={getQualityLabelText}
-                                        onChange={(event, newQuality) => {
-                                            setQuality(newQuality);
-                                        }}
-                                        onChangeActive={(event, newQualityHover) => {
-                                            setQualityHover(newQualityHover);
-                                        }}
-                                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                                    />
-                                    {quality !== null && (
-                                        <Box sx={{ ml: 2 }}>{qualitylabels[qualityHover !== -1 ? qualityHover : quality]}</Box>
-                                    )}
-                                </Box>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    label="Write a Review"
-                                    multiline
-                                    rows={5}
-                                    sx={{ width: '600px' }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    sx={{
-                                        mb: 3,
-                                        borderRadius: 2,
-                                        bgcolor: 'rgb(255,207,96)',
-                                        color: '#808080',
-                                        '&:hover': {
-                                            bgcolor: 'rgb(255,199,71)',
-                                            color: '#382e7f',
-                                        },
+                <Box sx={{ p: 2, bgcolor: 'white', mt: 1, width: '700px', borderRadius: 8, height: '320px' }} component="form"
+                    onSubmit={handleSubmit}
+                    noValidate>
+                    <Grid container spacing={2} sx={{ ml: 2, }}>
+                        <Grid item xs={10} sm={6}>
+                            <Box sx={{
+                                width: 250,
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}>
+                                <Typography component="legend">Difficulty:</Typography>
+                                <Rating
+                                    size="small"
+                                    name="hover-feedback"
+                                    difficulty={difficulty}
+                                    precision={1}
+                                    getDifficultyLabelText={getDifficultyLabelText}
+                                    onChange={(event, newDifficulty) => {
+                                        setFormData(({ ...formData, difficulty: newDifficulty }));
+                                        setDifficulty(newDifficulty);
                                     }}
-                                    onClick={handleClose}
-                                >
-                                    Done!
-                                </Button>
-                                <Tooltip title="Delete" >
-                                    <IconButton sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={handleClose}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Grid>
+                                    onChangeActive={(event, newDifficultyHover) => {
+                                        setDifficultyHover(newDifficultyHover);
+                                    }}
+                                />
+                                {difficulty !== null && difficulty !== 0 && (
+                                    <Box sx={{ ml: 2 }}>{difficultylabels[difficultyHover !== -1 ? difficultyHover : difficulty]}</Box>
+                                )}
+                            </Box>
                         </Grid>
+                        <Grid item xs={10} sm={6}>
+                            <Box sx={{
+                                width: 250,
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}>
+                                <Typography component="legend">Content:</Typography>
+                                <Rating
+                                    size="small"
+                                    name="hover-feedback"
+                                    content={content}
+                                    precision={1}
+                                    getContentLabelText={getContentLabelText}
+                                    onChange={(event, newContent) => {
+                                        setFormData(({ ...formData, content: newContent }));
+                                        setContent(newContent);
+                                    }}
+                                    onChangeActive={(event, newContentHover) => {
+                                        setContentHover(newContentHover);
+                                    }}
+                                />
+                                {content !== null && content !== 0 && (
+                                    <Box sx={{ ml: 2 }}>{contentlabels[contentHover !== -1 ? contentHover : content]}</Box>
+                                )}
+                            </Box>
+                        </Grid>
+                        <Grid item xs={10} sm={6}>
+                            <Box sx={{
+                                width: 250,
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}>
+                                <Typography component="legend">Quality:</Typography>
+                                <Rating
+                                    size="small"
+                                    name="hover-feedback"
+                                    quality={quality}
+                                    precision={1}
+                                    getQualityLabelText={getQualityLabelText}
+                                    onChange={(event, newQuality) => {
+                                        setFormData(({ ...formData, quality: newQuality }));
+                                        setQuality(newQuality);
+                                    }}
+                                    onChangeActive={(event, newQualityHover) => {
+                                        setQualityHover(newQualityHover);
+                                    }}
+                                />
+                                {quality !== null && quality !== 0 && (
+                                    <Box sx={{ ml: 2 }}>{qualitylabels[qualityHover !== -1 ? qualityHover : quality]}</Box>
+                                )}
+                            </Box>
+                        </Grid>
+                        <Grid item xs={10} sm={6}>
+                            <Box sx={{
+                                width: 250,
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}>
+                                <Typography component="legend" >Overall:</Typography>
+                                <Rating
+                                    size="small"
+                                    value={calculateOverall(formData)}
+                                    precision={1}
+                                    readOnly
+                                    onChange={() => setOverall(calculateOverall(formData))}
+                                />
+                                <Box sx={{ ml: 2 }}>{overalllabels[calculateOverall(formData)]}</Box>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Write a Review"
+                                multiline
+                                rows={5}
+                                sx={{ width: '600px' }}
+                                name="review" // Set the name attribute to identify the field in the event
+                                value={formData.review}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                sx={{
+                                    mb: 3,
+                                    borderRadius: 2,
+                                    bgcolor: 'rgb(255,207,96)',
+                                    color: '#808080',
+                                    '&:hover': {
+                                        bgcolor: 'rgb(255,199,71)',
+                                        color: '#382e7f',
+                                    },
+                                }}
+                                disabled={
+                                    formData.overall == '' || formData.overall == 0 ||
+                                    formData.review == ''
+                                }
+                                onClick={handleClose}
+                            >
+                                Done!
+                            </Button>
+                            <Tooltip title="Delete" slotProps={{
+                                popper: {
+                                    modifiers: [
+                                        {
+                                            name: 'offset',
+                                            options: {
+                                                offset: [0, -14],
+                                            },
+                                        },
+                                    ],
+                                },
+                            }}>
+                                <IconButton sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={handleClose}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
+                </Box>
 
-
-                    </Box>
-                </Popover>
             </Backdrop>
         </div >
     );
@@ -313,3 +311,4 @@ const overalllabels = {
     4: 'Great',
     5: 'Excellent',
 };
+
