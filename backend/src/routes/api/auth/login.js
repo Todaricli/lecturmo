@@ -26,8 +26,6 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/status', authenticate, (req, res) => {
-  console.log('req.session:', req.session);
-  console.log('req.user:', req.user);
   return req.user ? res.send(req.user) : res.sendStatus(401);
 });
 
