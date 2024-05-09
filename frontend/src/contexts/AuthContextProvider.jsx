@@ -3,10 +3,9 @@ import { createContext, useCallback, useState } from 'react';
 import { getRequest } from '../services/getRequest';
 import { postRequest } from '../services/postRequest';
 
-export const AuthContext = createContext();
-const BASE_URL =
-  import.meta.env.EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
+export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loginUserError, setLoginUserError] = useState(null);

@@ -30,6 +30,7 @@ import {
   checkPasswordsMatch,
   registerUser,
 } from '../../services/auth/registerAPIFetch';
+import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 
 export default function RegisterPage() {
   const [registerError, setRegisterError] = useState('');
@@ -119,7 +120,7 @@ export default function RegisterPage() {
         });
         setEmailError(res && res.error && value.length > 0 ? res.message : '');
       }
-    }, 0);
+    }, 500);
   };
 
   const handleRegisterSubmit = async (event) => {
@@ -158,13 +159,10 @@ export default function RegisterPage() {
       maxWidth="sm"
       sx={{
         marginTop: '50px',
+        width: {xs: "95%"},
         bgcolor: 'primary.main',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
+        borderRadius: 5,
         paddingBottom: 5,
-        marginBottom: '50px',
       }}
     >
       <IconButton

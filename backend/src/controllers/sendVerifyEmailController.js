@@ -6,10 +6,25 @@ export async function sendVerifyUniEmail(user, email) {
   const emailStr = email.toString();
   const atTheRate = emailStr.indexOf('@');
 
-  if (!validStr === emailStr.substr(atTheRate))
-    throw new Error('Invalid University Email');
+  if (validStr !== emailStr.substr(atTheRate)) {
+    return {
+      status: 'error',
+      message: 'Invalid University Email',
+    };
+  }
 
-  sendVerificationMail(user, emailStr);
+  try {
+    await sendVerificationMail(user, emailStr);
+    return {
+      status: 'success',
+      message: 'Verification email sent successfully',
+    };
+  } catch (error) {
+    return {
+      status: 'error',
+      message: `Failed to send verification email: ${error.message}`,
+    };
+  }
 }
 
 export async function verifyEmailToken(emailToken) {

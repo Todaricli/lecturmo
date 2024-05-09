@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { css } from '@emotion/css';
 import { useMediaQuery } from 'react-responsive';
-
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 const VerificationSuccessPage = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define your mobile breakpoint here
 
@@ -50,12 +50,9 @@ const VerificationSuccessPage = () => {
   return (
     <div className={css(backgroundStyle)} data-testid="background-container">
       <div className={css(containerStyle)}>
-        <span className="material-icons" style={iconStyle} data-testid="error-icon">
-          check_circle
-        </span>
-
-        <p className={css(titleStyle)} data-testid="error-title">SUCCESS!</p>
-        <p className={css(contentStyle)} data-testid="error-content">
+      <CheckCircleOutlineIcon data-testid="error-icon"/>
+        <p className={css(titleStyle)}>SUCCESS!</p>
+        <p className={css(contentStyle)}>
           Congrats! You have attended the lecture!
         </p>
 

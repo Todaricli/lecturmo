@@ -12,7 +12,6 @@ import VerificationErrorPage from './pages/ScanVerificationPage/VerificationErro
 import UserProfilePage from './pages/ProfilePage/UserProfilePage';
 import EditProfilePage from './pages/ProfilePage/EditProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
-import FetchExamplePage from './pages/FetchExamplePage/FetchExamplePage';
 import StatsPage from './pages/ProfilePage/StatsPage';
 import LecturerPage from './pages/LecturerPage/LecturerPage';
 import SinglePostPage from './pages/SinglePostPage/SinglePostPage';
@@ -37,7 +36,6 @@ function App() {
         <Route path="qr-landing-page" element={<QrLandingPage />} />
         <Route path="success" element={<VerificationSuccessPage />} />
         <Route path="error" element={<VerificationErrorPage />} />
-        <Route path="fetchExample" element={<FetchExamplePage />} />
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="stats" element={<StatsPage />} />
         {/* <Route path="lecturer" element={<LecturerPage />} /> */}

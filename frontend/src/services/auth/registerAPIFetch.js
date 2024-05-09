@@ -1,8 +1,10 @@
 import { postRequest } from '../postRequest';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 export const checkIfUserExists = async (body) => {
   const res = await postRequest(
-    'http://localhost:3000/api/auth/register/check-username',
+    `${BASE_URL}/auth/register/check-username`,
     body
   );
   return res;
@@ -10,7 +12,7 @@ export const checkIfUserExists = async (body) => {
 
 export const checkEmailInput = async (body) => {
   const res = await postRequest(
-    'http://localhost:3000/api/auth/register/check-email',
+    `${BASE_URL}/auth/register/check-email`,
     body
   );
   return res;
@@ -37,8 +39,6 @@ export const checkPasswordInput = async (body) => {
 
 export const checkPasswordsMatch = async (body) => {
   const { password, confirmPassword } = body;
-  console.log('confirmPassword:', confirmPassword);
-  console.log('password:', password);
   const res = {};
   if (password === confirmPassword) {
     res.message = 'Passwords match.';
@@ -53,7 +53,7 @@ export const checkPasswordsMatch = async (body) => {
 
 export const registerUser = async (formData) => {
   const res = await postRequest(
-    'http://localhost:3000/api/auth/register',
+    `${BASE_URL}/auth/register`,
     formData
   );
   return res;

@@ -5,6 +5,8 @@ import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContextProvider';
 import Loading from '../components/Loading';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+
 const VerifyEmail = () => {
   const { user, fetchUserDetails } = useContext(AuthContext);
 
@@ -16,6 +18,7 @@ const VerifyEmail = () => {
 
   const emailToken = searchParams.get('emailToken');
 
+
   useEffect(() => {
     const process = async () => {
       try {
@@ -23,7 +26,7 @@ const VerifyEmail = () => {
 
         if (emailToken) {
           await axios
-            .post(`http://localhost:3000/api/auth/verify-email-token`, {
+            .post(`${BASE_URL}/auth/verify-email-token`, {
               emailToken,
             })
             .then(async (response) => {
@@ -31,7 +34,13 @@ const VerifyEmail = () => {
               setHasFetchedUserDetails(true);
               return response.data;
             })
-            .catch((e) => alert(e));
+            .catch((e) => {
+              console.log('error:', e)
+              alert(e.message);
+              navigate('/home', {
+                state: { message: 'Verfication Failed' },
+              });
+            });
         }
       } catch (err) {
         console.log('err:', err);

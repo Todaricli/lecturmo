@@ -11,6 +11,7 @@ import { theme } from './layouts/GlobalTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ToastContainer } from 'react-toastify';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <App />
-              {/* <ReactQueryDevtools /> */}
+              <ToastContainer position="bottom-right" autoClose={2000} />
             </ThemeProvider>
           </QueryClientProvider>
         </BrowserRouter>

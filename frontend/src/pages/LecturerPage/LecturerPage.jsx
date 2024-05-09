@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import {
   Container,
   Box,
-  Card,
-  CardMedia,
-  CardContent,
+  Modal,
   Typography,
   Button,
   Table,
@@ -14,6 +12,11 @@ import {
   TableRow,
   TableBody,
   TextField,
+  IconButton,
+  Stack,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import QrCode from '../QrCode/QrCode.jsx';
 import AddNewLecture from '../../components/AddNewLecture.jsx';
@@ -21,23 +24,115 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContextProvider.jsx';
+import Loading from '../../components/Loading.jsx';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ClearIcon from '@mui/icons-material/Clear';
+import AccessDenied from '../../components/AccessDenied.jsx';
+
+const BASE_URL =
+  import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ??
+  'http://localhost:3000/api';
 
 const LecturerPage = () => {
+  const { user } = useContext(AuthContext);
+  if (user === null) {
+    return <Loading />;
+  }
+
+  useEffect(() => {
+    console.log(user)
+    if (user.roles != "lecturer") {
+      navigate('/')
+    }
+  }, [])
+
   const navigate = useNavigate();
+
+  const [handleInitalLoad, setInitialLoad] = useState(true);
+
   const [coursesList, setCoursesList] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeQr, setActiveQr] = useState(false);
 
   const [selectedLectureId, setSelectedLectureId] = useState(null);
   const [selectedLectureName, setSelectedLectureName] = useState(null);
   const [selectedCourseId, setCourseId] = useState(null);
-  const [selectedCourseName, setSelectedCourseName] =
+  const [selectedCourseCode, setSelectedCourseCode] =
     useState('nothing selected');
   const [courses, setCourses] = useState();
   const [courseNo, setCourseNo] = useState();
   const [lectures, setLectures] = useState();
   const [newLectureTitle, setNewLectureTitle] = useState();
   const [lectureDate, setLectureDate] = useState();
+  const [openModal, setOpenModal] = useState(false);
+  const [createLectureCourse, setCreateLectureCourse] = useState();
+
+  const [changeSort, setChangeSort] = useState('dateDesc');
+
+  const sortLecturesByNameDesc = () => {
+    console.log('here');
+    const sortedCourses = courses.map((course) => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        const lectureNameA = a.lectureName.toLowerCase();
+        const lectureNameB = b.lectureName.toLowerCase();
+        return lectureNameA.localeCompare(lectureNameB);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    console.log('courses', sortedCourses);
+    setCourses(sortedCourses);
+  };
+
+  const sortLecturesByNameAsc = () => {
+    const sortedCourses = courses.map((course) => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        const lectureNameA = a.lectureName.toLowerCase();
+        const lectureNameB = b.lectureName.toLowerCase();
+        return lectureNameB.localeCompare(lectureNameA);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    setCourses(sortedCourses);
+  };
+
+  const sortLecturesByDateAsc = () => {
+    const sortedCourses = courses.map((course) => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    setCourses(sortedCourses);
+  };
+
+  const sortLecturesByDateDesc = () => {
+    const sortedCourses = courses.map((course) => {
+      const sortedLectures = [...course.lectures].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+      return { ...course, lectures: sortedLectures };
+    });
+    setCourses(sortedCourses);
+  };
+
+  const sortList = (sortStyle) => {
+    if (courses != undefined) {
+      if (sortStyle == 'dateAsc') {
+        sortLecturesByDateAsc();
+      } else if (sortStyle == 'dateDesc') {
+        console.log('datedesc');
+        sortLecturesByDateDesc();
+      } else if (sortStyle == 'titleAsc') {
+        console.log('titleasc');
+        console.log('skeet');
+        sortLecturesByNameAsc();
+      } else if (sortStyle == 'titleDesc') {
+        console.log('titledsc');
+        sortLecturesByNameDesc();
+      }
+    }
+  };
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -50,19 +145,49 @@ const LecturerPage = () => {
     return formattedDate;
   };
 
+  const deleteLecture = async (lectureIdToDelete, courseIdToDelete) => {
+    const response = await axios
+      .post(
+        `${BASE_URL}/delete-lecture`,
+        {
+          courseId: courseIdToDelete,
+          lectureId: lectureIdToDelete,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.success) {
+          toast.success('Lecture successfully deleted');
+          setCourseId(null);
+          setSelectedLectureName(null);
+          setSelectedLectureId(null);
+          setSelectedCourseCode('nothing selected');
+        } else {
+          toast.error('Error deleting lecture');
+        }
+        setIsLoading(!isLoading);
+      });
+  };
+
   const getClasses = async () => {
-    await axios.get(`http://localhost:3000/api/lecture-list`).then((res) => {
+    await axios.get(`${BASE_URL}/lecture-list`).then((res) => {
       console.log(res);
       setCourseNo(res.data.length);
       setCourses(res.data);
       setLectures(res.data.lectures);
+      setInitialLoad(false);
     });
   };
 
   const createLecture = async (courseId) => {
+    console.log('lec', lectureDate);
     await axios
       .post(
-        `http://localhost:3000/api/add-lecture`,
+        `${BASE_URL}/add-lecture`,
         {
           lectureName: newLectureTitle,
           courseId: courseId,
@@ -74,26 +199,45 @@ const LecturerPage = () => {
           },
         }
       )
-      .then(() => {});
+      .then((res) => {
+        setIsLoading(!isLoading);
+      });
+  };
+
+  const handleSubmitLecture = async (courseId) => {
+    try {
+      await createLecture(courseId);
+      toast.success('Lecture added successfully!');
+      setOpenModal(false);
+    } catch (error) {
+      console.error('Failed to add lecture:', error);
+      toast.error('Failed to add lecture. Please try again.');
+    }
   };
 
   console.log(courses);
 
   useEffect(() => {
-    setIsLoading(true);
+    sortList(changeSort);
+  }, [changeSort]);
+
+  useEffect(() => {
     getClasses();
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     if (coursesList != undefined) {
-      console.log('fuck');
       console.log(courseList);
     }
   }, [coursesList]);
 
   return (
     <>
-      {courses ? (
+      {handleInitalLoad ? (
+        <Loading />
+      ) : user === null || user.roles != 'lecturer' ? (
+        <AccessDenied />
+      ) : courses ? (
         <Container
           maxWidth="lg"
           sx={{
@@ -104,7 +248,7 @@ const LecturerPage = () => {
             mt: 10,
           }}
         >
-          <Card
+          <Box
             sx={{
               bgcolor: 'primary.main',
               height: '250px',
@@ -114,51 +258,47 @@ const LecturerPage = () => {
               alignItems: 'center',
             }}
           >
-            <CardMedia
-              title="lecturer img"
-              image="/assets/dog.jpg"
+            <Box
               component="img"
+              src={user.avatarPicture}
               sx={{ width: 180, height: '200px', borderRadius: 4 }}
             />
-            <CardContent>
+            <Box ml="10px">
               <Typography variant="h6" color="initial">
-                Hi {'test'}
+                Hi, {user.fname} {user.lname}
               </Typography>
               <Typography variant="body1" color="initial">
-                You are teaching {courseNo} classes this semester.
+                You are teaching{' '}
+                <span style={{ fontWeight: 'bold' }}>
+                  {courseNo} {courseNo <= 1 ? 'class' : 'classes'} {''}
+                </span>
+                at the moment.
               </Typography>
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
           <Box
             sx={{
               bgcolor: 'secondary.main',
-              height: '100vh',
+              height: '100%',
               width: '100vw',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <Typography
-              variant="h4"
-              color="background.default"
-              sx={{ fontWeight: 'bold', mt: 5, mb: 3 }}
-            >
-              Classes Taking
-            </Typography>
             <Box
               sx={{
                 bgcolor: 'light.main',
-                width: '300px',
-                height: '350px',
+                maxWidth: '100%',
+                height: '200px',
                 borderRadius: 5,
                 display: 'flex',
                 justifyContent: 'center',
-
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '10px',
-                mb: 3,
+                m: 2,
+                p: 2,
               }}
             >
               <Typography
@@ -166,7 +306,7 @@ const LecturerPage = () => {
                 color="initial"
                 sx={{ fontWeight: 'bold' }}
               >
-                {selectedCourseName}
+                {selectedCourseCode}
               </Typography>
 
               <Typography
@@ -181,7 +321,7 @@ const LecturerPage = () => {
                 color="primary"
                 onClick={() => {
                   window.open(
-                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}`,
+                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseCode=${encodeURI(selectedCourseCode)}`,
                     '_blank'
                   );
                 }}
@@ -194,25 +334,66 @@ const LecturerPage = () => {
                     color: '#000000',
                   },
                 }}
+                disabled={
+                  selectedLectureId === null || selectedCourseId === null
+                    ? true
+                    : false
+                }
               >
-                create QR code
+                Create QR code
               </Button>
             </Box>
-
+            <Box sx={{ bgcolor: 'primary.main' }}>
+              <Box
+                mt={5}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  width: '100%',
+                }}
+              >
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="h6" color="light.main">
+                    Sort:
+                  </Typography>
+                  <FormControl sx={{ width: 250 }}>
+                    <Select
+                      labelId="post-select"
+                      id="post-select"
+                      value={changeSort}
+                      onChange={(e) => {
+                        setChangeSort(e.target.value);
+                        console.log(changeSort);
+                      }}
+                      sx={{
+                        borderRadius: 5,
+                        bgcolor: 'light.main',
+                        height: '40px',
+                      }}
+                    >
+                      <MenuItem value={'dateDesc'}>Latest</MenuItem>
+                      <MenuItem value={'dateAsc'}>Oldest</MenuItem>
+                      <MenuItem value={'titleAsc'}>Title Ascending</MenuItem>
+                      <MenuItem value={'titleDesc'}>Title Descending</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Stack>
+              </Box>
+            </Box>
             {courses.length > 0 ? (
               courses.map((course) => (
                 <Box
                   sx={{
                     bgcolor: 'primary.main',
                     width: '100%',
-                    height: '400px',
+                    height: '100%',
                     p: '20px',
                   }}
                 >
                   <Box
                     sx={{
                       display: 'flex',
-                      justifyContent: 'start',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
                       mb: '10px',
                     }}
@@ -222,11 +403,15 @@ const LecturerPage = () => {
                       color="initial"
                       sx={{ mb: '5px', mr: '10px' }}
                     >
-                      {course.courseName}
+                      {course.courseCode}-{course.courseName}
                     </Typography>
                     <Button
                       variant="contained"
                       sx={{ bgcolor: 'secondary.main', borderRadius: 5 }}
+                      onClick={() => {
+                        setOpenModal(true);
+                        setCreateLectureCourse(course._id);
+                      }}
                     >
                       Add Lecture
                     </Button>
@@ -241,17 +426,28 @@ const LecturerPage = () => {
                         <TableCell sx={{ color: 'light.main' }}>
                           Student Attendance
                         </TableCell>
+                        <TableCell sx={{ color: 'light.main' }}>
+                          Delete
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {course.lectures ? (
                         course.lectures.map((lecture) => (
                           <TableRow
+                            sx={
+                              lecture._id == selectedLectureId
+                                ? {
+                                    backgroundColor: 'yellow',
+                                    cursor: 'pointer',
+                                  }
+                                : { cursor: 'pointer' }
+                            }
                             onClick={() => {
                               setSelectedLectureId(lecture._id);
                               setSelectedLectureName(lecture.lectureName);
                               setCourseId(course._id);
-                              setSelectedCourseName(course.courseName);
+                              setSelectedCourseCode(course.courseCode);
                             }}
                           >
                             <TableCell>
@@ -262,41 +458,90 @@ const LecturerPage = () => {
                               {lecture.date ? formatDate(lecture.date) : null}
                             </TableCell>
                             <TableCell>{lecture.attendence} students</TableCell>
+                            <TableCell>
+                              <IconButton
+                                onClick={() => {
+                                  deleteLecture(lecture._id, course._id);
+                                }}
+                              >
+                                <ClearIcon />
+                              </IconButton>
+                            </TableCell>
                           </TableRow>
                         ))
                       ) : (
-                        <h3>there are no lectures currently</h3>
+                        <Typography variant="h6">
+                          there are no lectures currently
+                        </Typography>
                       )}
                     </TableBody>
                   </Table>
 
-                  <Box>
-                    <TextField
-                      onChange={(e) => {
-                        setNewLectureTitle(e.target.value);
+                  <Modal
+                    open={openModal}
+                    onClose={() => setOpenModal(false)}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '100vh',
+                    }}
+                    slotProps={{
+                      backdrop: {
+                        style: { backgroundColor: 'rgba(128, 128, 128, 0.3)' },
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        bgcolor: 'secondary.main',
+                        p: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        borderRadius: 5,
                       }}
-                    ></TextField>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        format="DD-MM-YYYY"
-                        onChange={(e) => {
-                          setLectureDate(e.$d);
-                          console.log(e.$d);
-                        }}
-                        label="Choose lecture date"
-                      />
-                    </LocalizationProvider>
-                    <Button
-                      onClick={() => createLecture(course._id)}
-                      style={{ background: 'white' }}
                     >
-                      submit
-                    </Button>
-                  </Box>
+                      <TextField
+                        onChange={(e) => {
+                          setNewLectureTitle(e.target.value);
+                        }}
+                        sx={{ bgcolor: 'light.main' }}
+                      ></TextField>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          format="DD-MM-YYYY"
+                          onChange={(e) => {
+                            setLectureDate(e.$d);
+                          }}
+                          label="Choose lecture date"
+                          sx={{ bgcolor: 'light.main' }}
+                        />
+                      </LocalizationProvider>
+                      <Button
+                        onClick={() => {
+                          handleSubmitLecture(createLectureCourse);
+                        }}
+                        sx={{
+                          bgcolor: 'background.default',
+                          ml: '10px',
+                          borderRadius: 5,
+                          '&:hover': {
+                            backgroundColor: 'lightBlue.main',
+                          },
+                        }}
+                        disabled={
+                          newLectureTitle === undefined ||
+                          lectureDate === undefined
+                        }
+                      >
+                        Submit
+                      </Button>
+                    </Box>
+                  </Modal>
                 </Box>
               ))
             ) : (
-              <Typography style={{ color: 'white' }}>
+              <Typography variant="h6">
                 YOU ARE NOT CURRENTLY IN CHARGE OF ANY CLASSES
               </Typography>
             )}
@@ -306,23 +551,5 @@ const LecturerPage = () => {
     </>
   );
 };
-
-// <div>
-// <h1>this is lecturer page</h1>
-// {coursesList && null}
-// <AddNewLecture lectureId = {getLectureId} courseList={courses}/>
-// <button
-//   style={{ background: "white" }}
-//   onClick={()=>{
-//     setActiveQr(!activeQr)
-//   }}
-// >
-//   create QR code
-// </button>
-// {activeQr
-// ?<QrCode lecture={lectureId} course={courseId}/>
-// : null}
-
-// </div>
 
 export default LecturerPage;

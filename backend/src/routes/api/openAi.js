@@ -16,16 +16,18 @@ export const openai = new OpenAI({
   project: PROJ_ID,
 });
 
-router.get('/summarizeReview', async (req, res) => {
-  const courseDummyId = req.body.courseId;
+router.post('/summarizeReview', async (req, res) => {
+  const course_Id = req.body.courseId;
 
-  if (!courseDummyId)
+  if (!course_Id)
     return res
       .status(400)
       .json('Please provided a course you want to get summary');
 
+  console.log(course_Id);
+
   try {
-    const course = await Course.findOne({ course_dummy_id: courseDummyId });
+    const course = await Course.findById(course_Id);
 
     if (!course)
       return res.status(500).json('Unable to retrieve course reviews data');
@@ -53,9 +55,10 @@ router.get('/summarizeReview', async (req, res) => {
         .status(500)
         .json('Unable to generate summary, please try again in 10 minutes!');
 
-    return res.status(200).json(completion.choices[0].message.content);
+    return res.status(200).json(completion.choices[0]);
   } catch (e) {
     console.log(e.messages);
+    console.log(e);
     return res.status(500).json(e.messages);
   }
 });

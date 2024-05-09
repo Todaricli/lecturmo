@@ -1,6 +1,5 @@
 import { User } from '../schemas/userSchema.js';
 import { hashPassword } from '../utils/useBcrypt.js';
-import crypto from 'crypto';
 
 export const isValidUOAEmail = (email) => {
   const aucklandUniEmailRegex = /^[^\s@]+@aucklanduni\.ac\.nz$/;
@@ -34,11 +33,9 @@ export const checkPasswordsMatch = (password, confirmPassword) => {
 };
 
 export const registerUser = async (userData) => {
-  const { username, email, password, firstName, lastName, gender, avatarURL } =
+  const { username, email, password, firstName, lastName, gender, avatarURL, emailToken } =
     userData;
 
-  const emailToken = crypto.randomBytes(32).toString('hex');
-  console.log('emailToken:', emailToken);
 
   const user = new User({
     fname: firstName,

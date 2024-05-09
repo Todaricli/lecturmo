@@ -9,10 +9,8 @@ import {
   IconButton,
   TextField,
   Link,
+  CircularProgress,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +19,8 @@ import PasswordField from '../../components/Register/PasswordField';
 import ConfirmPasswordField from '../../components/Register/ConfirmPasswordField';
 import EmailField from '../../components/Register/EmailField';
 import GenderSelect from '../../components/Register/GenderSelect';
+import Calendar from '../../components/Calendar';
+import AvatarSelector from '../../components/Register/AvatarSelect';
 import {
   checkIfUserExists,
   checkEmailInput,
@@ -46,10 +46,10 @@ const EditProfilePage = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [isCurrentPasswordConfirmed, setIsCurrentPasswordConfirmed] =
-    useState(false);
   const [currentPasswordError, setCurrentPasswordError] = useState('');
   const [open, setOpen] = useState(false);
+  const [isAvatarSelectorVisible, setIsAvatarSelectorVisible] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -77,7 +77,7 @@ const EditProfilePage = () => {
         password: '',
         confirmPassword: '',
         email: user.email,
-        verifyEmail: user.isVerified,
+        verifyEmail: false,
         firstName: user.fname,
         lastName: user.lname,
         gender: user.gender,
@@ -134,7 +134,10 @@ const EditProfilePage = () => {
           email: value,
           verifyEmail: formData.verifyEmail,
         });
-        setEmailError(res && res.error && value.length > 0 ? res.message : '');
+        console.log("formData.email:", formData.email)
+        console.log("user.email:", user.email)
+        setEmailError(
+          res && res.error && value.length > 0 && value != user.email ? res.message : '');
       } else if (name === 'password') {
         const res1 = await checkPasswordInput({ password: value });
         setPasswordError(
@@ -179,7 +182,6 @@ const EditProfilePage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('formData:', formData);
     const res = await updateUser(formData);
     setUpdateError(res && res.error ? res.message : '');
     if (!res.error) {
@@ -204,44 +206,33 @@ const EditProfilePage = () => {
     setFormData({ ...formData, gender: event.target.value });
   };
 
-  const handleDateChange = (date) => {
+  const handleDateOfBirthChange = (date) => {
     setFormData({ ...formData, dateOfBirth: date });
   };
 
-  const handleAvatarChange = () => {
-    // Logic for changing the avatar URL, possibly with a file input dialog.
-    console.log('Avatar change clicked');
+  const handleAvatarChange = (avatarURL) => {
+    setFormData({ ...formData, avatarURL: avatarURL });
+    setIsAvatarSelectorVisible(false);
+  };
+
+  const handleCameraIconClick = () => {
+    setIsAvatarSelectorVisible(true);
   };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          bgcolor: 'secondary.main',
-          marginTop: 5,
-          borderTopLeftRadius: 7,
-          borderTopRightRadius: 7,
-          position: 'relative',
-        }}
-      ></Box>
-      <Container
+    <Grid container>
+      <Grid container item
         sx={{
           bgcolor: 'primary.main',
-          zIndex: 10,
-          top: 200,
-          width: 600,
+          m: {xs: "50px 20px", md: "50px 100px", lg: "50px 200px"},
           height: 'fit-content',
-          left: 0,
-          right: 0,
-          bottom: 0,
           borderRadius: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          marginBottom: '50px',
+          p: "20px"
         }}
+        justifyContent="center"
+        alignItems="center"
       >
-        <Box>
+        <Grid item xs={12}>
           <IconButton
             color="initial"
             component={Link}
@@ -250,13 +241,8 @@ const EditProfilePage = () => {
           >
             <ArrowBackIcon />
           </IconButton>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+        </Grid>
+        <Grid item alignItems="center" justifyContent="center"
         >
           <Box
             sx={{
@@ -272,20 +258,58 @@ const EditProfilePage = () => {
               src={formData.avatarURL}
               sx={{ width: 150, height: 150 }}
             />
+            {isAvatarSelectorVisible && (
+              <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                zIndex: 1000,
+              }}>
+                <div
+                  onClick={() => setIsAvatarSelectorVisible(false)}
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    zIndex: 999,
+                  }}></div>
+
+                <div style={{
+                  zIndex: 1000,
+                  width: '80%',
+                  textAlign: 'center',
+                  backgroundColor: 'white',
+                  borderRadius: '10px',
+                  padding: '20px',
+                }}>
+                  <AvatarSelector
+                    value={formData.avatarURL}
+                    onChange={handleAvatarChange}
+                  />
+                </div>
+              </div>
+            )}
             <IconButton
               aria-label="edit avatar"
-              onClick={handleAvatarChange}
+              onClick={handleCameraIconClick}
               sx={{
-                position: 'absolute',
-                left: '100px',
-                top: '110px',
-                bgcolor: 'light.main',
+                bgcolor: 'secondary.main',
+                mt: "5px"
               }}
             >
               <CameraAltIcon />
             </IconButton>
           </Box>
-        </Box>
+        </Grid>
 
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -327,14 +351,10 @@ const EditProfilePage = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Date of Birth"
-                  value={formData.dateOfBirth}
-                  onChange={handleDateChange}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
-                />
-              </LocalizationProvider>
+              <Calendar
+                value={formData.dateOfBirth}
+                onChange={handleDateOfBirthChange}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -403,11 +423,11 @@ const EditProfilePage = () => {
               mt: 3,
               mb: 2,
               borderRadius: 2,
-              bgcolor: 'rgb(255,207,96)',
+              bgcolor: 'secondary.main',
               color: '#808080',
               '&:hover': {
-                bgcolor: 'rgb(255,199,71)',
-                color: '#382e7f',
+                bgcolor: 'secondary.main',
+                color: 'initial',
               },
             }}
           >
@@ -432,8 +452,8 @@ const EditProfilePage = () => {
             Successfully Updated Profile!
           </Alert>
         </Snackbar>
-      </Container>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 
