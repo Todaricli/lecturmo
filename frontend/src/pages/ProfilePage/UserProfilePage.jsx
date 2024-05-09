@@ -170,9 +170,10 @@ const UserProfilePage = () => {
                   
                   sx={{
                     boxShadow: 'none',
-                    bgcolor: 'grey.main',
+                    fontStyle: 'italic',
                     display: 'flex',
                     justifyContent: 'space-between',
+                    padding: '5px',
                   }}
                 >
                   <InputBase
