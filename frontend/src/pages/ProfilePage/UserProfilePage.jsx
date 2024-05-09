@@ -310,7 +310,7 @@ const UserProfilePage = () => {
               </Grid>
             ))
           ) : (
-            <p>oh naurr</p>
+            <></>
           ))
           : null}
 

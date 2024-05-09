@@ -1,4 +1,5 @@
 export const authenticate = (req, res, next) => {
+
   console.log("Session ID:", req.sessionID); // Log the session ID
   console.log("Session:", req.session); // Log the session content
   console.log("Raw Cookie Header:", req.headers.cookie);
@@ -7,6 +8,10 @@ export const authenticate = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
+
+  // if(req.session.user) {
+  //   return next()
+  // }
   // console.log("req:", req)
   res.status(401).json('Unauthorized');
 };
