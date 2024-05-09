@@ -107,3 +107,5 @@ export async function populateUsers(users, courses) {
     console.error('Failed to populate users:', error);
   }
 }
+
+export {initUsers, updateUserForeignKeys};

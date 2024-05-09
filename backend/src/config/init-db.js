@@ -46,3 +46,5 @@ async function run() {
 }
 
 run();
+
+export {run};
