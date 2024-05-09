@@ -116,12 +116,11 @@ env file is provided on Google form
     npm run dev
 
 ---
-# 3. Fabric Accounts
+# 3. Fabricated Account Credentials
 | Username       | Password       | Role          |
 | -------------- | -------------- |-------------- |
 |   user1        |  123           | Student       |
 |   user2        |  123           | Student       |
-|   user3        |  123           | Student       |
 |   lec1         |  123           | Lecturer      |
 |   lec2         |  123           | Lecturer      |
 |   lec3         |  123           | Lecturer      |
@@ -165,6 +164,14 @@ Define badge hierarchy based on the number of classes attended, providing incent
 2. Check your spam folder if you don't receive the verification email promptly.
 
 ### 2. Scan QR Code:
+#### Locally Run (RECOMMENDED)
+1. Open a tab, login as lecturer
+2. Open create QR code, and generate a dynamic QR aftering selecting a course (this will be on a second tab)
+3. Logout as lecturer, and login as a student.
+4. Open console, and click on a randomly generated QR link in the second tab.
+5. You have now attended a lecture!
+
+#### Live Deployment
 1. Scan QR Code with your phone.
 2. QR Code need be opened in Firefox browser.
 
@@ -202,6 +209,8 @@ Define badge hierarchy based on the number of classes attended, providing incent
 
 # 7. Deployment
 
+Link to live deployement!
+https://lecturemon.netlify.app/home
 
 ---
 
@@ -216,19 +225,7 @@ Define badge hierarchy based on the number of classes attended, providing incent
 
 ---
 
-# 9. Responsibility
-- **Alden Maiyor:**
-Alden has developed QR code generation and scanner feature.
 
-- **Tuocheng (Tony) Li:** 
-
-- **Inez Yuan Ya Chong:** 
-
-- **Yue (Carina) Qi:** 
-
-- **Tone Xie:** 
-
-- **Sienna Nguyen:** 
 
 
 
