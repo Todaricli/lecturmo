@@ -24,7 +24,7 @@ import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { postRequest } from '../../services/postRequest';
 import Loading from '../../components/Loading';
-import WriteReview from '../../components/writeReview';
+import WriteReview from '../../components/WriteReview';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
