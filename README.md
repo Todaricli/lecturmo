@@ -1,5 +1,5 @@
 # COMPSCI 732 / SOFTENG 750 project - Team Quaint Quokkas
-
+## ENSURE THAT YOU USE FIREFOX TO RUN THE PROJECT. THERE IS A KNOWN ISSUE THAT PASSPORT CAN HAVE ISSUES SETTING THE COOKIE ON OTHER BROWSERS.
 ---
 
 # **Lecturmo** 
@@ -7,6 +7,11 @@
 
 ## Overview
 <b>Lecturmo</b> is a comprehensive web application designed for universities, aimed at enhancing the university experience by fostering a transparent and informative environment for students to share their experiences and help others make informed decisions about their academic pursuits.
+
+Link to live deployement!
+
+https://lecturemon.netlify.app/home
+Please use ***firefox*** when using hosted site, because Netlify.app being listed in Public Suffix List (PSL), which cannot properly set cookies, only firefox allows cookie to be set, other browser will work as well, but cannot be properly log in a user.
 
 ### Purpose
 The purpose of Lecturmo is to empower students by providing a platform where they can share their insights and opinions through course reviews. By doing so, Lecturmo aims to create a valuable resource for both current and prospective students, enabling them to make informed decisions about their academic endeavors.
@@ -79,10 +84,10 @@ After clone into your own directory, open the direct repository that contains th
 3. ## MongoDB
 env file is provided on Google form
 ### Backend env
-> Add backend env to  `./backend` directory
+> Add backend .env to  `./backend` directory
 
 ### Frontend env
-> Add frontend env to  `./frontend` directory
+> Add frontend .env to  `./frontend` directory
 
 4. ## Run the Program Locally
 ### Backend Command

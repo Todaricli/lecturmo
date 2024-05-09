@@ -310,7 +310,7 @@ const UserProfilePage = () => {
               </Grid>
             ))
           ) : (
-            <></>
+            <><Typography></Typography></>
           ))
           : null}
 
