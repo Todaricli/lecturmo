@@ -79,10 +79,10 @@ After clone into your own directory, open the direct repository that contains th
 3. ## MongoDB
 env file is provided on Google form
 ### Backend env
-> Add backend env to  `./backend` directory
+> Add backend .env to  `./backend` directory
 
 ### Frontend env
-> Add frontend env to  `./frontend` directory
+> Add frontend .env to  `./frontend` directory
 
 4. ## Run the Program Locally
 ### Backend Command
