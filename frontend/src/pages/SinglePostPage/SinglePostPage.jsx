@@ -38,7 +38,7 @@ const SinglePostPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [course, setCourse] = useState([]);
   const [courseId, setCourseId] = useState();
-  const [sortBy, setSortBy] = useState(20);
+  const [sortBy, setSortBy] = useState(50);
   const [reviews, setReview] = useState();
   const [triggerReload, setTriggerReload] = useState(false)
   const [heartLoading, setHeartLoading] = useState(false)
@@ -58,8 +58,6 @@ const SinglePostPage = () => {
       `${API_URL}/lecturai/summarizeReview`,
       courseIdObjt
     );
-
-
 
     if (!response.message.content) {
       setAiError(true);
@@ -158,7 +156,6 @@ const SinglePostPage = () => {
       !review.contentRating
     )
       return 0;
-
     let totalRating =
       (review.difficultyRating + review.contentRating + review.qualityRating) /
       3;
@@ -166,6 +163,7 @@ const SinglePostPage = () => {
   };
 
   const sortReviews = (reviews) => {
+    console.log(sortBy)
     switch (sortBy) {
       case 30: // Highest Rating
         return reviews
@@ -175,6 +173,13 @@ const SinglePostPage = () => {
         return reviews
           .slice()
           .sort((a, b) => calculateSingleRating(a) - calculateSingleRating(b));
+      case 50:
+        reviews.sort((a, b) => b.likes.length - a.likes.length);
+        return reviews;
+      case 60:
+        return reviews
+          .slice()
+          .sort((a, b) => calculateSingleRating(b) - calculateSingleRating(a));
       default: // Newest
         return reviews
           .slice()
@@ -182,11 +187,11 @@ const SinglePostPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (reviews != undefined) {
-      setReview(sortReviews(reviews));
-    }
-  }, [reviews]);
+  // useEffect(() => {
+  //   if (reviews != undefined) {
+  //     setReview(sortReviews(reviews));
+  //   }
+  // }, [reviews]);
 
   useEffect(() => {
     setCourseId(searchParams.get('courseId'));
@@ -201,7 +206,7 @@ const SinglePostPage = () => {
             .then((res) => {
               console.log('single course: ', res.data.reviews);
               setCourse(res.data);
-              setReview(res.data.reviews);
+              setReview(sortReviews(res.data.reviews));
               setInitialLoad(false)
               setHeartLoading(false)
             });
@@ -434,9 +439,15 @@ const SinglePostPage = () => {
                   labelId="post-select"
                   id="post-select"
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+                  onChange={(e) => {
+                    setSortBy(e.target.value)
+                    setReview(sortReviews(reviews))
+                    console.log(e.target.value)
+                  }}
                   sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
                 >
+                  <MenuItem value={50}>Most popular</MenuItem>
+                  <MenuItem value={60}>Least popular</MenuItem>
                   <MenuItem value={20}>Newest</MenuItem>
                   <MenuItem value={30}>Highest Rating</MenuItem>
                   <MenuItem value={40}>Lowest Rating</MenuItem>
@@ -562,7 +573,7 @@ const SinglePostPage = () => {
 
                               {user == null
                                 ? <FavoriteBorderIcon
-                                  onClick = {() =>{
+                                  onClick={() => {
                                     toast.error("Please log in to like the review")
                                   }}
                                   sx={{ color: 'heart.main', cursor: "pointer" }} />
