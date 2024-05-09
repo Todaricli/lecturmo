@@ -84,7 +84,7 @@ env file is provided on Google form
 ### Frontend env
 > Add frontend env to  `./frontend` directory
 
-4. ## Start the Program
+4. ## Run the Program Locally
 ### Backend Command
 > Only available for backend project, which is under `./backend` directory
 
