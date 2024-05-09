@@ -55,7 +55,7 @@ const QrCode = () => {
 
   useEffect(() => {
     setQrCode(
-      `${FRONTEND_HOST_URL}/qr-landing-page?date=${currentTime}&course=${courseId}&lecture=${lecture}&courseCode=${encodeURI(courseCode)}`
+      `${FRONTEND_HOST_URL}/qr-landing-page?date=${encodeURI(currentTime)}&course=${courseId}&lecture=${lecture}&courseCode=${encodeURI(courseCode)}`
     );
   }, [currentTime]);
 
