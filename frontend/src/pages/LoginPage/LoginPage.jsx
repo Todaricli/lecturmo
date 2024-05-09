@@ -82,16 +82,6 @@ export default function LoginPage() {
     event.preventDefault();
   };
 
-  const handleEmail = (e) => {
-    setUsername(e);
-    console.log(username);
-  };
-
-  const handlePassword = (e) => {
-    setPassword(e);
-    console.log(password);
-  };
-
   return (
     <Container
       component="main"

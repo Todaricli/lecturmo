@@ -13,32 +13,48 @@ import {
   Stack,
   Grid,
   Container,
+  Snackbar,
+  Alert,
 } from '@mui/material';
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import EmailIcon from '@mui/icons-material/Email';
 import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import Loading from '../../components/Loading';
+import { resendVerificationEmail } from '../../services/profile/userProfileAPIFetch';
 
 const UserProfilePage = () => {
   const { user } = useContext(AuthContext);
   useRedirectToLoginIfNotLoggedIn();
 
+  const [emailError, setEmailError] = useState('');
+  const [sentEmailSuccess, setSentEmailSuccess] = useState(false);
+
   if (user === null) {
     return <Loading />;
   }
 
-  console.log(user);
+  const handleResendEmail = async () => {
+    console.log("user:", user)
+    const res = await resendVerificationEmail({
+      username: user.username,
+      email: user.email,
+    });
+    setEmailError(res && res.error ? res.message : '');
+    if (!res.error) {
+      setSentEmailSuccess(true);
+    }
+  }
 
   return (
     <Container
       component="main"
       maxWidth="md"
       sx={{
-        my: "50px",
-        width: "90%",
+        my: '50px',
+        width: '90%',
         bgcolor: 'primary.main',
         height: '100%',
         borderRadius: 5,
@@ -92,14 +108,19 @@ const UserProfilePage = () => {
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      mr: "10px"
+                      mr: '10px',
                     }}
                   >
                     {user.fname} {user.lname}
                   </Typography>
-                  {user.isVerified && <VerifiedIcon color="verifiedIcon"/>}
+                  {user.isVerified && <VerifiedIcon color="verifiedIcon" />}
                 </Box>
-                <Box mt={1} display="flex" flexDirection="column" alignItems="center"> 
+                <Box
+                  mt={1}
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                >
                   <Typography variant="body2" color="#78858F">
                     Email
                   </Typography>
@@ -146,6 +167,7 @@ const UserProfilePage = () => {
                 </Typography>
                 <Paper
                   component="form"
+                  
                   sx={{
                     boxShadow: 'none',
                     bgcolor: 'grey.main',
@@ -156,16 +178,39 @@ const UserProfilePage = () => {
                   <InputBase
                     placeholder="Enter your email"
                     value={user.email}
-                    sx={{ padding: 1 }}
+                    sx={{ padding: 1, width: "100%" }}
                   />
-                  <IconButton sx={{ p: '10px' }} aria-label="menu">
+                  <IconButton
+                    sx={{ p: '10px' }}
+                    aria-label="menu"
+                    onClick={handleResendEmail}
+                  >
                     <EmailIcon />
                   </IconButton>
                 </Paper>
+                {emailError && (
+                  <Typography color="error" align="center">
+                    {emailError}
+                  </Typography>
+                )}
               </CardContent>
             </Card>
           </Grid>
         )}
+
+        <Snackbar
+          open={sentEmailSuccess}
+          autoHideDuration={6000}
+          onClose={() => setSentEmailSuccess(false)}
+        >
+          <Alert
+            onClose={() => setSentEmailSuccess(false)}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Successfully Sent Verficiation Email!
+          </Alert>
+        </Snackbar>
 
         {user.courses.length > 0 ? (
           user.courses.map((course) => (

@@ -52,7 +52,7 @@ const SearchBar = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width: "80%",
+        width: {xs: "80%", lg: "70%"},
         mt: "50px",
       }}
     >

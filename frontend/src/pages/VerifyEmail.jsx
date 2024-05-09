@@ -18,6 +18,7 @@ const VerifyEmail = () => {
 
   const emailToken = searchParams.get('emailToken');
 
+
   useEffect(() => {
     const process = async () => {
       try {
@@ -33,7 +34,13 @@ const VerifyEmail = () => {
               setHasFetchedUserDetails(true);
               return response.data;
             })
-            .catch((e) => alert(e));
+            .catch((e) => {
+              console.log('error:', e)
+              alert(e.message);
+              navigate('/home', {
+                state: { message: 'Verfication Failed' },
+              });
+            });
         }
       } catch (err) {
         console.log('err:', err);
