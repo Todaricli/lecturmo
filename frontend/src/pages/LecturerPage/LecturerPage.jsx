@@ -35,6 +35,10 @@ const BASE_URL =
   import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ??
   'http://localhost:3000/api';
 
+const FRONTEND_HOST_URL =
+  import.meta.env.VITE_FRONTEND_NETLIFY_APP_URL ??
+  'http://localhost:5173';
+
 const LecturerPage = () => {
   const { user } = useContext(AuthContext);
   if (user === null) {
@@ -321,7 +325,7 @@ const LecturerPage = () => {
                 color="primary"
                 onClick={() => {
                   window.open(
-                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseCode=${encodeURI(selectedCourseCode)}`,
+                    `${FRONTEND_HOST_URL}/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseCode=${encodeURI(selectedCourseCode)}`,
                     '_blank'
                   );
                 }}
@@ -435,9 +439,9 @@ const LecturerPage = () => {
                             sx={
                               lecture._id == selectedLectureId
                                 ? {
-                                    backgroundColor: 'yellow',
-                                    cursor: 'pointer',
-                                  }
+                                  backgroundColor: 'yellow',
+                                  cursor: 'pointer',
+                                }
                                 : { cursor: 'pointer' }
                             }
                             onClick={() => {

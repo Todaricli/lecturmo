@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import { addReview } from '../services/review/reviewAPIFetch.js'
 
-export default function WriteReview() {
+export default function WriteReview({active, triggerFunction}) {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const courseId = queryParams.get('courseId');
@@ -83,7 +83,9 @@ export default function WriteReview() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const res = await addReview(courseId, formData);
+            const res = await addReview(courseId, formData).then(()=>{
+                triggerFunction()
+            });
             console.log(res); // Log the response from the backend API
         } catch (error) {
             console.error('Error adding review:', error);
@@ -102,6 +104,7 @@ export default function WriteReview() {
         <div>
             <Button
                 aria-describedby={id}
+                disabled={!active}
                 variant="contained"
                 onClick={handleClick}
                 sx={{ border: '2px solid grey', borderRadius: 4, color: '#000000' }}
