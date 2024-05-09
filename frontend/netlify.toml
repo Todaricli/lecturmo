@@ -3,11 +3,10 @@
   for = "/*.jsx"
   [headers.values]
   Content-Type = "application/javascript"
+  Access-Control-Allow-Origin = "*"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
   force = false
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
