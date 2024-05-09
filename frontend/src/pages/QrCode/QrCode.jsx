@@ -41,7 +41,7 @@ const QrCode = () => {
       setCurrentTime(timeJson.dateTime);
     } catch (e) {
       console.log(e)
-      const newDate = new Date().toUTCString
+      const newDate = new Date().toUTCString();
       setCurrentTime(newDate);
     }
   };
