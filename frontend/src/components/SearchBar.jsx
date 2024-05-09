@@ -73,7 +73,7 @@ const SearchBar = () => {
       }}
     >
       <TextField
-        placeholder="Search"
+        placeholder="Search by course Id (ex: Compsci 732)"
         sx={{
           width: '100%',
           bgcolor: 'light.main',

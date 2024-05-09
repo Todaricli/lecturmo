@@ -154,13 +154,7 @@ export default function LoginPage() {
               alignItems: 'center',
             }}
           >
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Link href="#" variant="body2">
-              Forgot password?
-            </Link>
+         
           </Grid>
           <Button
             type="submit"
@@ -180,9 +174,6 @@ export default function LoginPage() {
             Login
           </Button>
           <Grid container>
-            <Link href="/register" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </Link>
           </Grid>
         </Box>
       </Box>
@@ -200,13 +191,14 @@ function Copyright(props) {
   return (
     <Typography
       variant="body2"
-      color="text.secondary"
+      color="initial"
       align="center"
       {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit">Lectermo</Link> {new Date().getFullYear()}
-      {'.'}
+    >{"Don't have an account? "}
+      <Link href="/register" variant="body2" sx={{color: "lightBlue.main"}}>
+        {'Sign Up'}
+      </Link>
+      
     </Typography>
   );
 }
