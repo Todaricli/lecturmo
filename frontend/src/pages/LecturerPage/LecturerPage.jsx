@@ -347,42 +347,39 @@ const LecturerPage = () => {
                 Create QR code
               </Button>
             </Box>
-            <Box sx={{ bgcolor: 'primary.main' }}>
-              <Box
-                mt={5}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  width: '100%',
-                }}
+            <Box bgcolor="primary.main" width="100vw" pr="5px">
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                spacing={1}
+                mt={2}
               >
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Typography variant="h6" color="light.main">
-                    Sort:
-                  </Typography>
-                  <FormControl sx={{ width: 250 }}>
-                    <Select
-                      labelId="post-select"
-                      id="post-select"
-                      value={changeSort}
-                      onChange={(e) => {
-                        setChangeSort(e.target.value);
-                        console.log(changeSort);
-                      }}
-                      sx={{
-                        borderRadius: 5,
-                        bgcolor: 'light.main',
-                        height: '40px',
-                      }}
-                    >
-                      <MenuItem value={'dateDesc'}>Latest</MenuItem>
-                      <MenuItem value={'dateAsc'}>Oldest</MenuItem>
-                      <MenuItem value={'titleAsc'}>Title Ascending</MenuItem>
-                      <MenuItem value={'titleDesc'}>Title Descending</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Stack>
-              </Box>
+                <Typography variant="subtitle2" color="initial">
+                  Sort:
+                </Typography>
+                <FormControl sx={{ width: '200px' }}>
+                  <Select
+                    labelId="post-select"
+                    id="post-select"
+                    value={changeSort}
+                    onChange={(e) => {
+                      setChangeSort(e.target.value);
+                      console.log(changeSort);
+                    }}
+                    sx={{
+                      borderRadius: 5,
+                      bgcolor: 'light.main',
+                      height: '35px',
+                    }}
+                  >
+                    <MenuItem value={'dateDesc'}>Latest</MenuItem>
+                    <MenuItem value={'dateAsc'}>Oldest</MenuItem>
+                    <MenuItem value={'titleAsc'}>Title Ascending</MenuItem>
+                    <MenuItem value={'titleDesc'}>Title Descending</MenuItem>
+                  </Select>
+                </FormControl>
+              </Stack>
             </Box>
             {courses.length > 0 ? (
               courses.map((course) => (
@@ -489,6 +486,8 @@ const LecturerPage = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       height: '100vh',
+                      mx: "10px",
+
                     }}
                     slotProps={{
                       backdrop: {
@@ -499,7 +498,7 @@ const LecturerPage = () => {
                     <Box
                       sx={{
                         bgcolor: 'secondary.main',
-                        p: 10,
+                        p: "50px 10px",
                         display: 'flex',
                         alignItems: 'center',
                         borderRadius: 5,
