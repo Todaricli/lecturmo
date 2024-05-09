@@ -35,16 +35,6 @@ const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'h
 
 const LecturerPage = () => {
   const { user } = useContext(AuthContext);
-  // if (user === null) {
-  //   return <AccessDenied />;
-  // }
-
-  // useEffect(() => {
-  //   console.log(user)
-  //   if (user.roles != "lecturer") {
-  //     navigate('/')
-  //   }
-  // }, [])
 
   const navigate = useNavigate();
 

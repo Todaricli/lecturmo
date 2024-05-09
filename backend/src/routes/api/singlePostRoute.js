@@ -12,14 +12,11 @@ SinglePageRouters.post("/toggle-like", async (req,res) =>{
   const courseId = req.body.courseId
   const loggedInUserId = req.user
 
- 
+  if (loggedInUserId == undefined){
+    return res.json({Error_message: "user not logged in "})
+  }
 
   const loggedInUserIdString = loggedInUserId._id.toString()
-  console.log(loggedInUserIdString)
-
-  const loggedInUserIdObj = new mongoose.Types.ObjectId(loggedInUserId)
-
-
 
   try {
     const course = await Course.findById(courseId);
@@ -34,14 +31,14 @@ SinglePageRouters.post("/toggle-like", async (req,res) =>{
       return res.status(404).json({ error: 'Review not found' });
     }
 
-    const userExists = review.likes.some(like => like.userId1 === loggedInUserIdString);
+    const userExists = review.likes.some(like => like.userId === loggedInUserIdString);
 
     if (!userExists) {
       // User doesn't exist in likes, so add the like
-      review.likes.push({ userId1: loggedInUserIdString });
+      review.likes.push({ userId: loggedInUserIdString });
     } else {
       // User exists in likes, so remove the like
-      review.likes = review.likes.filter(like => like.userId1 !== loggedInUserIdString);
+      review.likes = review.likes.filter(like => like.userId !== loggedInUserIdString);
     }
 
     // Update the likes in the database

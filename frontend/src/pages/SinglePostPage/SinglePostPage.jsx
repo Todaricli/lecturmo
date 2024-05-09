@@ -15,19 +15,24 @@ import {
   Avatar,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { postRequest } from '../../services/postRequest';
 import Loading from '../../components/Loading';
 import WriteReview from '../../components/writeReview';
+import { AuthContext } from '../../contexts/AuthContextProvider';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
 const SinglePostPage = () => {
+  const { user } = useContext(AuthContext);
   const [initialLoad, setInitialLoad] = useState(true)
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,6 +41,7 @@ const SinglePostPage = () => {
   const [sortBy, setSortBy] = useState(20);
   const [reviews, setReview] = useState();
   const [triggerReload, setTriggerReload] = useState(false)
+  const [heartLoading, setHeartLoading] = useState(false)
 
   //AI
   const [summary, setSummary] = useState(null);
@@ -64,7 +70,7 @@ const SinglePostPage = () => {
     setAiInProgress(false);
   };
 
-  const toggleLike = async(reviewId,varCourseId) =>{
+  const toggleLike = async (reviewId, varCourseId) => {
     const response = await postRequest(`http://localhost:3000/api/toggle-like`,
       {
         reviewId: reviewId,
@@ -188,7 +194,6 @@ const SinglePostPage = () => {
 
   useEffect(() => {
     if (courseId != undefined) {
-      console.log(courseId);
       const fetchData = async () => {
         try {
           const response = await axios
@@ -198,7 +203,7 @@ const SinglePostPage = () => {
               setCourse(res.data);
               setReview(res.data.reviews);
               setInitialLoad(false)
-              
+              setHeartLoading(false)
             });
         } catch (error) {
           console.log('Error fetching single post data: ', error);
@@ -206,7 +211,7 @@ const SinglePostPage = () => {
       };
       fetchData();
     }
-  }, [courseId,triggerReload]);
+  }, [courseId, triggerReload]);
 
   return (
     <>
@@ -323,33 +328,33 @@ const SinglePostPage = () => {
               </Grid>
             </Box>
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <WriteReview />
-          <Box
-            sx={{
-              display: 'flex',
-              bgcolor: 'secondary.main',
-              padding: '8px',
-              width: 190,
-              borderRadius: 3,
-            }}
-          >
-            <LocationOnOutlinedIcon
-              fontSize="small"
-              sx={{ marginRight: '5px' }}
-            />
-            <Typography variant="body2" color="initial">
-              University of Auckland
-            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <WriteReview />
+              <Box
+                sx={{
+                  display: 'flex',
+                  bgcolor: 'secondary.main',
+                  padding: '8px',
+                  width: 190,
+                  borderRadius: 3,
+                }}
+              >
+                <LocationOnOutlinedIcon
+                  fontSize="small"
+                  sx={{ marginRight: '5px' }}
+                />
+                <Typography variant="body2" color="initial">
+                  University of Auckland
+                </Typography>
+              </Box>
+            </Box>
           </Box>
-        </Box>
-      </Box>
 
           <Box
             sx={{
@@ -539,14 +544,14 @@ const SinglePostPage = () => {
                               </Typography>
                             </Box>
 
-                              {/* for siennna */}
+                            {/* for siennna */}
                             <Typography>{
                               review.userId.courses.length < 3
-                                ? review.userId.courses.length 
+                                ? review.userId.courses.length
                                 : review.userId.courses.length < 8
-                                  ? review.userId.courses.length 
+                                  ? review.userId.courses.length
                                   : review.userId.courses.length < 15
-                                    ? review.userId.courses.length 
+                                    ? review.userId.courses.length
                                     : null
                             }</Typography>
 
@@ -554,12 +559,34 @@ const SinglePostPage = () => {
                           </Box>
                           <Box>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <FavoriteBorderIcon 
-                              onClick={()=>{
-                                console.log("fuck")
-                                toggleLike(review._id, courseId)
-                              }}
-                              sx={{ color: 'heart.main', cursor: "pointer" }} />
+
+                              {user == null
+                                ? <FavoriteBorderIcon
+                                  onClick = {() =>{
+                                    toast.error("Please log in to like the review")
+                                  }}
+                                  sx={{ color: 'heart.main', cursor: "pointer" }} />
+                                : (!heartLoading &&
+                                  (review.likes.findIndex(like => like.userId === user?._id) == -1
+                                    ? <FavoriteBorderIcon
+                                      onClick={() => {
+                                        console.log("fuck", user)
+                                        toggleLike(review._id, courseId)
+                                        setHeartLoading(true)
+                                        console.log("userId: ", review.likes.findIndex(like => like.userId === user._id))
+                                      }}
+                                      sx={{ color: 'heart.main', cursor: "pointer" }} />
+                                    : <FavoriteIcon
+                                      onClick={() => {
+                                        console.log("fuck", user)
+                                        toggleLike(review._id, courseId)
+                                        console.log("userId: ", review.likes.findIndex(like => like.userId === user._id))
+                                      }}
+                                      sx={{ color: 'heart.main', cursor: "pointer" }}
+                                    />
+                                  )
+                                )
+                              }
                               <Typography variant="body1" color="initial">
                                 {review.likes.length}
                               </Typography>
