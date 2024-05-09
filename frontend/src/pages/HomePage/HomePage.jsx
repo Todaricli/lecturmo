@@ -56,32 +56,8 @@ const HomePage = () => {
       <Box
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
-        <LandingBackground />
-      <Box sx={{ height: '100vh' }}> {/* Set height of the body to 100vh */}
-        <Box sx={{ height: '100%' }}> {/* Set height of the Box component to 100% */}
-          <LandingImage />
-            <SearchBar />
-          </Box>
-      </Box>
+      <SearchBar />
       <LandingPosts posts={posts} />
-        <IconButton
-          sx={{
-            bgcolor: 'secondary.main',
-            width: '60px',
-            height: '60px',
-            borderRadius: 10,
-            padding: '5px',
-            marginTop: '70px',
-            textAlign: 'center',
-            boxShadow: theme.shadows[1],
-            '&:hover': {
-              backgroundColor: 'secondary.main',
-              color: '#000000',
-            },
-          }}
-        >
-          <ArrowDownwardIcon sx={{ fontSize: 50 }} />
-        </IconButton>
         <Snackbar
           open={open}
           autoHideDuration={6000}

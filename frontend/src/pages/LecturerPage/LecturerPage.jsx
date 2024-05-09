@@ -31,14 +31,26 @@ import 'react-toastify/dist/ReactToastify.css';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccessDenied from '../../components/AccessDenied.jsx';
 
-const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
+const BASE_URL =
+  import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ??
+  'http://localhost:3000/api';
 
 const LecturerPage = () => {
   const { user } = useContext(AuthContext);
+  if (user === null) {
+    return <Loading />;
+  }
+
+  useEffect(() => {
+    console.log(user)
+    if (user.roles != "lecturer") {
+      navigate('/')
+    }
+  }, [])
 
   const navigate = useNavigate();
 
-  const [handleInitalLoad, setInitialLoad] = useState(true)
+  const [handleInitalLoad, setInitialLoad] = useState(true);
 
   const [coursesList, setCoursesList] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,20 +58,21 @@ const LecturerPage = () => {
   const [selectedLectureId, setSelectedLectureId] = useState(null);
   const [selectedLectureName, setSelectedLectureName] = useState(null);
   const [selectedCourseId, setCourseId] = useState(null);
-  const [selectedCourseCode, setSelectedCourseCode] = useState('nothing selected');
+  const [selectedCourseCode, setSelectedCourseCode] =
+    useState('nothing selected');
   const [courses, setCourses] = useState();
   const [courseNo, setCourseNo] = useState();
   const [lectures, setLectures] = useState();
   const [newLectureTitle, setNewLectureTitle] = useState();
   const [lectureDate, setLectureDate] = useState();
-  const [openModal, setOpenModal] = useState(false)
-  const [createLectureCourse, setCreateLectureCourse] = useState()
+  const [openModal, setOpenModal] = useState(false);
+  const [createLectureCourse, setCreateLectureCourse] = useState();
 
-  const [changeSort, setChangeSort] = useState("dateDesc")
+  const [changeSort, setChangeSort] = useState('dateDesc');
 
   const sortLecturesByNameDesc = () => {
-    console.log("here")
-    const sortedCourses = courses.map(course => {
+    console.log('here');
+    const sortedCourses = courses.map((course) => {
       const sortedLectures = [...course.lectures].sort((a, b) => {
         const lectureNameA = a.lectureName.toLowerCase();
         const lectureNameB = b.lectureName.toLowerCase();
@@ -67,12 +80,12 @@ const LecturerPage = () => {
       });
       return { ...course, lectures: sortedLectures };
     });
-    console.log("courses", sortedCourses)
+    console.log('courses', sortedCourses);
     setCourses(sortedCourses);
   };
 
   const sortLecturesByNameAsc = () => {
-    const sortedCourses = courses.map(course => {
+    const sortedCourses = courses.map((course) => {
       const sortedLectures = [...course.lectures].sort((a, b) => {
         const lectureNameA = a.lectureName.toLowerCase();
         const lectureNameB = b.lectureName.toLowerCase();
@@ -84,7 +97,7 @@ const LecturerPage = () => {
   };
 
   const sortLecturesByDateAsc = () => {
-    const sortedCourses = courses.map(course => {
+    const sortedCourses = courses.map((course) => {
       const sortedLectures = [...course.lectures].sort((a, b) => {
         return new Date(a.date) - new Date(b.date);
       });
@@ -94,7 +107,7 @@ const LecturerPage = () => {
   };
 
   const sortLecturesByDateDesc = () => {
-    const sortedCourses = courses.map(course => {
+    const sortedCourses = courses.map((course) => {
       const sortedLectures = [...course.lectures].sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
       });
@@ -105,22 +118,21 @@ const LecturerPage = () => {
 
   const sortList = (sortStyle) => {
     if (courses != undefined) {
-      if (sortStyle == "dateAsc") {
-        sortLecturesByDateAsc()
-      } else if (sortStyle == "dateDesc") {
-        console.log("datedesc")
-        sortLecturesByDateDesc()
-      } else if (sortStyle == "titleAsc") {
-        console.log("titleasc")
-        console.log("skeet")
-        sortLecturesByNameAsc()
-      } else if (sortStyle == "titleDesc") {
-        console.log("titledsc")
-        sortLecturesByNameDesc()
+      if (sortStyle == 'dateAsc') {
+        sortLecturesByDateAsc();
+      } else if (sortStyle == 'dateDesc') {
+        console.log('datedesc');
+        sortLecturesByDateDesc();
+      } else if (sortStyle == 'titleAsc') {
+        console.log('titleasc');
+        console.log('skeet');
+        sortLecturesByNameAsc();
+      } else if (sortStyle == 'titleDesc') {
+        console.log('titledsc');
+        sortLecturesByNameDesc();
       }
     }
-
-  }
+  };
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -149,11 +161,11 @@ const LecturerPage = () => {
       )
       .then((res) => {
         if (res.data.success) {
-          toast.success("Lecture successfully deleted")
-          setCourseId(null)
-          setSelectedLectureName(null)
-          setSelectedLectureId(null)
-          setSelectedCourseCode("nothing selected")
+          toast.success('Lecture successfully deleted');
+          setCourseId(null);
+          setSelectedLectureName(null);
+          setSelectedLectureId(null);
+          setSelectedCourseCode('nothing selected');
         } else {
           toast.error('Error deleting lecture');
         }
@@ -172,7 +184,7 @@ const LecturerPage = () => {
   };
 
   const createLecture = async (courseId) => {
-    console.log("lec", lectureDate)
+    console.log('lec', lectureDate);
     await axios
       .post(
         `${BASE_URL}/add-lecture`,
@@ -206,8 +218,8 @@ const LecturerPage = () => {
   console.log(courses);
 
   useEffect(() => {
-    sortList(changeSort)
-  }, [changeSort])
+    sortList(changeSort);
+  }, [changeSort]);
 
   useEffect(() => {
     getClasses();
@@ -221,310 +233,321 @@ const LecturerPage = () => {
 
   return (
     <>
-      {handleInitalLoad ? <Loading /> :
-        (user === null || user.roles != "lecturer" ? <AccessDenied /> :
-          (courses ? (
-            <Container
-              maxWidth="lg"
+      {handleInitalLoad ? (
+        <Loading />
+      ) : user === null || user.roles != 'lecturer' ? (
+        <AccessDenied />
+      ) : courses ? (
+        <Container
+          maxWidth="lg"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            mt: 10,
+          }}
+        >
+          <Box
+            sx={{
+              bgcolor: 'primary.main',
+              height: '250px',
+              width: '100vw',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Box
+              component="img"
+              src={user.avatarPicture}
+              sx={{ width: 180, height: '200px', borderRadius: 4 }}
+            />
+            <Box ml="10px">
+              <Typography variant="h6" color="initial">
+                Hi, {user.fname} {user.lname}
+              </Typography>
+              <Typography variant="body1" color="initial">
+                You are teaching{' '}
+                <span style={{ fontWeight: 'bold' }}>
+                  {courseNo} {courseNo <= 1 ? 'class' : 'classes'} {''}
+                </span>
+                at the moment.
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              bgcolor: 'secondary.main',
+              height: '100%',
+              width: '100vw',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Box
               sx={{
+                bgcolor: 'light.main',
+                maxWidth: '100%',
+                height: '200px',
+                borderRadius: 5,
                 display: 'flex',
-                flexDirection: 'column',
                 justifyContent: 'center',
+                flexDirection: 'column',
                 alignItems: 'center',
-                mt: 10,
+                gap: '10px',
+                m: 2,
+                p: 2,
               }}
             >
-              <Box
+              <Typography
+                variant="h6"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                {selectedCourseCode}
+              </Typography>
+
+              <Typography
+                variant="subtitle2"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                {selectedLectureName}
+              </Typography>
+              <Button
+                variant="text"
+                color="primary"
+                onClick={() => {
+                  window.open(
+                    `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseCode=${encodeURI(selectedCourseCode)}`,
+                    '_blank'
+                  );
+                }}
                 sx={{
-                  bgcolor: 'primary.main',
-                  height: '250px',
-                  width: '100vw',
+                  bgcolor: 'background.default',
+                  borderRadius: 4,
+                  width: '150px',
+                  '&:hover': {
+                    backgroundColor: 'secondary.main',
+                    color: '#000000',
+                  },
+                }}
+                disabled={
+                  selectedLectureId === null || selectedCourseId === null
+                    ? true
+                    : false
+                }
+              >
+                Create QR code
+              </Button>
+            </Box>
+            <Box sx={{ bgcolor: 'primary.main' }}>
+              <Box
+                mt={5}
+                sx={{
                   display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  width: '100%',
                 }}
               >
-                <Box
-                  component="img"
-                  src={user.avatarPicture}
-                  sx={{ width: 180, height: '200px', borderRadius: 4 }}
-                />
-                <Box ml="10px">
-                  <Typography variant="h6" color="initial">
-                    Hi, {user.fname} {user.lname}
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="h6" color="light.main">
+                    Sort:
                   </Typography>
-                  <Typography variant="body1" color="initial">
-                    You are teaching{' '}
-                    <span style={{ fontWeight: 'bold' }}>
-                      {courseNo} {courseNo <= 1 ? 'class' : 'classes'} {''}
-                    </span>
-                    at the moment.
-                  </Typography>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  bgcolor: 'secondary.main',
-                  height: '100%',
-                  width: '100vw',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Box
-                  sx={{
-                    bgcolor: 'light.main',
-                    maxWidth: '100%',
-                    height: '200px',
-                    borderRadius: 5,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '10px',
-                    m: 2,
-                    p: 2,
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                    color="initial"
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    {selectedCourseCode}
-                  </Typography>
-
-                  <Typography
-                    variant="subtitle2"
-                    color="initial"
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    {selectedLectureName}
-                  </Typography>
-                  <Button
-                    variant="text"
-                    color="primary"
-                    onClick={() => {
-                      window.open(
-                        `http://localhost:5173/qr?lecture=${selectedLectureId}&course=${selectedCourseId}&courseCode=${encodeURI(selectedCourseCode)}`,
-                        '_blank'
-                      );
-                    }}
-                    sx={{
-                      bgcolor: 'background.default',
-                      borderRadius: 4,
-                      width: '150px',
-                      '&:hover': {
-                        backgroundColor: 'secondary.main',
-                        color: '#000000',
-                      },
-                    }}
-                    disabled={
-                      selectedLectureId === null ||
-                        selectedCourseId === null ? true : false
-                    }
-                  >
-                    Create QR code
-                  </Button>
-                </Box>
-                <Box sx={{ bgcolor: "primary.main" }}>
-                  <Box
-                    mt={5}
-                    sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}
-                  >
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Typography variant="h6" color="light.main">
-                        Sort:
-                      </Typography>
-                      <FormControl sx={{ width: 250 }}>
-                        <Select
-                          labelId="post-select"
-                          id="post-select"
-                          value={changeSort}
-                          onChange={(e) => {
-                            setChangeSort(e.target.value)
-                            console.log(changeSort)
-                          }
-                          }
-                          sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
-                        >
-                          <MenuItem value={"dateDesc"}>Latest</MenuItem>
-                          <MenuItem value={"dateAsc"}>Oldest</MenuItem>
-                          <MenuItem value={"titleAsc"}>Title Ascending</MenuItem>
-                          <MenuItem value={"titleDesc"}>Title Descending</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Stack>
-                  </Box>
-
-                </Box>
-                {courses.length > 0 ? (
-                  courses.map((course) => (
-                    <Box
+                  <FormControl sx={{ width: 250 }}>
+                    <Select
+                      labelId="post-select"
+                      id="post-select"
+                      value={changeSort}
+                      onChange={(e) => {
+                        setChangeSort(e.target.value);
+                        console.log(changeSort);
+                      }}
                       sx={{
-                        bgcolor: 'primary.main',
-                        width: '100%',
-                        height: '100%',
-                        p: '20px',
+                        borderRadius: 5,
+                        bgcolor: 'light.main',
+                        height: '40px',
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          mb: '10px',
-                        }}
-                      >
-                        <Typography
-                          variant="h6"
-                          color="initial"
-                          sx={{ mb: '5px', mr: '10px' }}
-                        >
-                          {course.courseCode}-{course.courseName}
-                        </Typography>
-                        <Button
-                          variant="contained"
-                          sx={{ bgcolor: 'secondary.main', borderRadius: 5 }}
-                          onClick={() => {
-                            setOpenModal(true);
-                            setCreateLectureCourse(course._id);
-                          }}
-                        >
-                          Add Lecture
-                        </Button>
-                      </Box>
-                      <Table sx={{ maxWidth: '100%', bgcolor: 'grey.main' }}>
-                        <TableHead sx={{ bgcolor: 'background.default' }}>
-                          <TableRow>
-                            <TableCell sx={{ color: 'light.main' }}>
-                              Title
+                      <MenuItem value={'dateDesc'}>Latest</MenuItem>
+                      <MenuItem value={'dateAsc'}>Oldest</MenuItem>
+                      <MenuItem value={'titleAsc'}>Title Ascending</MenuItem>
+                      <MenuItem value={'titleDesc'}>Title Descending</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Stack>
+              </Box>
+            </Box>
+            {courses.length > 0 ? (
+              courses.map((course) => (
+                <Box
+                  sx={{
+                    bgcolor: 'primary.main',
+                    width: '100%',
+                    height: '100%',
+                    p: '20px',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      mb: '10px',
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="initial"
+                      sx={{ mb: '5px', mr: '10px' }}
+                    >
+                      {course.courseCode}-{course.courseName}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'secondary.main', borderRadius: 5 }}
+                      onClick={() => {
+                        setOpenModal(true);
+                        setCreateLectureCourse(course._id);
+                      }}
+                    >
+                      Add Lecture
+                    </Button>
+                  </Box>
+                  <Table sx={{ maxWidth: '100%', bgcolor: 'grey.main' }}>
+                    <TableHead sx={{ bgcolor: 'background.default' }}>
+                      <TableRow>
+                        <TableCell sx={{ color: 'light.main' }}>
+                          Title
+                        </TableCell>
+                        <TableCell sx={{ color: 'light.main' }}>Date</TableCell>
+                        <TableCell sx={{ color: 'light.main' }}>
+                          Student Attendance
+                        </TableCell>
+                        <TableCell sx={{ color: 'light.main' }}>
+                          Delete
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {course.lectures ? (
+                        course.lectures.map((lecture) => (
+                          <TableRow
+                            sx={
+                              lecture._id == selectedLectureId
+                                ? {
+                                    backgroundColor: 'yellow',
+                                    cursor: 'pointer',
+                                  }
+                                : { cursor: 'pointer' }
+                            }
+                            onClick={() => {
+                              setSelectedLectureId(lecture._id);
+                              setSelectedLectureName(lecture.lectureName);
+                              setCourseId(course._id);
+                              setSelectedCourseCode(course.courseCode);
+                            }}
+                          >
+                            <TableCell>
+                              {' '}
+                              {lecture.lectureName && lecture.lectureName}
                             </TableCell>
-                            <TableCell sx={{ color: 'light.main' }}>Date</TableCell>
-                            <TableCell sx={{ color: 'light.main' }}>
-                              Student Attendance
+                            <TableCell>
+                              {lecture.date ? formatDate(lecture.date) : null}
                             </TableCell>
-                            <TableCell sx={{ color: 'light.main' }}>
-                              Delete
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {course.lectures ? (
-                            course.lectures.map((lecture) => (
-                              <TableRow
-                                sx={
-                                  lecture._id == selectedLectureId ? { backgroundColor: "yellow", cursor: "pointer" } : { cursor: "pointer" }
-                                }
+                            <TableCell>{lecture.attendence} students</TableCell>
+                            <TableCell>
+                              <IconButton
                                 onClick={() => {
-                                  setSelectedLectureId(lecture._id);
-                                  setSelectedLectureName(lecture.lectureName);
-                                  setCourseId(course._id);
-                                  setSelectedCourseCode(course.courseCode);
+                                  deleteLecture(lecture._id, course._id);
                                 }}
                               >
-                                <TableCell>
-                                  {' '}
-                                  {lecture.lectureName && lecture.lectureName}
-                                </TableCell>
-                                <TableCell>
-                                  {lecture.date ? formatDate(lecture.date) : null}
-                                </TableCell>
-                                <TableCell>{lecture.attendence} students</TableCell>
-                                <TableCell>
-                                  <IconButton
-                                    onClick={() => {
-                                      deleteLecture(lecture._id, course._id);
-                                    }}
-                                  >
-                                    <ClearIcon />
-                                  </IconButton>
-                                </TableCell>
-                              </TableRow>
-                            ))
-                          ) : (
-                            <Typography variant="h6">
-                              there are no lectures currently
-                            </Typography>
-                          )}
-                        </TableBody>
-                      </Table>
+                                <ClearIcon />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <Typography variant="h6">
+                          there are no lectures currently
+                        </Typography>
+                      )}
+                    </TableBody>
+                  </Table>
 
-                      <Modal
-                        open={openModal}
-                        onClose={() => setOpenModal(false)}
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          height: '100vh',
+                  <Modal
+                    open={openModal}
+                    onClose={() => setOpenModal(false)}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '100vh',
+                    }}
+                    slotProps={{
+                      backdrop: {
+                        style: { backgroundColor: 'rgba(128, 128, 128, 0.3)' },
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        bgcolor: 'secondary.main',
+                        p: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        borderRadius: 5,
+                      }}
+                    >
+                      <TextField
+                        onChange={(e) => {
+                          setNewLectureTitle(e.target.value);
                         }}
-                        slotProps={{
-                          backdrop: {
-                            style: { backgroundColor: 'rgba(128, 128, 128, 0.3)' },
+                        sx={{ bgcolor: 'light.main' }}
+                      ></TextField>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          format="DD-MM-YYYY"
+                          onChange={(e) => {
+                            setLectureDate(e.$d);
+                          }}
+                          label="Choose lecture date"
+                          sx={{ bgcolor: 'light.main' }}
+                        />
+                      </LocalizationProvider>
+                      <Button
+                        onClick={() => {
+                          handleSubmitLecture(createLectureCourse);
+                        }}
+                        sx={{
+                          bgcolor: 'background.default',
+                          ml: '10px',
+                          borderRadius: 5,
+                          '&:hover': {
+                            backgroundColor: 'lightBlue.main',
                           },
                         }}
+                        disabled={
+                          newLectureTitle === undefined ||
+                          lectureDate === undefined
+                        }
                       >
-                        <Box
-                          sx={{
-                            bgcolor: 'secondary.main',
-                            p: 10,
-                            display: 'flex',
-                            alignItems: 'center',
-                            borderRadius: 5,
-                          }}
-                        >
-                          <TextField
-                            onChange={(e) => {
-                              setNewLectureTitle(e.target.value);
-                            }}
-                            sx={{ bgcolor: 'light.main' }}
-                          ></TextField>
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                              format="DD-MM-YYYY"
-                              onChange={(e) => {
-                                setLectureDate(e.$d);
-
-                              }}
-                              label="Choose lecture date"
-                              sx={{ bgcolor: 'light.main' }}
-                            />
-                          </LocalizationProvider>
-                          <Button
-                            onClick={() => {
-                              handleSubmitLecture(createLectureCourse);
-                            }}
-                            sx={{
-                              bgcolor: 'background.default',
-                              ml: '10px',
-                              borderRadius: 5,
-                              '&:hover': {
-                                backgroundColor: 'lightBlue.main',
-                              },
-                            }}
-                            disabled={
-                              newLectureTitle === undefined ||
-                              lectureDate === undefined
-                            }
-                          >
-                            Submit
-                          </Button>
-                        </Box>
-                      </Modal>
+                        Submit
+                      </Button>
                     </Box>
-                  ))
-                ) : (
-                  <Typography variant="h6">
-                    YOU ARE NOT CURRENTLY IN CHARGE OF ANY CLASSES
-                  </Typography>
-                )}
-              </Box>
-            </Container >
-          ) : null)
-        )
-      }
+                  </Modal>
+                </Box>
+              ))
+            ) : (
+              <Typography variant="h6">
+                YOU ARE NOT CURRENTLY IN CHARGE OF ANY CLASSES
+              </Typography>
+            )}
+          </Box>
+        </Container>
+      ) : null}
     </>
   );
 };
