@@ -50,13 +50,13 @@ const SinglePostPage = () => {
 
   const generateCourseReviewSummary = async (course_Id) => {
     setAiInProgress(true);
-    const courseIdObjt = {
+    const courseIdObj = {
       courseId: course_Id,
     };
 
     const response = await postRequest(
-      `${API_URL}/lecturai/summarizeReview`,
-      courseIdObjt
+      `${BASE_URL}/lecturai/summarizeReview`,
+      courseIdObj
     );
 
     if (!response.message.content) {
@@ -361,70 +361,70 @@ const SinglePostPage = () => {
             </Box>
           </Box>
 
-          <Box
-            sx={{
-              bgcolor: 'secondary.main',
-              height: '100%',
-              width: '100%',
-              p: '20px',
-              borderRadius: 5,
-              mt: 5,
-            }}
-          >
-            <Box>
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {aiInProgress ? (
-                  <LoadingButton
-                    loading
-                    sx={{
-                      bgcolor: 'background.default',
-                      borderRadius: 5,
-                      '& .MuiCircularProgress-svg': {
-                        color: 'light.main',
-                      },
-                    }}
-                  >
-                    Generating summary...
-                  </LoadingButton>
-                ) : (
-                  <Button
-                    sx={{
-                      bgcolor: 'background.default',
-                      color: 'primary.main',
-                      borderRadius: 5,
-                      '&:hover': {
-                        bgcolor: 'lightBlue.main',
-                      },
-                    }}
-                    onClick={() => generateCourseReviewSummary(courseId)}
-                  >
-                    Generate Summary
-                  </Button>
-                )}
-              </Box>
-              <Box mt="10px" sx={{ display: 'flex', justifyContent: 'center' }}>
-                {!summary && (
-                  <Typography
-                    variant="body1"
-                    color="initial"
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    If you don't want to read reviews, please use AI to summarize
-                    reviews
-                  </Typography>
-                )}
-                {aiError ? (
-                  <Typography sx={{ color: 'red' }}>
-                    AI generation error, try again in 5 minutes
-                  </Typography>
-                ) : (
-                  <Typography variant="body1" color="#000000">
-                    {summary}
-                  </Typography>
-                )}
-              </Box>
-            </Box>
+      <Box
+        sx={{
+          bgcolor: 'secondary.main',
+          height: '100%',
+          width: '100%',
+          p: '20px',
+          borderRadius: 5,
+          mt: 5,
+        }}
+      >
+        <Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            {aiInProgress ? (
+              <LoadingButton
+                loading
+                sx={{
+                  bgcolor: 'background.default',
+                  borderRadius: 5,
+                  '& .MuiCircularProgress-svg': {
+                    color: 'light.main',
+                  },
+                }}
+              >
+                Generating summary...
+              </LoadingButton>
+            ) : (
+              <Button
+                sx={{
+                  bgcolor: 'background.default',
+                  color: 'primary.main',
+                  borderRadius: 5,
+                  '&:hover': {
+                    bgcolor: 'lightBlue.main',
+                  },
+                }}
+                onClick={() => generateCourseReviewSummary(courseId)}
+              >
+                Generate Summary
+              </Button>
+            )}
           </Box>
+          <Box mt="10px" sx={{ display: 'flex', justifyContent: 'center' }}>
+            {!summary && (
+              <Typography
+                variant="body1"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                Not bother to read through?
+                Try lecturAI to summarize the reviews for you!
+              </Typography>
+            )}
+            {aiError ? (
+              <Typography sx={{ color: 'red' }}>
+                AI generation error, try again in 5 minutes
+              </Typography>
+            ) : (
+              <Typography variant="body1" color="#000000">
+                {summary}
+              </Typography>
+            )}
+          </Box>
+        </Box>
+      </Box>
 
           <Box
             mt={5}

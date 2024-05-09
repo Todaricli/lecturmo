@@ -7,6 +7,10 @@ export const authenticate = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
+
+  // if(req.session.user) {
+  //   return next()
+  // }
   // console.log("req:", req)
   res.status(401).json('Unauthorized');
 };
