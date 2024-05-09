@@ -17,7 +17,7 @@ export async function initCourses() {
 }
 
 // find the actual generated _id based off dummy id
-async function fetchUserIds(users) {
+export async function fetchUserIds(users) {
   const userMap = {};
   users.forEach((user) => {
     userMap[user.user_dummy_id] = user._id;
@@ -109,7 +109,7 @@ export async function populateCourses(users, courses) {
           }
         })
 
-        return course.save(); // Save the updated course
+        return await course.save(); // Save the updated course
       }),
     );
   } catch (error) {

@@ -24,6 +24,13 @@ SearchRouter.post('/search', async (req, res) => {
       courses: courseSearchResults,
       category: categorySearchResults,
     });
+
+    // Add debugging statement
+console.log(JSON.stringify({
+  courses: courseSearchResults,
+  category: categorySearchResults,
+}));
+
   }
 
   return res.json();

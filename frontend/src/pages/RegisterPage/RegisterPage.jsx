@@ -272,6 +272,7 @@ export default function RegisterPage() {
           </Grid>
           <Button
             type="submit"
+            data-testid="submit-button"
             fullWidth
             variant="contained"
             disabled={
@@ -281,7 +282,7 @@ export default function RegisterPage() {
               confirmPasswordError !== ''
             }
             sx={{
-              mt: 3,
+              mt: 3,  
               mb: 2,
               borderRadius: 2,
               bgcolor: 'rgb(255,207,96)',
