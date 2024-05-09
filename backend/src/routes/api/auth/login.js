@@ -1,12 +1,14 @@
 import express from 'express';
 import passport from 'passport';
 import { authenticate } from '../../../middleware/authMW.js';
+import signature from 'cookie-signature';
 
 const router = express.Router();
-
+const SECRET_KEY = process.env.COOKIE_SECRET_KEY ?? '39608663';
 // expects username and password
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
+
     // err only happens for outside of auth issues
     if (err) {
       const status = err.status || 500;
@@ -20,14 +22,16 @@ router.post('/login', (req, res, next) => {
       if (err) {
         return res.status(500).json({ message: 'Internal server error' });
       }
-      res.status(200).json({ message: 'Login Successful' });
+      // manually set cookie cuz passport doesn't do it -_-
+      const cookie = 's:' + signature.sign(req.sessionID, SECRET_KEY);
+      console.log("res.cookie:", res.cookie)
+
+      res.status(200).json({ message: 'Login Successful', cookie: cookie});
     });
   })(req, res, next);
 });
 
 router.get('/status', authenticate, (req, res) => {
-  console.log('req.session:', req.session);
-  console.log('req.user:', req.user);
   return req.user ? res.send(req.user) : res.sendStatus(401);
 });
 

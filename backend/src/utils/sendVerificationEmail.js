@@ -11,8 +11,10 @@ const FRONTEND_URL = process.env.CLIENT_URL ?? '';
  * @param {*} email
  */
 export const sendVerificationMail = (user, email) => {
+  console.log("user.emailToken:", user.emailToken)
+  console.log("user.username:", user.username)
+
   const transporter = createMailTransporter();
-  console.log('user:', user);
 
   const mailOptions = {
     from: '"Lecturmon" <lecturmon.officials@outlook.com>',

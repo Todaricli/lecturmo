@@ -8,3 +8,12 @@ export const updateUser = async (formData) => {
   );
   return res;
 };
+
+
+export const resendVerificationEmail = async (formData) => {
+  const res = await postRequest(
+    `${BASE_URL}/resend-verification-email`,
+    formData
+  );
+  return res;
+}
