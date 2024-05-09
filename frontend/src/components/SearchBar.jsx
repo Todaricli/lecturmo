@@ -108,7 +108,7 @@ const SearchBar = () => {
                     console.log(result._id);
                   }}
                 >
-                  {result.courseName}
+                  {result.courseCode} - {result.courseName}
                 </Grid>
               );
             })

@@ -66,6 +66,7 @@ SinglePageRouters.get('/courses/:courseId', async (req, res) => {
       },
     });
 
+
     if (!course) {
       console.log(`Course with ID ${courseId} not found`);
       return res.status(404).json({ error: 'Course not found' });
