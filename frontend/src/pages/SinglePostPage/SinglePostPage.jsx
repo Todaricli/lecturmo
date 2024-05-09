@@ -28,6 +28,7 @@ import WriteReview from '../../components/WriteReview';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ?? 'http://localhost:3000/api';
 
@@ -187,11 +188,11 @@ const SinglePostPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (reviews != undefined) {
-  //     setReview(sortReviews(reviews));
-  //   }
-  // }, [reviews]);
+  useEffect(() => {
+    if (reviews != undefined) {
+      setReview(sortReviews(reviews));
+    }
+  }, [reviews]);
 
   useEffect(() => {
     setCourseId(searchParams.get('courseId'));
@@ -476,6 +477,7 @@ const SinglePostPage = () => {
                                 size="small"
                                 value={calculateSingleRating(review)}
                                 precision={0.5}
+                                readOnly
                               />
                             </Stack>
                           </Grid>
@@ -488,6 +490,7 @@ const SinglePostPage = () => {
                                 size="small"
                                 value={review.difficultyRating}
                                 precision={0.5}
+                                readOnly
                               />
                             </Stack>
                           </Grid>
@@ -500,6 +503,7 @@ const SinglePostPage = () => {
                                 size="small"
                                 value={review.contentRating}
                                 precision={0.5}
+                                readOnly
                               />
                             </Stack>
                           </Grid>
@@ -512,6 +516,7 @@ const SinglePostPage = () => {
                                 size="small"
                                 value={review.qualityRating}
                                 precision={0.5}
+                                readOnly
                               />
                             </Stack>
                           </Grid>
@@ -536,13 +541,21 @@ const SinglePostPage = () => {
                               src={review.userId.avatarPicture}
                             />
                             <Box>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                sx={{ fontWeight: 'bold' }}
-                              >
-                                {review.userId.username}
-                              </Typography>
+                              <Box sx={{display:'flex', justifyContent: 'start', alignItems: 'center'}}>
+                                <Typography
+                                  variant="body1"
+                                  color="initial"
+                                  sx={{ fontWeight: 'bold' }}
+                                >
+                                  {review.userId.username}
+                                </Typography>
+                                <Box>
+                                  {review.userId.isVerified ? (
+                                    <VerifiedIcon color='icon' sx={{width: "17px", ml: "5px"}}/>
+                                  ) : null}
+                                </Box>
+                              </Box>
+
                               <Typography variant="caption" color="initial">
                                 {new Date(review.createdAt).toLocaleDateString(
                                   'en-US',
@@ -556,48 +569,98 @@ const SinglePostPage = () => {
                             </Box>
 
                             {/* for siennna */}
-                            <Typography>{
-                              review.userId.courses.length < 3
-                                ? review.userId.courses.length
-                                : review.userId.courses.length < 8
-                                  ? review.userId.courses.length
-                                  : review.userId.courses.length < 15
-                                    ? review.userId.courses.length
-                                    : null
-                            }</Typography>
-
-
+                            <Box>
+                              {review.userId.courses.length < 3 ? (
+                                <Box
+                                  component="img"
+                                  src="../../../bronze-medal.png"
+                                  sx={{
+                                    width: '40px',
+                                    height: '40px',
+                                    ml: '10px',
+                                  }}
+                                ></Box>
+                              ) : // bronze
+                              review.userId.courses.length < 8 ? (
+                                <Box
+                                  component="img"
+                                  src="../../../silver-medal.png"
+                                  sx={{
+                                    width: '40px',
+                                    height: '40px',
+                                    ml: '10px',
+                                  }}
+                                ></Box>
+                              ) : //silver
+                              review.userId.courses.length < 15 ? (
+                                <Box
+                                  component="img"
+                                  src="../../../gold-badge.png"
+                                  sx={{
+                                    width: '40px',
+                                    height: '40px',
+                                    ml: '10px',
+                                  }}
+                                ></Box>
+                              ) : //gold
+                              null}
+                            </Box>
                           </Box>
                           <Box>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                              {user == null
-                                ? <FavoriteBorderIcon
+                              {user == null ? (
+                                <FavoriteBorderIcon
                                   onClick={() => {
-                                    toast.error("Please log in to like the review")
+                                    toast.error(
+                                      'Please log in to like the review'
+                                    );
                                   }}
-                                  sx={{ color: 'heart.main', cursor: "pointer" }} />
-                                : (!heartLoading &&
-                                  (review.likes.findIndex(like => like.userId === user?._id) == -1
-                                    ? <FavoriteBorderIcon
-                                      onClick={() => {
-                                        console.log("fuck", user)
-                                        toggleLike(review._id, courseId)
-                                        setHeartLoading(true)
-                                        console.log("userId: ", review.likes.findIndex(like => like.userId === user._id))
-                                      }}
-                                      sx={{ color: 'heart.main', cursor: "pointer" }} />
-                                    : <FavoriteIcon
-                                      onClick={() => {
-                                        console.log("fuck", user)
-                                        toggleLike(review._id, courseId)
-                                        console.log("userId: ", review.likes.findIndex(like => like.userId === user._id))
-                                      }}
-                                      sx={{ color: 'heart.main', cursor: "pointer" }}
-                                    />
-                                  )
-                                )
-                              }
+                                  sx={{
+                                    color: 'heart.main',
+                                    cursor: 'pointer',
+                                  }}
+                                />
+                              ) : (
+                                !heartLoading &&
+                                (review.likes.findIndex(
+                                  (like) => like.userId === user?._id
+                                ) == -1 ? (
+                                  <FavoriteBorderIcon
+                                    onClick={() => {
+                                      console.log('fuck', user);
+                                      toggleLike(review._id, courseId);
+                                      setHeartLoading(true);
+                                      console.log(
+                                        'userId: ',
+                                        review.likes.findIndex(
+                                          (like) => like.userId === user._id
+                                        )
+                                      );
+                                    }}
+                                    sx={{
+                                      color: 'heart.main',
+                                      cursor: 'pointer',
+                                    }}
+                                  />
+                                ) : (
+                                  <FavoriteIcon
+                                    onClick={() => {
+                                      console.log('fuck', user);
+                                      toggleLike(review._id, courseId);
+                                      console.log(
+                                        'userId: ',
+                                        review.likes.findIndex(
+                                          (like) => like.userId === user._id
+                                        )
+                                      );
+                                    }}
+                                    sx={{
+                                      color: 'heart.main',
+                                      cursor: 'pointer',
+                                    }}
+                                  />
+                                ))
+                              )}
                               <Typography variant="body1" color="initial">
                                 {review.likes.length}
                               </Typography>
