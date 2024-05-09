@@ -34,10 +34,10 @@ const QrCode = () => {
 
   const getServerTime = async () => {
     const time = await fetch(
-      `http://worldtimeapi.org/api/timezone/Pacific/Auckland`
+      `https://timeapi.io/api/Time/current/zone?timeZone=Pacific/Auckland`
     );
     const timeJson = await time.json();
-    setCurrentTime(timeJson.utc_datetime);
+    setCurrentTime(timeJson.dateTime);
   };
 
   useEffect(() => {
