@@ -57,7 +57,7 @@ const HomePage = () => {
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         data-testid='home'
     >
-      <SearchBar />
+      <SearchBar/>
       <LandingPosts posts={posts} />
         <Snackbar
           open={open}

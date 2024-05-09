@@ -51,8 +51,8 @@ const VerificationSuccessPage = () => {
     <div className={css(backgroundStyle)} data-testid="background-container">
       <div className={css(containerStyle)}>
       <CheckCircleOutlineIcon data-testid="error-icon"/>
-        <p className={css(titleStyle)}>SUCCESS!</p>
-        <p className={css(contentStyle)}>
+        <p className={css(titleStyle)} data-testid="error-title">SUCCESS!</p>
+        <p className={css(contentStyle)} data-testid="error-content">
           Congrats! You have attended the lecture!
         </p>
 
