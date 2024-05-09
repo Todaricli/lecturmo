@@ -1,10 +1,13 @@
 import { test, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import VerificationSuccessPage from '../../pages/ScanVerificationPage/VerificationSuccessPage';
+import { MemoryRouter } from 'react-router-dom';
 
 test('VerificationErrorPage component', () => {
     // Render the VerificationErrorPage component
-    const { getByTestId } = render(<VerificationSuccessPage />);
+    const { getByTestId } = render(<MemoryRouter>
+      <VerificationSuccessPage />
+      </MemoryRouter>);
   
     // Assert that the container element is rendered
     const container = getByTestId('background-container');

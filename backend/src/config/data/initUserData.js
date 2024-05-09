@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { User } from '../../schemas/userSchema.js';
 import { hashPassword } from '../../utils/useBcrypt.js';
 import { usersJSON } from './raw/usersJSON.js';
+import { newUsersJSON } from './raw/newUsersJSON.js'
 
 const NUMBER_OF_USERS = usersJSON.length;
 const PASSWORD = '123';
@@ -87,13 +88,11 @@ export async function populateUsers(users, courses) {
 
         // Populate user details
         user.name = faker.person.fullName();
-        user.username = `user${index + 1}`;
-        // user.password = "123";
+        user.username = `user${index + 1 + "a"}`;
+        // user.password = hashPassword(123);
         user.email = faker.internet.email();
         user.rank = faker.helpers.arrayElement([
-          'Beginner',
-          'Intermediate',
-          'Advanced',
+          'none', 'bronze', 'silver', 'gold'
         ]);
         user.profileDescription = faker.lorem.sentence();
         user.avatarPicture = faker.image.avatar();
@@ -112,5 +111,3 @@ export async function populateUsers(users, courses) {
     console.error('Failed to populate users:', error);
   }
 }
-
-export {initUsers, updateUserForeignKeys};
