@@ -29,6 +29,7 @@ import Loading from '../../components/Loading.jsx';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClearIcon from '@mui/icons-material/Clear';
+import AccessDenied from '../../components/AccessDenied.jsx';
 
 const BASE_URL =
   import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ??
@@ -41,13 +42,15 @@ const LecturerPage = () => {
   }
 
   useEffect(() => {
-    console.log(user);
-    if (user.roles != 'lecturer') {
-      navigate('/');
+    console.log(user)
+    if (user.roles != "lecturer") {
+      navigate('/')
     }
-  }, []);
+  }, [])
 
   const navigate = useNavigate();
+
+  const [handleInitalLoad, setInitialLoad] = useState(true);
 
   const [coursesList, setCoursesList] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -176,6 +179,7 @@ const LecturerPage = () => {
       setCourseNo(res.data.length);
       setCourses(res.data);
       setLectures(res.data.lectures);
+      setInitialLoad(false);
     });
   };
 
@@ -229,7 +233,11 @@ const LecturerPage = () => {
 
   return (
     <>
-      {courses ? (
+      {handleInitalLoad ? (
+        <Loading />
+      ) : user === null || user.roles != 'lecturer' ? (
+        <AccessDenied />
+      ) : courses ? (
         <Container
           maxWidth="lg"
           sx={{
@@ -335,42 +343,43 @@ const LecturerPage = () => {
                 Create QR code
               </Button>
             </Box>
-
-            <Box bgcolor="primary.main" width="100vw" pr="5px">
-              <Stack
-                direction="row"
-                justifyContent="flex-end"
-                alignItems="center"
-                spacing={1}
-                mt={2}
+            <Box sx={{ bgcolor: 'primary.main' }}>
+              <Box
+                mt={5}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  width: '100%',
+                }}
               >
-                <Typography variant="subtitle2" color="initial">
-                  Sort:
-                </Typography>
-                <FormControl sx={{ width: '200px' }}>
-                  <Select
-                    labelId="post-select"
-                    id="post-select"
-                    value={changeSort}
-                    onChange={(e) => {
-                      setChangeSort(e.target.value);
-                      console.log(changeSort);
-                    }}
-                    sx={{
-                      borderRadius: 5,
-                      bgcolor: 'light.main',
-                      height: '35px',
-                    }}
-                  >
-                    <MenuItem value={'dateDesc'}>Latest</MenuItem>
-                    <MenuItem value={'dateAsc'}>Oldest</MenuItem>
-                    <MenuItem value={'titleAsc'}>Title Ascending</MenuItem>
-                    <MenuItem value={'titleDesc'}>Title Descending</MenuItem>
-                  </Select>
-                </FormControl>
-              </Stack>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="h6" color="light.main">
+                    Sort:
+                  </Typography>
+                  <FormControl sx={{ width: 250 }}>
+                    <Select
+                      labelId="post-select"
+                      id="post-select"
+                      value={changeSort}
+                      onChange={(e) => {
+                        setChangeSort(e.target.value);
+                        console.log(changeSort);
+                      }}
+                      sx={{
+                        borderRadius: 5,
+                        bgcolor: 'light.main',
+                        height: '40px',
+                      }}
+                    >
+                      <MenuItem value={'dateDesc'}>Latest</MenuItem>
+                      <MenuItem value={'dateAsc'}>Oldest</MenuItem>
+                      <MenuItem value={'titleAsc'}>Title Ascending</MenuItem>
+                      <MenuItem value={'titleDesc'}>Title Descending</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Stack>
+              </Box>
             </Box>
-
             {courses.length > 0 ? (
               courses.map((course) => (
                 <Box
@@ -384,7 +393,7 @@ const LecturerPage = () => {
                   <Box
                     sx={{
                       display: 'flex',
-                      justifyContent: 'start',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
                       mb: '10px',
                     }}
@@ -394,7 +403,7 @@ const LecturerPage = () => {
                       color="initial"
                       sx={{ mb: '5px', mr: '10px' }}
                     >
-                      {course.courseCode} - {course.courseName}
+                      {course.courseCode}-{course.courseName}
                     </Typography>
                     <Button
                       variant="contained"
@@ -442,6 +451,7 @@ const LecturerPage = () => {
                             }}
                           >
                             <TableCell>
+                              {' '}
                               {lecture.lectureName && lecture.lectureName}
                             </TableCell>
                             <TableCell>
