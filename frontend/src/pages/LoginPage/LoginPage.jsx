@@ -82,16 +82,6 @@ export default function LoginPage() {
     event.preventDefault();
   };
 
-  const handleEmail = (e) => {
-    setUsername(e);
-    console.log(username);
-  };
-
-  const handlePassword = (e) => {
-    setPassword(e);
-    console.log(password);
-  };
-
   return (
     <Container
       component="main"
@@ -178,7 +168,10 @@ export default function LoginPage() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3, mb: 2,
+              backgroundColor: 'secondary.main',
+            }}
           >
             Login
           </Button>
