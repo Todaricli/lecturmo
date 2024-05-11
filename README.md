@@ -8,7 +8,21 @@
 ## Overview
 <b>Lecturmo</b> is a comprehensive web application designed for universities, aimed at enhancing the university experience by fostering a transparent and informative environment for students to share their experiences and help others make informed decisions about their academic pursuits.
 
-Link to live deployement!
+***------------------This section below added after due date--------------------***
+
+Due to **[External DNS verification](https://www.site24x7.com/learn/external-dns.html#:~:text=External%20DNS%20allows%20you%20to,to%20look%20up%20domain%20names.)** of our hosted website took longer than expected, we just got it verified today.
+
+https://lecturmo.org
+
+This is the hosted custom domain, which fixed the issue of cookies not being set when logged in.
+
+However, it somehow still **does not** able to set the cookies on **Iphone**, but **works** for any browsers on **Mac**, **Windows**, and **Android**.
+
+Feel free to disregard this section, if this after due date modification in the ReadMe is not permitted.
+
+***------------------------------Section End------------------------------------***
+
+**Link to live deployement!**
 
 https://lecturemon.netlify.app/home
 Please use ***firefox*** when using hosted site, because Netlify.app being listed in Public Suffix List (PSL), which cannot properly set cookies, only firefox allows cookie to be set, other browser will work as well, but cannot be properly log in a user.
