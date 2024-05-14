@@ -11,7 +11,7 @@ import {
   Stack,
 } from '@mui/material';
 import React, { useEffect } from 'react';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
@@ -37,13 +37,13 @@ const LandingPosts = ({ posts }) => {
       totalRating += averageRating;
     });
     const overallRating = totalRating / totalReviews;
-    console.log('course: ', post.courseCode);
-    console.log(overallRating);
+    // console.log('course: ', post.courseCode);
+    // console.log(overallRating);
     return overallRating;
   };
 
   useEffect(() => {
-    console.log('posts:', posts);
+    // console.log('posts:', posts);
   }, [posts]);
 
   return (
@@ -55,6 +55,7 @@ const LandingPosts = ({ posts }) => {
       spacing={2}
       sx={{ mt: '20px' }}
     >
+      
       {[...Array(2)].map((_, columnIndex) => (
         <Grid item lg={2} key={columnIndex}>
           {/* Each column */}
@@ -71,7 +72,7 @@ const LandingPosts = ({ posts }) => {
                 }}
                 onClick={() => {
                   navigate(`/courses?courseId=${post._id}`);
-                  console.log(post);
+                  // console.log(post);
                 }}
               >
                 <Card
@@ -85,8 +86,10 @@ const LandingPosts = ({ posts }) => {
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      flexDirection: 'column',
+                      flexDirection: 'row',
+                      alignItems: 'center',
                       height: '100%',
+                      pr: '10px'
                     }}
                   >
                     <CardHeader
@@ -96,6 +99,10 @@ const LandingPosts = ({ posts }) => {
                         fontWeight: 'bold',
                       }}
                     />
+                    <Box>
+                      {post?.reviews?.length}
+                      <RateReviewIcon color='heart' sx={{width: "20px"}}/>
+                    </Box>
                   </Box>
                   <Box
                     sx={{
@@ -150,12 +157,7 @@ const LandingPosts = ({ posts }) => {
                         >
                           Review:
                         </Typography>
-                        <Stack direction="row">
-                          <FavoriteIcon color="heart" sx={{ width: '20px' }} />
-                          <Typography variant="body1" color="heart.main">
-                            {post?.reviews?.length}
-                          </Typography>
-                        </Stack>
+                        
                       </Box>
                       <Typography
                         variant="body2"

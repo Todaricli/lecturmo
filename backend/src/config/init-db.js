@@ -24,6 +24,7 @@ async function run() {
   try {
     console.log('Connecting to database.');
     await mongoose.connect(MONGODB_CONNECTION_STRING);
+    console.log(`Connected to database at ${MONGODB_CONNECTION_STRING}.`);
 
     await mongoose.connection.dropDatabase();
     console.log('Database cleared.');
@@ -32,14 +33,18 @@ async function run() {
     // const users = await createEmptyUsers();
     // const courses = await createEmptyCourses();
 
-    const users = await initUsers();
     const courses = await initCourses();
 
-    await updateUserForeignKeys(users, courses);
-    await updateCourseForeignKeys(users, courses);
+    if (courses) {
+      const users = await initUsers();
 
-    // await populateUsers(users, courses);
-    // await populateCourses(users, courses);
+      await updateUserForeignKeys(users, courses);
+      await updateCourseForeignKeys(users, courses);
+
+      // await populateUsers(users, courses);
+      // await populateCourses(users, courses);
+    }
+
     console.log('Database seeded successfully.');
   } catch (error) {
     console.error('Error seeding the database:', error);
@@ -50,3 +55,5 @@ async function run() {
 }
 
 run();
+
+export {run};

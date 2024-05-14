@@ -13,7 +13,7 @@ SearchRouter.post('/search', async (req, res) => {
 
   if (searchParams !== undefined && searchParams.length != 0) {
     const courseSearchResults = await Course.find({
-      courseName: { $regex: searchParams, $options: 'i' },
+      courseCode: { $regex: searchParams, $options: 'i' },
     }).exec();
     const categorySearchResults = await Course.find({
       category: { $regex: searchParams, $options: 'i' },
@@ -24,6 +24,13 @@ SearchRouter.post('/search', async (req, res) => {
       courses: courseSearchResults,
       category: categorySearchResults,
     });
+
+    // Add debugging statement
+console.log(JSON.stringify({
+  courses: courseSearchResults,
+  category: categorySearchResults,
+}));
+
   }
 
   return res.json();

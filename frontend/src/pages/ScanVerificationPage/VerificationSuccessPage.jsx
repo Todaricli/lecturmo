@@ -3,7 +3,9 @@ import Button from '@mui/material/Button';
 import { css } from '@emotion/css';
 import { useMediaQuery } from 'react-responsive';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useNavigate } from 'react-router-dom';
 const VerificationSuccessPage = () => {
+  const navigate = useNavigate()
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define your mobile breakpoint here
 
   const containerStyle = {
@@ -48,15 +50,21 @@ const VerificationSuccessPage = () => {
   };
 
   return (
-    <div className={css(backgroundStyle)}>
+    <div className={css(backgroundStyle)} data-testid="background-container">
       <div className={css(containerStyle)}>
-      <CheckCircleOutlineIcon />
-        <p className={css(titleStyle)}>SUCCESS!</p>
-        <p className={css(contentStyle)}>
+      <CheckCircleOutlineIcon data-testid="error-icon"/>
+        <p className={css(titleStyle)} data-testid="error-title">SUCCESS!</p>
+        <p className={css(contentStyle)} data-testid="error-content">
           Congrats! You have attended the lecture!
         </p>
 
-        <Button variant="contained" color="success">
+        <Button 
+        onClick={()=>{
+          navigate("/")
+        }}
+        variant="contained" 
+        color="success" 
+        data-testid="try-again-button">
           Go Back Home
         </Button>
       </div>

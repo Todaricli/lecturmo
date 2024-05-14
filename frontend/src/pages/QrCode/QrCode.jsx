@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+const FRONTEND_HOST_URL =
+  import.meta.env.VITE_FRONTEND_NETLIFY_APP_URL ??
+  'http://localhost:5173';
+
 const QrCode = () => {
 
   const navigate = useNavigate()
@@ -16,24 +20,31 @@ const QrCode = () => {
 
   if (!courseId || !lecture) {
     return (<>
-      <div style={{backgroundColor: "white"}}>
+      <div style={{ backgroundColor: "white" }}>
         <h1 style={{
           color: "black",
           scale: "500px"
         }}>
           Error generating QR code
         </h1>
-        <button onClick={()=>{navigate(-1)}}>Go Back</button>
+        <button onClick={() => { navigate(-1) }}>Go Back</button>
       </div>
     </>)
   }
 
   const getServerTime = async () => {
-    const time = await fetch(
-      `http://worldtimeapi.org/api/timezone/Pacific/Auckland`
-    );
-    const timeJson = await time.json();
-    setCurrentTime(timeJson.utc_datetime);
+    try {
+      const time = await fetch(
+        `https://timeapi.io/api/Time/current/zone?timeZone=Pacific/Auckland`
+      );
+      const timeJson = await time.json();
+      setCurrentTime(timeJson.dateTime);
+    } catch (e) {
+      console.log(e)
+      const newDate = new Date().toISOString();
+      console.log(newDate)
+      setCurrentTime(newDate);
+    }
   };
 
   useEffect(() => {
@@ -45,7 +56,7 @@ const QrCode = () => {
 
   useEffect(() => {
     setQrCode(
-      `http://localhost:5173/qr-landing-page?date=${currentTime}&course=${courseId}&lecture=${lecture}&courseCode=${encodeURI(courseCode)}`
+      `${FRONTEND_HOST_URL}/qr-landing-page?date=${encodeURI(currentTime)}&course=${courseId}&lecture=${lecture}&courseCode=${encodeURI(courseCode)}`
     );
   }, [currentTime]);
 
@@ -64,6 +75,7 @@ const QrCode = () => {
       }}
     >
       <Box>
+        <Typography variant='h5' mb="10px" color="light.main">{courseCode}</Typography>
         <QRCode value={qrCode} />
         <Typography variant="body1" color="primary">
           {currentTime}

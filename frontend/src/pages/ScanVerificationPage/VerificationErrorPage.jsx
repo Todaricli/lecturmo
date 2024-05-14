@@ -3,9 +3,11 @@ import Button from '@mui/material/Button';
 import { css } from '@emotion/css';
 import { useMediaQuery } from 'react-responsive';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { useNavigate } from 'react-router-dom';
 
 
 const VerificationErrorPage = () => {
+  const navigate = useNavigate()
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define your mobile breakpoint here
 
   const containerStyle = {
@@ -50,15 +52,21 @@ const VerificationErrorPage = () => {
   };
 
   return (
-    <div className={css(backgroundStyle)}>
+    <div className={css(backgroundStyle)} data-testid="background-container">
       <div className={css(containerStyle)}>
-      <HighlightOffIcon />
+      <HighlightOffIcon data-testid="error-icon"/>
       
 
-        <p className={css(titleStyle)}>ERROR!</p>
-        <p className={css(contentStyle)}>We couldn't process your request.</p>
+        <p className={css(titleStyle)} data-testid="error-title">ERROR!</p>
+        <p className={css(contentStyle)} data-testid="error-content">We couldn't process your request.</p>
 
-        <Button variant="contained" color="error">
+        <Button
+          onClick={() => {
+            navigate("/")
+          }}
+          variant="contained"
+          color="error" 
+          data-testid="try-again-button">
           Try Again
         </Button>
       </div>
