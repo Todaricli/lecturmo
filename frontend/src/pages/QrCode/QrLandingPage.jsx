@@ -22,7 +22,6 @@ const QrLandingPage = () => {
   const [user, setUser] = useState();
 
   const submit = async () => {
-    console.log(courseCode);
     try {
       if (date && course) {
         const response = await axios
@@ -42,7 +41,6 @@ const QrLandingPage = () => {
           )
           .then((response) => {
             setResponse(response);
-            console.log('skeet');
           });
       }
     } catch (error) {
@@ -70,16 +68,13 @@ const QrLandingPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log('asd');
     submit();
   }, [date, course]);
 
   useEffect(() => {
-    console.log('here');
-    console.log(response);
+    // console.log(response);
     if (response != undefined) {
       setValidity(response.data.validity);
-      console.log(response.data.validity);
       setIsLoading(false);
     }
   }, [response]);

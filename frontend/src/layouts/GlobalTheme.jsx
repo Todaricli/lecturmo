@@ -40,6 +40,14 @@ export const theme = createTheme({
   shadows: {
     0: 'none',
     1: 'rgba(0, 0, 0, 0.15) 0px 30px 14px',
+    2: 'rgba(0, 0, 0, 0.15) 0px 30px 14px',
+    3: 'rgba(0, 0, 0, 0) 0px 30px 14px',
+    4: 'rgba(0, 0, 0, 0) 0px 30px 14px',
+    5: 'rgba(0, 0, 0, 0) 0px 30px 14px',
+    6: 'rgba(0, 0, 0, 0) 0px 30px 14px',
+    7: 'rgba(0, 0, 0, 0) 0px 30px 14px',
+    8: 'rgba(0, 0, 0, 0) 0px 30px 14px',
+    9: 'rgba(0, 0, 0, 0) 0px 30px 14px',
   },
   components: {
     MuiLinearProgress: {

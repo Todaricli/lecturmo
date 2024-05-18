@@ -37,8 +37,6 @@ const LandingPosts = ({ posts }) => {
       totalRating += averageRating;
     });
     const overallRating = totalRating / totalReviews;
-    // console.log('course: ', post.courseCode);
-    // console.log(overallRating);
     return overallRating;
   };
 

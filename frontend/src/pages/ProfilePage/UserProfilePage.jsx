@@ -37,7 +37,6 @@ const UserProfilePage = () => {
   }
 
   const handleResendEmail = async () => {
-    console.log("user:", user)
     const res = await resendVerificationEmail({
       username: user.username,
       email: user.email,

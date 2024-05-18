@@ -206,8 +206,6 @@ const SinglePostPage = () => {
           const response = await axios
             .get(`${BASE_URL}/courses/${courseId}`)
             .then((res) => {
-              console.log('single course: ', res.data.reviews);
-              console.log("sorting: ", sortBy)
               setCourse(res.data);
               setReview(sortReviews(res.data.reviews));
               setInitialLoad(false)
@@ -446,7 +444,6 @@ const SinglePostPage = () => {
                     setSortBy(e.target.value)
 
                     console.log(e.target.value)
-                    console.log("fuck")
                   }}
                   sx={{ borderRadius: 5, bgcolor: 'light.main', height: '40px' }}
                 >
@@ -630,7 +627,6 @@ const SinglePostPage = () => {
                                 ) == -1 ? (
                                   <FavoriteBorderIcon
                                     onClick={() => {
-                                      console.log('fuck', user);
                                       toggleLike(review._id, courseId);
                                       setHeartLoading(true);
                                       console.log(
@@ -648,7 +644,6 @@ const SinglePostPage = () => {
                                 ) : (
                                   <FavoriteIcon
                                     onClick={() => {
-                                      console.log('fuck', user);
                                       toggleLike(review._id, courseId);
                                       console.log(
                                         'userId: ',

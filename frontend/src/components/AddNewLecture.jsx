@@ -8,16 +8,13 @@ const AddNewLecture = ({ lectureId, courseList }) => {
   const [selectedLecture, setSelectedLecture] = useState('');
 
   const getClasses = async () => {
-    console.log('asd');
     await axios.get(`${BASE_URL}/lecture-list`).then((res) => {
       console.log(res);
     });
   };
 
   useEffect(() => {
-    console.log('sjkjetjejtejtj');
     console.log(courseList);
-    console.log('here');
   }, [courseList]);
 
   return (
@@ -53,7 +50,6 @@ const AddNewLecture = ({ lectureId, courseList }) => {
                   <>
                     <div
                       onClick={() => {
-                        console.log(item._id);
                         setSelectedLecture(item._id);
                         lectureId(item._id, items._id);
                       }}

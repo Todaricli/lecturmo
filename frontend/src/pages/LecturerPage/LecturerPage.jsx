@@ -46,7 +46,7 @@ const LecturerPage = () => {
   }
 
   useEffect(() => {
-    console.log(user)
+    // console.log(user)
     if (user.roles != "lecturer") {
       navigate('/')
     }
@@ -75,7 +75,6 @@ const LecturerPage = () => {
   const [changeSort, setChangeSort] = useState('dateDesc');
 
   const sortLecturesByNameDesc = () => {
-    console.log('here');
     const sortedCourses = courses.map((course) => {
       const sortedLectures = [...course.lectures].sort((a, b) => {
         const lectureNameA = a.lectureName.toLowerCase();
@@ -84,7 +83,7 @@ const LecturerPage = () => {
       });
       return { ...course, lectures: sortedLectures };
     });
-    console.log('courses', sortedCourses);
+    // console.log('courses', sortedCourses);
     setCourses(sortedCourses);
   };
 
@@ -125,14 +124,11 @@ const LecturerPage = () => {
       if (sortStyle == 'dateAsc') {
         sortLecturesByDateAsc();
       } else if (sortStyle == 'dateDesc') {
-        console.log('datedesc');
+        // console.log('datedesc');
         sortLecturesByDateDesc();
       } else if (sortStyle == 'titleAsc') {
-        console.log('titleasc');
-        console.log('skeet');
         sortLecturesByNameAsc();
       } else if (sortStyle == 'titleDesc') {
-        console.log('titledsc');
         sortLecturesByNameDesc();
       }
     }
@@ -188,7 +184,7 @@ const LecturerPage = () => {
   };
 
   const createLecture = async (courseId) => {
-    console.log('lec', lectureDate);
+    // console.log('lec', lectureDate);
     await axios
       .post(
         `${BASE_URL}/add-lecture`,
@@ -219,7 +215,6 @@ const LecturerPage = () => {
     }
   };
 
-  console.log(courses);
 
   useEffect(() => {
     sortList(changeSort);
@@ -231,7 +226,7 @@ const LecturerPage = () => {
 
   useEffect(() => {
     if (coursesList != undefined) {
-      console.log(courseList);
+      // console.log(courseList);
     }
   }, [coursesList]);
 
@@ -365,7 +360,6 @@ const LecturerPage = () => {
                     value={changeSort}
                     onChange={(e) => {
                       setChangeSort(e.target.value);
-                      console.log(changeSort);
                     }}
                     sx={{
                       borderRadius: 5,

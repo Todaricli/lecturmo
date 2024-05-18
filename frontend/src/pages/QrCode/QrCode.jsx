@@ -42,7 +42,6 @@ const QrCode = () => {
     } catch (e) {
       console.log(e)
       const newDate = new Date().toISOString();
-      console.log(newDate)
       setCurrentTime(newDate);
     }
   };
@@ -61,7 +60,7 @@ const QrCode = () => {
   }, [currentTime]);
 
   useEffect(() => {
-    console.log(qrCode);
+    // console.log(qrCode);
   }, [qrCode]);
 
   return (

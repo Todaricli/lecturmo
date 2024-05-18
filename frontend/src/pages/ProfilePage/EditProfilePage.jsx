@@ -134,8 +134,6 @@ const EditProfilePage = () => {
           email: value,
           verifyEmail: formData.verifyEmail,
         });
-        console.log("formData.email:", formData.email)
-        console.log("user.email:", user.email)
         setEmailError(
           res && res.error && value.length > 0 && value != user.email ? res.message : '');
       } else if (name === 'password') {

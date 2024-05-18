@@ -36,7 +36,7 @@ const HomePage = () => {
   },[])
 
   useEffect(() => {
-    console.log('message:', message);
+    // console.log('message:', message);
     if (message === 'Successfully verified!') {
       setOpen(true);
     }

@@ -98,7 +98,6 @@ export default function RegisterPage() {
           password: value,
           confirmPassword: formData.confirmPassword,
         });
-        console.log('res2:', res2);
         setConfirmPasswordError(
           res2 && res2.error && formData.confirmPassword.length > 0
             ? res2.message
@@ -125,7 +124,6 @@ export default function RegisterPage() {
 
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
     const res = await registerUser(formData);
     setRegisterError(res && res.error ? res.message : '');
     if (!res.error) {
