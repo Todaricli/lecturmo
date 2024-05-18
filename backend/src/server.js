@@ -64,15 +64,13 @@ export async function startExpress() {
     session({
       secret: SECRET_KEY,
       saveUninitialized: false,
-      resave: true,
+      resave: false,
       store: MongoStore.create({
         mongoUrl: MONGODB_CONNECTION_STRING,
         collection: 'sessions',
       }), //session is now stored in db
       cookie: {
-        secure: false,
         maxAge: 60 * 60 * 1000, // 1 hour
-        sameSite: 'none'
       },
     })
   );
