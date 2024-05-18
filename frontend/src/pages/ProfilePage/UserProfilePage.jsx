@@ -36,8 +36,8 @@ const UserProfilePage = () => {
 
   useEffect(() => {
     const preloadAvatar = async () => {
-      const avatarUrl = user?.avatarPicture || '../../../no-avatar.png';
-      await preloadImages([avatarUrl]);
+      const avatarUrls = [user?.avatarPicture];
+      await preloadImages(avatarUrls);
     };
 
     const loadData = async () => {
@@ -61,7 +61,7 @@ const UserProfilePage = () => {
     }
   };
 
-  if (user === null) {
+  if (initialLoad || user === null) {
     return <Loading />;
   }
 

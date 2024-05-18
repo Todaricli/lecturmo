@@ -139,10 +139,6 @@ const EditProfilePage = () => {
     }
   }, [open, updateUserDetails]);
 
-  if (initialLoad || user === null) {
-    return <Loading />;
-  }
-
   const handleChange = async (event) => {
     const { name, value, checked, type } = event.target;
     setUpdateError('');
@@ -254,12 +250,16 @@ const EditProfilePage = () => {
     setIsAvatarSelectorVisible(true);
   };
 
+  if (initialLoad || user === null) {
+    return <Loading />;
+  }
+
   return (
     <Grid container>
       <Grid container item
         sx={{
           bgcolor: 'primary.main',
-          m: {xs: "50px 20px", md: "50px 100px", lg: "50px 200px"},
+          m: { xs: "50px 20px", md: "50px 100px", lg: "50px 200px" },
           height: 'fit-content',
           borderRadius: 4,
           p: "20px"

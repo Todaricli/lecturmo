@@ -30,6 +30,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccessDenied from '../../components/AccessDenied.jsx';
+import { preloadImages } from '../../services/preloadImages.js';
 
 const BASE_URL =
   import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ??
@@ -41,29 +42,15 @@ const FRONTEND_HOST_URL =
 
 const LecturerPage = () => {
   const { user } = useContext(AuthContext);
-  if (user === null) {
-    return <Loading />;
-  }
-
-  useEffect(() => {
-    // console.log(user)
-    if (user.roles != "lecturer") {
-      navigate('/')
-    }
-  }, [])
-
   const navigate = useNavigate();
 
-  const [handleInitalLoad, setInitialLoad] = useState(true);
-
+  const [initialLoad, setInitialLoad] = useState(true);
   const [coursesList, setCoursesList] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-
   const [selectedLectureId, setSelectedLectureId] = useState(null);
   const [selectedLectureName, setSelectedLectureName] = useState(null);
   const [selectedCourseId, setCourseId] = useState(null);
-  const [selectedCourseCode, setSelectedCourseCode] =
-    useState('nothing selected');
+  const [selectedCourseCode, setSelectedCourseCode] = useState('nothing selected');
   const [courses, setCourses] = useState();
   const [courseNo, setCourseNo] = useState();
   const [lectures, setLectures] = useState();
@@ -71,8 +58,55 @@ const LecturerPage = () => {
   const [lectureDate, setLectureDate] = useState();
   const [openModal, setOpenModal] = useState(false);
   const [createLectureCourse, setCreateLectureCourse] = useState();
-
   const [changeSort, setChangeSort] = useState('dateDesc');
+
+  useEffect(() => {
+    // Redirect if the user is not a lecturer
+    if (user?.roles !== 'lecturer') {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
+    const preloadAvatarAndFetchClasses = async () => {
+      try {
+        if (user?.avatarPicture) {
+          await preloadImages([user.avatarPicture]);
+        }
+        const response = await axios.get(`${BASE_URL}/lecture-list`);
+        setCourseNo(response.data.length);
+        setCourses(response.data);
+        setLectures(response.data.lectures);
+      } catch (error) {
+        console.error('Failed to preload avatar or fetch classes:', error);
+      } finally {
+        setInitialLoad(false);
+      }
+    };
+
+    if (user) {
+      preloadAvatarAndFetchClasses();
+    } else {
+      setInitialLoad(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/lecture-list`);
+        setCourseNo(response.data.length);
+        setCourses(response.data);
+        setLectures(response.data.lectures);
+      } catch (error) {
+        console.error('Failed to fetch courses:', error);
+      }
+    };
+
+    if (!initialLoad) {
+      fetchCourses();
+    }
+  }, [isLoading, initialLoad]);
 
   const sortLecturesByNameDesc = () => {
     const sortedCourses = courses.map((course) => {
@@ -83,7 +117,6 @@ const LecturerPage = () => {
       });
       return { ...course, lectures: sortedLectures };
     });
-    // console.log('courses', sortedCourses);
     setCourses(sortedCourses);
   };
 
@@ -120,15 +153,14 @@ const LecturerPage = () => {
   };
 
   const sortList = (sortStyle) => {
-    if (courses != undefined) {
-      if (sortStyle == 'dateAsc') {
+    if (courses !== undefined) {
+      if (sortStyle === 'dateAsc') {
         sortLecturesByDateAsc();
-      } else if (sortStyle == 'dateDesc') {
-        // console.log('datedesc');
+      } else if (sortStyle === 'dateDesc') {
         sortLecturesByDateDesc();
-      } else if (sortStyle == 'titleAsc') {
+      } else if (sortStyle === 'titleAsc') {
         sortLecturesByNameAsc();
-      } else if (sortStyle == 'titleDesc') {
+      } else if (sortStyle === 'titleDesc') {
         sortLecturesByNameDesc();
       }
     }
@@ -136,72 +168,42 @@ const LecturerPage = () => {
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-
-    const day = date.getDate().toString().padStart(2, '0'); // Get day and pad with leading zero if necessary
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (months are zero-based) and pad with leading zero if necessary
-    const year = date.getFullYear(); // Get full year
-
-    const formattedDate = `${day}-${month}-${year}`;
-    return formattedDate;
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   };
 
   const deleteLecture = async (lectureIdToDelete, courseIdToDelete) => {
-    const response = await axios
-      .post(
-        `${BASE_URL}/delete-lecture`,
-        {
-          courseId: courseIdToDelete,
-          lectureId: lectureIdToDelete,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => {
-        if (res.data.success) {
-          toast.success('Lecture successfully deleted');
-          setCourseId(null);
-          setSelectedLectureName(null);
-          setSelectedLectureId(null);
-          setSelectedCourseCode('nothing selected');
-        } else {
-          toast.error('Error deleting lecture');
-        }
-        setIsLoading(!isLoading);
-      });
-  };
+    const response = await axios.post(
+      `${BASE_URL}/delete-lecture`,
+      { courseId: courseIdToDelete, lectureId: lectureIdToDelete },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
 
-  const getClasses = async () => {
-    await axios.get(`${BASE_URL}/lecture-list`).then((res) => {
-      console.log(res);
-      setCourseNo(res.data.length);
-      setCourses(res.data);
-      setLectures(res.data.lectures);
-      setInitialLoad(false);
-    });
+    if (response.data.success) {
+      toast.success('Lecture successfully deleted');
+      setCourseId(null);
+      setSelectedLectureName(null);
+      setSelectedLectureId(null);
+      setSelectedCourseCode('nothing selected');
+    } else {
+      toast.error('Error deleting lecture');
+    }
+    setIsLoading(!isLoading);
   };
 
   const createLecture = async (courseId) => {
-    // console.log('lec', lectureDate);
-    await axios
-      .post(
-        `${BASE_URL}/add-lecture`,
-        {
-          lectureName: newLectureTitle,
-          courseId: courseId,
-          date: lectureDate,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => {
-        setIsLoading(!isLoading);
-      });
+    await axios.post(
+      `${BASE_URL}/add-lecture`,
+      {
+        lectureName: newLectureTitle,
+        courseId: courseId,
+        date: lectureDate,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    setIsLoading(!isLoading);
   };
 
   const handleSubmitLecture = async (courseId) => {
@@ -215,24 +217,17 @@ const LecturerPage = () => {
     }
   };
 
-
   useEffect(() => {
     sortList(changeSort);
   }, [changeSort]);
 
-  useEffect(() => {
-    getClasses();
-  }, [isLoading]);
-
-  useEffect(() => {
-    if (coursesList != undefined) {
-      // console.log(courseList);
-    }
-  }, [coursesList]);
+  if (initialLoad || user === null) {
+    return <Loading />;
+  }
 
   return (
     <>
-      {handleInitalLoad ? (
+      {initialLoad ? (
         <Loading />
       ) : user === null || user.roles != 'lecturer' ? (
         <AccessDenied />
@@ -260,7 +255,7 @@ const LecturerPage = () => {
             <Box
               component="img"
               src={user.avatarPicture}
-              sx={{ width: 180, height: '200px', borderRadius: 4 }}
+              sx={{ width: 200, height: 200, borderRadius: 4 }}
             />
             <Box ml="10px">
               <Typography variant="h6" color="initial">
@@ -430,6 +425,7 @@ const LecturerPage = () => {
                       {course.lectures ? (
                         course.lectures.map((lecture) => (
                           <TableRow
+                            key={lecture._id}
                             sx={
                               lecture._id == selectedLectureId
                                 ? {
