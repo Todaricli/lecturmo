@@ -16,7 +16,7 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import EmailIcon from '@mui/icons-material/Email';
@@ -24,6 +24,7 @@ import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginI
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import Loading from '../../components/Loading';
 import { resendVerificationEmail } from '../../services/profile/userProfileAPIFetch';
+import { preloadImages } from '../../services/preloadImages';
 
 const UserProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -31,10 +32,23 @@ const UserProfilePage = () => {
 
   const [emailError, setEmailError] = useState('');
   const [sentEmailSuccess, setSentEmailSuccess] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
 
-  if (user === null) {
-    return <Loading />;
-  }
+  useEffect(() => {
+    const preloadAvatar = async () => {
+      const avatarUrl = user?.avatarPicture || '../../../no-avatar.png';
+      await preloadImages([avatarUrl]);
+    };
+
+    const loadData = async () => {
+      if (user) {
+        await preloadAvatar();
+        setInitialLoad(false);
+      }
+    };
+
+    loadData();
+  }, [user]);
 
   const handleResendEmail = async () => {
     const res = await resendVerificationEmail({
@@ -45,7 +59,12 @@ const UserProfilePage = () => {
     if (!res.error) {
       setSentEmailSuccess(true);
     }
+  };
+
+  if (user === null) {
+    return <Loading />;
   }
+
 
   return (
     <Container
@@ -82,7 +101,9 @@ const UserProfilePage = () => {
             <Card
               sx={{
                 pl: '10px',
+                padding: 2,
                 display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
                 borderRadius: 4,
                 justifyContent: 'center',
                 alignItems: 'center',

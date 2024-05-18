@@ -1,16 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../../contexts/AuthContextProvider';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import Typography from '@mui/material/Typography';
-import LandingPosts from '../../components/LandingPosts';
+import { Box, Snackbar, Alert } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Footer from '../../components/Footer';
-import { useTheme } from '@emotion/react';
-import { Box } from '@mui/material';
-import axios from 'axios';
-import { useLocation } from 'react-router-dom';
-import { Snackbar, Alert } from '@mui/material';
 import Loading from '../../components/Loading';
+import LandingPosts from '../../components/LandingPosts';
 import SearchBar from '../../components/SearchBar';
+import { preloadImages } from '../../services/preloadImages';
 
 const BASE_URL =
   import.meta.env.VITE_BACKEND_EXPRESS_APP_ENDPOINT_API_URL ??
@@ -23,20 +21,19 @@ const HomePage = () => {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
-  const [toggleSearch, setToggleSearch] = useState(false)
+  const [toggleSearch, setToggleSearch] = useState(false);
 
   const toggleSearchBar = () => {
-    setToggleSearch(!toggleSearch)
-  }
+    setToggleSearch(!toggleSearch);
+  };
 
   useEffect(() => {
-    document.addEventListener("mousedown", (e) => {
+    document.addEventListener('mousedown', (e) => {
       // console.log(e.target)
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
-    // console.log('message:', message);
     if (message === 'Successfully verified!') {
       setOpen(true);
     }
@@ -45,18 +42,24 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios
-          .get(`${BASE_URL}/landing-posts`)
-          .then((response) => {
-            setPosts(response.data);
-            setInitialLoad(false);
-          });
-        // console.log('data', response.data);
+        const response = await axios.get(`${BASE_URL}/landing-posts`);
+        setPosts(response.data);
       } catch (error) {
         console.log('Error fetching data: ', error);
       }
     };
-    fetchData();
+
+    const preloadAssets = async () => {
+      const imageUrls = ['../../../FullLogo.png']; 
+      await preloadImages(imageUrls);
+    };
+
+    const loadDataAndAssets = async () => {
+      await Promise.all([fetchData(), preloadAssets()]);
+      setInitialLoad(false);
+    };
+
+    loadDataAndAssets();
   }, []);
 
   return (
@@ -71,8 +74,12 @@ const HomePage = () => {
             alignItems: 'center',
           }}
         >
-          <Box component="img" src="../../../FullLogo.png" sx={{ width: { xs: "100%", sm:"60%"} }}></Box>
-          <SearchBar toggle={toggleSearch} skeet="skeet"/>
+          <Box
+            component="img"
+            src="../../../FullLogo.png"
+            sx={{ width: { xs: '80%', sm: '40%', margin:"20px"} }}
+          ></Box>
+          <SearchBar toggle={toggleSearch} skeet="skeet" />
           <LandingPosts posts={posts} />
           <Snackbar
             open={open}

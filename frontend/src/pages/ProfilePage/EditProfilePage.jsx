@@ -34,6 +34,7 @@ import Loading from '../../components/Loading';
 import { useRedirectToLoginIfNotLoggedIn } from '../../hooks/useRedirectToLoginIfNotLoggedIn';
 import { updateUser } from '../../services/profile/userProfileAPIFetch';
 import { Snackbar, Alert } from '@mui/material';
+import { preloadImages } from '../../services/preloadImages';
 
 const EditProfilePage = () => {
   const { user, updateUserDetails } = useContext(AuthContext);
@@ -49,7 +50,7 @@ const EditProfilePage = () => {
   const [currentPasswordError, setCurrentPasswordError] = useState('');
   const [open, setOpen] = useState(false);
   const [isAvatarSelectorVisible, setIsAvatarSelectorVisible] = useState(false);
-  const [avatarLoading, setAvatarLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -69,7 +70,34 @@ const EditProfilePage = () => {
   const timeoutRef = useRef(null);
   const navigate = useNavigate();
 
-  // useEffect to initialize formData when user data is available
+  const avatarUrls = [
+    '/assets/Avatar/cat1.png',
+    '/assets/Avatar/cat2.png',
+    '/assets/Avatar/cat3.png',
+    '/assets/Avatar/cat4.png',
+    '/assets/Avatar/dog1.png',
+    '/assets/Avatar/dog2.png',
+    '/assets/Avatar/bird1.png',
+    '/assets/Avatar/sheep1.png',
+    '/assets/Avatar/goat1.png',
+    '/assets/Avatar/girl1.png',
+    '/assets/Avatar/girl2.png',
+    '/assets/Avatar/girl3.png',
+    '/assets/Avatar/girl4.png',
+    '/assets/Avatar/girl5.png',
+    '/assets/Avatar/girl6.png',
+    '/assets/Avatar/girl7.png',
+    '/assets/Avatar/girl8.png',
+    '/assets/Avatar/boy1.png',
+    '/assets/Avatar/boy2.png',
+    '/assets/Avatar/boy3.png',
+    '/assets/Avatar/boy4.png',
+    '/assets/Avatar/boy5.png',
+    '/assets/Avatar/boy6.png',
+    '/assets/Avatar/boy7.png',
+    '/assets/Avatar/boy8.png',
+  ];
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -88,6 +116,15 @@ const EditProfilePage = () => {
       });
     }
 
+    const preloadAssets = async () => {
+      await preloadImages(avatarUrls);
+      setInitialLoad(false);
+    };
+
+    if (user) {
+      preloadAssets();
+    }
+
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -95,14 +132,14 @@ const EditProfilePage = () => {
     };
   }, [user]);
 
-  // forcefully update user state success message is opened
+  // forcefully update user state when success message is opened
   useEffect(() => {
     if (open === true) {
       updateUserDetails();
     }
-  }, [open]);
+  }, [open, updateUserDetails]);
 
-  if (user === null) {
+  if (initialLoad || user === null) {
     return <Loading />;
   }
 
