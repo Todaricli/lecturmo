@@ -9,7 +9,7 @@ import SinglePageRouters from './singlePostRoute.js';
 import statsUserRouter from './statsUserRouter.js';
 import userProfileRoutes from './userProfilePage.js';
 import lecturAi from './openAi.js';
-import writeReviewRoutes from './WriteReview.js';
+import writeReviewRoutes from './writeReview.js';
 
 const router = express.Router();
 
