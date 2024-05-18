@@ -64,8 +64,12 @@ const LandingPosts = ({ posts }) => {
                 key={index}
                 sx={{
                   cursor: 'pointer',
+                  margin: 'auto',
                   marginTop: '15px',
-                  width: '400px',
+                  width: {
+                    xs: '95%',
+                    sm: '400px',
+                  },
                   boxShadow: theme.shadows[1],
                 }}
                 onClick={() => {

@@ -25,15 +25,15 @@ const HomePage = () => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [toggleSearch, setToggleSearch] = useState(false)
 
-  const toggleSearchBar = ()=>{
+  const toggleSearchBar = () => {
     setToggleSearch(!toggleSearch)
   }
 
-  useEffect(()=>{
-    document.addEventListener("mousedown", (e)=>{
+  useEffect(() => {
+    document.addEventListener("mousedown", (e) => {
       // console.log(e.target)
     })
-  },[])
+  }, [])
 
   useEffect(() => {
     // console.log('message:', message);
@@ -71,8 +71,8 @@ const HomePage = () => {
             alignItems: 'center',
           }}
         >
-          <Box component="img" src="../../../FullLogo.png" sx={{width: "60%"}}></Box>
-          <SearchBar toggle= {toggleSearch} skeet="skeet"/>
+          <Box component="img" src="../../../FullLogo.png" sx={{ width: { xs: "100%", sm:"60%"} }}></Box>
+          <SearchBar toggle={toggleSearch} skeet="skeet"/>
           <LandingPosts posts={posts} />
           <Snackbar
             open={open}

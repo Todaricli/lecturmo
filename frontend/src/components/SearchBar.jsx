@@ -68,7 +68,6 @@ const SearchBar = () => {
         alignItems: 'center',
         justifyContent: 'center',
         width: { xs: '80%', lg: '70%' },
-        mt: '50px',
         position: 'relative',
       }}
     >
