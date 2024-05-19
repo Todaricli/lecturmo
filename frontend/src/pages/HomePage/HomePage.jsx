@@ -77,7 +77,7 @@ const HomePage = () => {
           <Box
             component="img"
             src="../../../FullLogo.png"
-            sx={{ width: { xs: '80%', sm: '40%', margin:"20px"} }}
+            sx={{ width: "60%" }}
           ></Box>
           <SearchBar toggle={toggleSearch} skeet="skeet" />
           <LandingPosts posts={posts} />

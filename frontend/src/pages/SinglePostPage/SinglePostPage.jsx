@@ -70,7 +70,7 @@ const SinglePostPage = () => {
   };
 
   const toggleLike = async (reviewId, varCourseId) => {
-    const response = await postRequest(`http://localhost:3000/api/toggle-like`,
+    const response = await postRequest(`${BASE_URL}/toggle-like`,
       {
         reviewId: reviewId,
         courseId: varCourseId
@@ -570,7 +570,7 @@ const SinglePostPage = () => {
 
                             {/* for siennna */}
                             <Box>
-                              {review.userId.courses.length < 3 ? (
+                              {review.userId.courses[0]?.lectures.length < 3 ? (
                                 <Box
                                   component="img"
                                   src="../../../bronze-medal.png"
@@ -581,7 +581,7 @@ const SinglePostPage = () => {
                                   }}
                                 ></Box>
                               ) : // bronze
-                              review.userId.courses.length < 8 ? (
+                              review.userId.courses[0]?.lectures.length < 8 ? (
                                 <Box
                                   component="img"
                                   src="../../../silver-medal.png"
@@ -592,7 +592,7 @@ const SinglePostPage = () => {
                                   }}
                                 ></Box>
                               ) : //silver
-                              review.userId.courses.length < 15 ? (
+                              review.userId.courses[0]?.lectures.length < 15 ? (
                                 <Box
                                   component="img"
                                   src="../../../gold-badge.png"

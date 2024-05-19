@@ -101,9 +101,9 @@ const UserProfilePage = () => {
             <Card
               sx={{
                 pl: '10px',
-                padding: 2,
+                // padding: 2,
                 display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
+                // flexDirection: { xs: 'column', sm: 'row' },
                 borderRadius: 4,
                 justifyContent: 'center',
                 alignItems: 'center',

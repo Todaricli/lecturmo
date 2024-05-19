@@ -255,7 +255,7 @@ const LecturerPage = () => {
             <Box
               component="img"
               src={user.avatarPicture}
-              sx={{ width: 200, height: 200, borderRadius: 4 }}
+              sx={{ width: 180, height: 200, borderRadius: 4 }}
             />
             <Box ml="10px">
               <Typography variant="h6" color="initial">
